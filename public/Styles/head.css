@@ -1,0 +1,37 @@
+.page_inner {
+  background: tint(grey);
+}
+
+.page_header {
+  position: relative;
+  z-index: 10;
+  background: #fff;
+  color: #00d300;
+  -webkit-box-shadow: inset 0 -1px 0 0 1;
+          box-shadow: inset 0 -1px 0 0 1;
+}
+
+.page_header__fixed {
+  position: fixed;
+  width: 100%;
+}
+
+/* Headline */
+.page__headline {
+  float: left;
+  margin-right: 1em;
+}
+
+.page__title {
+  font-size: inherit;
+  line-height: 1;
+  margin: 0;
+  padding-top: .7em;
+  padding-bottom: .8em;
+}
+
+.page__title a {
+  display: inline-block;
+  vertical-align: top;
+}
+/*# sourceMappingURL=head.css.map */
