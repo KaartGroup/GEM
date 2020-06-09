@@ -1,1 +1,6 @@
 node_modules
+vgem/
+__pycache__/
+.vscode/
+flask/static/
+.DS_Store
