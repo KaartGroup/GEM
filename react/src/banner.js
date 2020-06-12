@@ -10,7 +10,7 @@ export function Banner() {
             <div className="banner-container">
                 <div className="divider"></div>
                 <div className="button-container" style={{ display: "center-block" }}>
-                    <a href="/editor"><button className='loginbtn'> Try GEM</button></a>           
+                    <a href="gui"><button className='loginbtn'> Try GEM</button></a>           
                 </div>
             </div>   
         </section>

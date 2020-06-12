@@ -15,7 +15,7 @@ body {
   
   .mod-nav{
     background-color: #FFFFFF;
-    border-bottom: 2px solid #31ff08;
+    border-bottom: 2px solid #f4753c;
   }
   
   .mod-nav .container {
@@ -134,7 +134,7 @@ body {
     font-family: 'Hind Guntur', sans-serif;
     line-height: 1.5;
     background-color:#fff;
-    border-top: 2px solid #31ff08;
+    border-top: 2px solid #f4753c;
     padding: 20px 0 20px;
   }
   

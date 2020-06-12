@@ -10,7 +10,6 @@ function App() {
       <Header />
       <Banner />
       <Footer />
-      <p>My Token = {window.token}</p>
       </div>
         );
       }
