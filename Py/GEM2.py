@@ -7,6 +7,8 @@ import github
 from github import Github
 import os
 import sys
+import logging
+import re
 from PySide2.QtWidgets import QApplication
 from PySide2 import QtCore, QtGui, QtWidgets
 import PyQt5
@@ -40,12 +42,15 @@ __email__ = "chris.gousset@kaart.com"
 __status__ = "Development"
 
 #########################################
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
     try:
         # PyInstaller creates a temp folder and stores path in _MEIPASS
         base_path = sys._MEIPASS
-    except Exception:
+    except Exception as e:
+        logger.exception(e)
         base_path = os.path.abspath(".")
 
     return os.path.join(base_path, relative_path)
@@ -56,7 +61,9 @@ def resource_path(relative_path):
 ###########################################
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
-except AttributeError:
+except AttributeError as e:
+    # TODO: We are detecting that QString doesn't exist?
+    logger.exception(e)
 
     def _fromUtf8(s):
         return s
@@ -69,7 +76,9 @@ try:
         return QtGui.QApplication.translate(context, text, disambig, _encoding)
 
 
-except AttributeError:
+except AttributeError as e:
+    # TODO: We are detecting that something doesn't exist?
+    logger.exception(e)
 
     def _translate(context, text, disambig):
         return QtWidgets.QApplication.translate(context, text, disambig)
@@ -112,15 +121,15 @@ class TABMOD(QAbstractTableModel):
                     value = self.GEMarraydata[row][column]
                     self.dataChanged.emit(index, index)
                     return str(value)
-                except:
-                    pass
+                except Exception as e:
+                    logger.exception(e)
             if column == 1:
                 try:
                     value = self.GEMarraydata[row][column]
                     self.dataChanged.emit(index, index)
                     return str(value)
-                except:
-                    pass
+                except Exception as e:
+                    logger.exception(e)
         if role == QtCore.Qt.DecorationRole:
             row = index.row()
             column = index.column()
@@ -148,15 +157,15 @@ class TABMOD(QAbstractTableModel):
                     value = self.GEMarraydata[row][column]
                     self.dataChanged.emit(index, index)
                     return str(value)
-                except:
-                    pass
+                except Exception as e:
+                    logger.exception(e)
             if column == 1:
                 try:
                     value = self.GEMarraydata[row][column]
                     self.dataChanged.emit(index, index)
                     return str(value)
-                except:
-                    pass
+                except Exception as e:
+                    logger.exception(e)
         if role == QtCore.Qt.DecorationRole:
             row = index.row()
             column = index.column()
@@ -215,37 +224,37 @@ class GUMTABMOD(QAbstractTableModel):
                     value = self.GEMarraydata[row][column]
                     self.dataChanged.emit(index, index)
                     return str(value)
-                except:
-                    pass
+                except Exception as e:
+                    logger.exception(e)
             if column == 1:
                 try:
                     value = self.GEMarraydata[row][column]
                     self.dataChanged.emit(index, index)
                     return str(value)
-                except:
-                    pass
+                except Exception as e:
+                    logger.exception(e)
 
             if column == 2:
                 try:
                     value = self.GEMarraydata[row][column]
                     self.dataChanged.emit(index, index)
                     return str(value)
-                except:
-                    pass
+                except Exception as e:
+                    logger.exception(e)
             if column == 3:
                 try:
                     value = self.GEMarraydata[row][column]
                     self.dataChanged.emit(index, index)
                     return str(value)
-                except:
-                    pass
+                except Exception as e:
+                    logger.exception(e)
             if column == 4:
                 try:
                     value = self.GEMarraydata[row][column]
                     self.dataChanged.emit(index, index)
                     return str(value)
-                except:
-                    pass
+                except Exception as e:
+                    logger.exception(e)
 
     def setData(self, index, value):
         if role == QtCore.Qt.DisplayRole:
@@ -256,36 +265,36 @@ class GUMTABMOD(QAbstractTableModel):
                     value = self.GEMarraydata[row][column]
                     self.dataChanged.emit(index, index)
                     return str(value)
-                except:
-                    pass
+                except Exception as e:
+                    logger.exception(e)
             if column == 1:
                 try:
                     value = self.GEMarraydata[row][column]
                     self.dataChanged.emit(index, index)
                     return str(value)
-                except:
-                    pass
+                except Exception as e:
+                    logger.exception(e)
             if column == 2:
                 try:
                     value = self.GEMarraydata[row][column]
                     self.dataChanged.emit(index, index)
                     return str(value)
-                except:
-                    pass
+                except Exception as e:
+                    logger.exception(e)
             if column == 3:
                 try:
                     value = self.GEMarraydata[row][column]
                     self.dataChanged.emit(index, index)
                     return str(value)
-                except:
-                    pass
+                except Exception as e:
+                    logger.exception(e)
             if column == 4:
                 try:
                     value = self.GEMarraydata[row][column]
                     self.dataChanged.emit(index, index)
                     return str(value)
-                except:
-                    pass
+                except Exception as e:
+                    logger.exception(e)
 
     def headerData(self, section, orientation, role):
         if role == QtCore.Qt.DisplayRole:
@@ -356,9 +365,9 @@ class CONFIRMPOPUP(QMainWindow):
         TESTPASS = self.PASSFIELD.text()
 
         if TESTPASS == one.ADMINPASS:
-
             one.GITPUSH_GO()
         else:
+            # TODO why is this else statement here?
             pass
         self.close()
 
@@ -914,7 +923,8 @@ class MAINWindow(QMainWindow):
         try:
             # PyInstaller creates a temp folder and stores path in _MEIPASS
             base_path = sys._MEIPASS
-        except Exception:
+        except Exception as e:
+            logger.exception(e)
             base_path = os.path.abspath(".")
 
         return os.path.join(base_path, relative_path)
@@ -1014,6 +1024,7 @@ class MAINWindow(QMainWindow):
                             self.TEMPUSERS[str(MOVEFROM)] = self.MOVEFROMUSER
                             self.SETNR()
             else:
+                # TODO why is this else statement here?
                 pass
 
     def MOVEDOWN_clicked(self):
@@ -1052,6 +1063,7 @@ class MAINWindow(QMainWindow):
                     self.SETNR()
 
         else:
+            # TODO why is this else statement here?
             pass
 
     def EDITORLINECOLOR_clicked(self):
@@ -1402,8 +1414,8 @@ class MAINWindow(QMainWindow):
     def MASTEROUTPUT(self, ISPUSH):
         try:
             path = self.OUTFILE[0]
-        except:
-            pass
+        except Exception as e:
+            logger.exception(e)
 
         OUTPUT = """meta {
   title: "QC Style For %s Team";
@@ -1492,8 +1504,8 @@ that there is another selector we would like to call out after "aaron"
   casing-color: lime;
   casing-width: 10;
   casing-opacity: 0.3;
- 
- 
+
+
 }
 
 -- This is our code block which will style up whatever we called out as a selector
@@ -1603,8 +1615,8 @@ node:selected::selected_layer {
             self.EDITORLINECOLORICON.repaint()
             self.TEMPEDITORICONSHAPE = ""
 
-        except:
-            pass
+        except Exception as e:
+            logger.exception(e)
 
     def REMOVE_clicked(self):
         self.dialog = QMessageBox.question(
@@ -1617,6 +1629,7 @@ node:selected::selected_layer {
         if self.dialog == QMessageBox.Yes:
             one.REMOVE_GO()
         else:
+            # TODO why is this else statement here?
             pass
 
     def REMOVEALL_clicked(self):
@@ -1631,6 +1644,7 @@ node:selected::selected_layer {
         if self.dialog == QMessageBox.Yes:
             one.REMOVEALL_GO()
         else:
+            # TODO why is this else statement here?
             pass
 
     def REMOVEALL_GO(self):
@@ -1653,8 +1667,8 @@ node:selected::selected_layer {
                 self.GEMarray[i][2] = QtGui.QColor(clear)
                 self.GEMarray[i][3] = QtGui.QColor(clear)
             self.GOREMOVEALL = False
-        except:
-            pass
+        except Exception as e:
+            logger.exception(e)
 
     def REMOVE_GO(self):
         for ix in self.TABLE.selectedIndexes():
@@ -1668,12 +1682,12 @@ node:selected::selected_layer {
             try:
                 self.ADDUSERS[int(self.NRSELECT)] = ""
 
-            except:
-                pass
+            except Exception as e:
+                logger.exception(e)
             try:
                 self.TEMPUSERS[str(self.NRSELECT)] = 0
-            except:
-                pass
+            except Exception as e:
+                logger.exception(e)
             self.GEMarray[self.NRSELECT][0] = str("")
             self.GEMarray[self.NRSELECT][1] = str("")
             self.GEMarray[self.NRSELECT][2] = QtGui.QColor(clear)
@@ -1727,6 +1741,7 @@ node:selected::selected_layer {
                 self.EDITORNODESIZESPIN.repaint()
                 self.EDITORSELECT = self.NRSELECT
         else:
+            # TODO why is this else statement here?
             pass
 
     def IMPULLGO(self, PULL):
@@ -1749,7 +1764,7 @@ node:selected::selected_layer {
   casing-opacity: 0.6;
   /*
   text: eval(concat("Highway type =", " ", tag("highway")));
-  text-offset: -20; 
+  text-offset: -20;
   */
 
 
@@ -1926,12 +1941,12 @@ node:selected::selected_layer {
             global INKML
             with open(INFILE, "r+") as IN:
                 INFILETEXT = IN.read()
-        except:
-            pass
+        except Exception as e:
+            logger.exception(e)
         try:
             self.IMPORT_clicked(INFILETEXT)
-        except:
-            pass
+        except Exception as e:
+            logger.exception(e)
 
     def IMPORT_clicked(self, PULL):
         INFILETEXT = str(PULL)
@@ -2083,6 +2098,7 @@ node:selected::selected_layer {
             CONSTRUCTOR.UID = i[0]
 
             CONSTRUCTOR.LINECOLORUI = QtGui.QColor(i[3])
+
             CONSTRUCTOR.NODECOLORUI = QtGui.QColor(i[8])
             CONSTRUCTOR.LINECOLORTEXT = i[3]
             CONSTRUCTOR.NODECOLORTEXT = i[8]
@@ -2123,6 +2139,7 @@ node:selected::selected_layer {
             self.TEMPUSERS[str(count)].icon = QtGui.QIcon(pixmap)
             self.GEMarray[count][3] = self.TEMPUSERS[str(count)].icon
         else:
+            # TODO why is this else statement here?
             pass
 
         if self.TEMPUSERS[str(count)].ICONSHAPE == "Square":
@@ -2134,6 +2151,7 @@ node:selected::selected_layer {
             self.TEMPUSERS[str(count)].icon = QtGui.QIcon(pixmap)
             self.GEMarray[count][3] = self.TEMPUSERS[str(count)].icon
         else:
+            # TODO why is this else statement here?
             pass
 
         if self.TEMPUSERS[str(count)].ICONSHAPE == "Triangle":
@@ -2145,6 +2163,7 @@ node:selected::selected_layer {
             self.TEMPUSERS[str(count)].icon = QtGui.QIcon(pixmap)
             self.GEMarray[count][3] = self.TEMPUSERS[str(count)].icon
         else:
+            # TODO why is this else statement here?
             pass
 
         if self.TEMPUSERS[str(count)].ICONSHAPE == "Pentagon":
@@ -2156,6 +2175,7 @@ node:selected::selected_layer {
             self.TEMPUSERS[str(count)].icon = QtGui.QIcon(pixmap)
             self.GEMarray[count][3] = self.TEMPUSERS[str(count)].icon
         else:
+            # TODO why is this else statement here?
             pass
 
         if self.TEMPUSERS[str(count)].ICONSHAPE == "Hexagon":
@@ -2167,6 +2187,7 @@ node:selected::selected_layer {
             self.TEMPUSERS[str(count)].icon = QtGui.QIcon(pixmap)
             self.GEMarray[count][3] = self.TEMPUSERS[str(count)].icon
         else:
+            # TODO why is this else statement here?
             pass
 
         if self.TEMPUSERS[str(count)].ICONSHAPE == "Heptagon":
@@ -2178,6 +2199,7 @@ node:selected::selected_layer {
             self.TEMPUSERS[str(count)].icon = QtGui.QIcon(pixmap)
             self.GEMarray[count][3] = self.TEMPUSERS[str(count)].icon
         else:
+            # TODO why is this else statement here?
             pass
 
         if self.TEMPUSERS[str(count)].ICONSHAPE == "Octagon":
@@ -2189,6 +2211,7 @@ node:selected::selected_layer {
             self.TEMPUSERS[str(count)].icon = QtGui.QIcon(pixmap)
             self.GEMarray[count][3] = self.TEMPUSERS[str(count)].icon
         else:
+            # TODO why is this else statement here?
             pass
 
         if self.TEMPUSERS[str(count)].ICONSHAPE == "Nonagon":
@@ -2200,6 +2223,7 @@ node:selected::selected_layer {
             self.TEMPUSERS[str(count)].icon = QtGui.QIcon(pixmap)
             self.GEMarray[count][3] = self.TEMPUSERS[str(count)].icon
         else:
+            # TODO why is this else statement here?
             pass
 
         if self.TEMPUSERS[str(count)].ICONSHAPE == "Decagon":
@@ -2211,6 +2235,7 @@ node:selected::selected_layer {
             self.TEMPUSERS[str(count)].icon = QtGui.QIcon(pixmap)
             self.GEMarray[count][3] = self.TEMPUSERS[str(count)].icon
         else:
+            # TODO why is this else statement here?
             pass
 
     #######################################################GUM INTERFACE#############################################
@@ -2293,6 +2318,7 @@ node:selected::selected_layer {
                             self.GUMTEMPUSERS[str(MOVEFROM)] = self.MOVEFROMUSER
                             self.SETGUM()
             else:
+                # TODO why is this else statement here?
                 pass
 
     def GUMMOVEDOWN_clicked(self):
@@ -2339,6 +2365,7 @@ node:selected::selected_layer {
                     self.SETGUM()
 
         else:
+            # TODO why is this else statement here?
             pass
 
     def GUMRESTACK_clicked(self):
@@ -2443,6 +2470,7 @@ node:selected::selected_layer {
         if self.dialog == QMessageBox.Yes:
             one.GUMREMOVE_GO()
         else:
+            # TODO why is this else statement here?
             pass
 
     def GUMREMOVEALL_clicked(self):
@@ -2457,6 +2485,7 @@ node:selected::selected_layer {
         if self.dialog == QMessageBox.Yes:
             one.GUMREMOVEALL_GO()
         else:
+            # TODO why is this else statement here?
             pass
 
     def GUMREMOVEALL_GO(self):
@@ -2474,8 +2503,8 @@ node:selected::selected_layer {
                 self.GUMarray[i][3] = str("")
                 self.GUMarray[i][4] = str("")
             self.GUMGOREMOVEALL = False
-        except:
-            pass
+        except Exception as e:
+            logger.exception(e)
 
     def GUMREMOVE_GO(self):
         for ix in self.GUMTABLE.selectedIndexes():
@@ -2489,12 +2518,12 @@ node:selected::selected_layer {
             try:
                 self.GUMADDUSERS[int(self.GUMSELECT)] = ""
 
-            except:
-                pass
+            except Exception as e:
+                logger.exception(e)
             try:
                 self.GUMTEMPUSERS[str(self.GUMSELECT)] = 0
-            except:
-                pass
+            except Exception as e:
+                logger.exception(e)
             self.GUMarray[self.GUMSELECT][0] = str("")
             self.GUMarray[self.GUMSELECT][1] = str("")
             self.GUMarray[self.GUMSELECT][2] = str("")
@@ -2516,8 +2545,8 @@ node:selected::selected_layer {
             self.GUMEDITORTITLE.repaint()
             self.GUMADD.setText("ADD")
             self.GUMADD.repaint()
-        except:
-            pass
+        except Exception as e:
+            logger.exception(e)
 
     def GUMADD_clicked(self):
         if self.GUMSELECT == "":
@@ -2630,7 +2659,8 @@ node:selected::selected_layer {
                 CONSTRUCTOR.USERNAME = i["username"]
                 try:
                     CONSTRUCTOR.TITLE = i["comment"]
-                except:
+                except Exception as e:
+                    logger.exception(e)
                     CONSTRUCTOR.TITLE = i["title"]
                 if i["gitaccess"] == "False":
                     CONSTRUCTOR.GITACCESSTEXT = "No"
@@ -2680,8 +2710,8 @@ node:selected::selected_layer {
             self.GUMEDITORID.repaint()
             self.GUMEDITORUSERNAME.repaint()
             self.GUMEDITORTITLE.repaint()
-        except:
-            pass
+        except Exception as e:
+            logger.exception(e)
 
     def SETGUM(self):
         for ix in self.GUMTABLE.selectedIndexes():
@@ -2709,7 +2739,10 @@ def main(args):
 
 def exception_hook(exctype, value, traceback):
     print(exctype, value, traceback)
-    sys._excepthook(exctype, value, traceback)
+    try:
+        sys._excepthook(exctype, value, traceback)
+    except Exception as error:
+        logger.critical(error)
     sys.exit(1)
 
 
