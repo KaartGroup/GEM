@@ -217,21 +217,72 @@ body {
     height:auto;
     display:inline-block;
   }
-  
-  .loginbtn {
-    background-color: #f4753c;
+
+  .teambtn{
+    background-color: #4A4A4A;
     color: white;
-    padding: 14px 20px;
     font-size: 18px;
     width: auto;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
+    margin-left: inherit;
     width: 100%;
-    font-weight: 600;
+    padding: 14px 20px;
   }
   
-  button:hover {
-    opacity: 0.8;
-    color: black;
+  label{
+    display: block;
+    font: 1rem 'Fira Sans', sans-serif;
+    width: 200px;
+    text-decoration-color: #f4753c;
+    border-bottom: 2px solid #f4753c;
+    border-right: 2px solid #f4753c;
+  }
+
+  input,
+  label{
+    margin: .4rem 0;
+  }
+
+  p,
+  label{
+    font: 1rem 'Fira Sans', sans-serif;
+    text-decoration-color: #f4753c;
+
+  }
+
+  input{
+    margin: .4rem;
+  }
+
+  .way-values{
+    grid-template-columns: 200px 200px;
+    display: grid;
+    align-items: start;
+  }
+
+  .shape-buttons{
+    background-color:#f4753c;
+    grid-template-columns: 100px 100px 100px;
+    display: grid;
+    width: 300px
+  }
+  .editor-settings{
+    grid-template-columns: 200px 200px;
+    display: grid;
+    align-items: start;
+  }
+  .body-style{
+    border-left: 2px solid #f4753c;
+    line-height: 1;
+  }
+  .editor-buttons{
+    background-color:#f4753c;
+    grid-template-columns: 100px 100px 100px;
+    display: grid;
+    width: 300px;
+    align-items: start;
+  }
+  .editor-way{
+    grid-template-columns: 200px 200px;
+    display: grid;
+    align-items: start;
   }

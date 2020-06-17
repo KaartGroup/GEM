@@ -4,15 +4,73 @@ export function Banner() {
    
 
     return (
-        <section className="banner">
-            <img className="img-responsive img-banner opacity" src="http://via.placeholder.com/1400x700" alt="" />
-            <div className="banner-layer-img" style={{ background: "url('https://images.pexels.com/photos/41949/earth-earth-at-night-night-lights-41949.jpeg') center center / cover no-repeat" }}></div>   
-            <div className="banner-container">
-                <div className="divider"></div>
-                <div className="button-container" style={{ display: "center-block" }}>
-                    <a href="gui"><button className='loginbtn'> Try GEM</button></a>           
+        <div className="body-style">
+        <section className="Team">
+            <label for="team">Team Name:</label>
+            <input type="text" id="team" team="team" required
+            minLength="4" maxLength="16" size="20"></input>
+            <div>
+                <p >Choose Highlight Colors</p> 
+                <div className="way-values">
+                <label for="linecolor"> Line Color: </label> 
+                <input type="color" id="linecolor" name="linecolor" value="#FF0000"></input>
+                <label for="linewidth">Line Width:</label>
+                <input type="number" id="lindewidth" name="linewidth" min="1" max="20"></input>
+                <label for="nodecolor"> Node Color: </label> 
+                <input type="color" id="nodecolor" name="nodecolor" value="#0000FF"></input>
+                <label for="nodesize">Node Size:</label>
+                <input type="number" id="nodesize" name="nodesize" min="10" max="50"></input>
                 </div>
-            </div>   
+                <label for="nodeshape" >Node Shape:</label> 
+                <div className="shape-buttons"> 
+                <input class="button-container" type="button" value="Circle"></input> 
+                <input class="button-container" type="button" value="Triangle"></input> 
+                <input class="button-container" type="button" value="Square"></input>
+                <input class="button-container" type="button" value="Pentagon"></input>
+                <input class="button-container" type="button" value="Hexagon"></input>
+                <input class="button-container" type="button" value="Heptagon"></input>
+                <input class="button-container" type="button" value="Octagon"></input>
+                <input class="button-container" type="button" value="Nonagon"></input>
+                <input class="button-container" type="button" value="Decagon"></input></div>
+                </div>
+                <p> </p>
+                <p>Editor Settings</p>
+                <div className="editor-settings">
+                <label for="editorname">Editor Name:</label>
+                <input type="text" id="editorname" editorname="editorname" required minLength="4" maxLength="16" size="20"></input>
+                <label for="editoruid">Editor User ID:</label>
+                <input type="text" id="editoruid" editorname="editoruid" required minLength="4" maxLength="16" size="20"></input>
+                <div className="editor-buttons">
+                <input class="button-container" type="button" value="Add"></input> 
+                <input class="button-container" type="button" value="Clear"></input> 
+                <input class="button-container" type="button" value="Edit"></input>
+                </div>
+                <p> </p>
+                <div className="editor-way">
+                <label for="linecolor"> Line Color: </label> 
+                <input type="color" id="linecolor" name="linecolor" value="#FF0000"></input>
+                <label for="linewidth">Line Width:</label>
+                <input type="number" id="lindewidth" name="linewidth" min="1" max="20"></input>
+                <label for="nodecolor"> Node Color: </label> 
+                <input type="color" id="nodecolor" name="nodecolor" value="#0000FF"></input>
+                <label for="nodesize">Node Size:</label>
+                <input type="number" id="nodesize" name="nodesize" min="10" max="50"></input>
+                <label for="toggleUID">Toggle User ID in the Menu </label>
+                <input type="checkbox" id="toggleUID" name="toggle" ></input>
+                <div className="shape-buttons"> 
+                <input class="button-container" type="button" value="Circle"></input> 
+                <input class="button-container" type="button" value="Triangle"></input> 
+                <input class="button-container" type="button" value="Square"></input>
+                <input class="button-container" type="button" value="Pentagon"></input>
+                <input class="button-container" type="button" value="Hexagon"></input>
+                <input class="button-container" type="button" value="Heptagon"></input>
+                <input class="button-container" type="button" value="Octagon"></input>
+                <input class="button-container" type="button" value="Nonagon"></input>
+                <input class="button-container" type="button" value="Decagon"></input>
+                </div>
+                </div>
+                </div> 
         </section>
+        </div>
     );
 }
