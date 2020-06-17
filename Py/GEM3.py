@@ -30,13 +30,14 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtWidgets import QPushButton, QMessageBox, QTabWidget
 from PyQt5.QtCore import QSize
+import time
 
 ##################################################
 __author__ = "Chris Gousset"
 __copyright__ = "N/A"
 __credits__ = ["Louis Morales", "Zack LaVergne"]
 __license__ = "N/A"
-__version__ = "2.0"
+__version__ = "2.1pyi"
 __maintainer__ = "Chris Gousset"
 __email__ = "chris.gousset@kaart.com"
 __status__ = "Development"
@@ -189,123 +190,9 @@ class TABMOD(QAbstractTableModel):
                     return self.headers[section]
 
 
-####################################################GUM TABLE##############################
-class GUMTABMOD(QAbstractTableModel):
-    def __init__(
-        self, GEMarray, headers=[], parent=None,
-    ):
-        QAbstractTableModel.__init__(self, parent)
-        self.GEMarraydata = GEMarray
-        self.headers = headers
-        self.thumbSize = 64
-
-    def resizePixmap(self, mult):
-        self.thumbSize = self.thumbSize * mult
-        self.reset()
-
-    def flags(self, index):
-        return Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable
-
-    def rowCount(self, parent):
-        return 50
-
-    def columnCount(self, parent):
-        return 5
-
-    def data(self, index, role):
-        row = index.row()
-        column = index.column()
-        value = self.GEMarraydata[row][column]
-        if role == QtCore.Qt.DisplayRole:
-            row = index.row()
-            column = index.column()
-            if column == 0:
-                try:
-                    value = self.GEMarraydata[row][column]
-                    self.dataChanged.emit(index, index)
-                    return str(value)
-                except Exception as e:
-                    logger.exception(e)
-            if column == 1:
-                try:
-                    value = self.GEMarraydata[row][column]
-                    self.dataChanged.emit(index, index)
-                    return str(value)
-                except Exception as e:
-                    logger.exception(e)
-
-            if column == 2:
-                try:
-                    value = self.GEMarraydata[row][column]
-                    self.dataChanged.emit(index, index)
-                    return str(value)
-                except Exception as e:
-                    logger.exception(e)
-            if column == 3:
-                try:
-                    value = self.GEMarraydata[row][column]
-                    self.dataChanged.emit(index, index)
-                    return str(value)
-                except Exception as e:
-                    logger.exception(e)
-            if column == 4:
-                try:
-                    value = self.GEMarraydata[row][column]
-                    self.dataChanged.emit(index, index)
-                    return str(value)
-                except Exception as e:
-                    logger.exception(e)
-
-    def setData(self, index, value):
-        if role == QtCore.Qt.DisplayRole:
-            row = index.row()
-            column = index.column()
-            if column == 0:
-                try:
-                    value = self.GEMarraydata[row][column]
-                    self.dataChanged.emit(index, index)
-                    return str(value)
-                except Exception as e:
-                    logger.exception(e)
-            if column == 1:
-                try:
-                    value = self.GEMarraydata[row][column]
-                    self.dataChanged.emit(index, index)
-                    return str(value)
-                except Exception as e:
-                    logger.exception(e)
-            if column == 2:
-                try:
-                    value = self.GEMarraydata[row][column]
-                    self.dataChanged.emit(index, index)
-                    return str(value)
-                except Exception as e:
-                    logger.exception(e)
-            if column == 3:
-                try:
-                    value = self.GEMarraydata[row][column]
-                    self.dataChanged.emit(index, index)
-                    return str(value)
-                except Exception as e:
-                    logger.exception(e)
-            if column == 4:
-                try:
-                    value = self.GEMarraydata[row][column]
-                    self.dataChanged.emit(index, index)
-                    return str(value)
-                except Exception as e:
-                    logger.exception(e)
-
-    def headerData(self, section, orientation, role):
-        if role == QtCore.Qt.DisplayRole:
-            if orientation == QtCore.Qt.Horizontal:
-                if section < len(self.headers):
-                    return self.headers[section]
-
-
 #####################################################
 Model = TABMOD
-GModel = GUMTABMOD
+
 clear = QtGui.QColor(0, 0, 0, 0)
 red = QtGui.QColor(255, 0, 0)
 
@@ -387,7 +274,7 @@ class MAINWindow(QMainWindow):
     def MWHOME(self, MAINWindow):
 
         MAINWindow.setObjectName(_fromUtf8("MAINWindow"))
-        self.ADMINPASS = "KaartROXX2020"
+        self.ADMINPASS = "**********"
         self.repoGO = False
         self.GOREMOVEALL = False
         self.TEAMNAMETEXT = ""
@@ -434,7 +321,6 @@ class MAINWindow(QMainWindow):
         self.TAB1 = QWidget()
         self.TAB2 = QWidget()
         self.TABS.addTab(self.TAB1, "GEM")
-        self.TABS.addTab(self.TAB2, "GUM")
         self.PULLUSER = ""
         ################################TABLE BUTTONS#######################################
 
@@ -556,7 +442,7 @@ class MAINWindow(QMainWindow):
         self.ICONSHAPELABEL.move(10, 84)
 
         self.TEAMICONSHAPEBOX = QtWidgets.QComboBox(self.groupBox3)
-        self.TEAMICONSHAPEBOX.currentIndexChanged.connect(self.TEAMSHAPESELECT)
+        self.TEAMICONSHAPEBOX.activated.connect(self.TEAMSHAPESELECT)
         self.TEAMICONSHAPEBOX.blockSignals(False)
         self.TEAMICONSHAPEBOX.resize(138, 20)
         self.TEAMICONSHAPEBOX.addItem("Circle")
@@ -569,6 +455,7 @@ class MAINWindow(QMainWindow):
         self.TEAMICONSHAPEBOX.addItem("Nonagon")
         self.TEAMICONSHAPEBOX.addItem("Decagon")
         self.TEAMICONSHAPEBOX.move(105, 85)
+
         ## ##############################EDITOR SETTINGS######################################
 
         self.groupBox2 = QtWidgets.QGroupBox(self.TAB1)
@@ -673,7 +560,7 @@ class MAINWindow(QMainWindow):
         self.EDITORICONSHAPELABEL.move(12, 190)
 
         self.EDITORICONSHAPEBOX = QtWidgets.QComboBox(self.groupBox2)
-        self.EDITORICONSHAPEBOX.currentIndexChanged.connect(self.EDITORSHAPESELECT)
+        self.EDITORICONSHAPEBOX.activated.connect(self.EDITORSHAPESELECT)
         self.EDITORICONSHAPEBOX.blockSignals(False)
         self.EDITORICONSHAPEBOX.resize(135, 20)
         self.EDITORICONSHAPEBOX.addItem("Circle")
@@ -686,24 +573,24 @@ class MAINWindow(QMainWindow):
         self.EDITORICONSHAPEBOX.addItem("Nonagon")
         self.EDITORICONSHAPEBOX.addItem("Decagon")
         self.EDITORICONSHAPEBOX.move(105, 190)
-        self.CIRCLE = "/Users/imac25/Desktop/bitmaps/circle.png"
-        self.SQUARE = "/Users/imac25/Desktop/bitmaps/square.png"
-        self.TRIANGLE = "/Users/imac25/Desktop/bitmaps/triangle.png"
-        self.PENTAGON = "/Users/imac25/Desktop/bitmaps/pentagon.png"
-        self.HEXAGON = "/Users/imac25/Desktop/bitmaps/hexagon.png"
-        self.HEPTAGON = "/Users/imac25/Desktop/bitmaps/heptagon.png"
-        self.OCTAGON = "/Users/imac25/Desktop/bitmaps/octagon.png"
-        self.NONAGON = "/Users/imac25/Desktop/bitmaps/nonagon.png"
-        self.DECAGON = "/Users/imac25/Desktop/bitmaps/decagon.png"
-        ##        self.CIRCLE= resource_path("//circle.png")
-        ##        self.SQUARE=resource_path("//square.png")
-        ##        self.TRIANGLE =resource_path("//triangle.png")
-        ##        self.PENTAGON=resource_path("//pentagon.png")
-        ##        self.HEXAGON =resource_path( "//hexagon.png")
-        ##        self.HEPTAGON=resource_path("//heptagon.png")
-        ##        self.OCTAGON=resource_path("//octagon.png")
-        ##        self.NONAGON =resource_path("//nonagon.png")
-        ##        self.DECAGON=resource_path("//decagon.png")
+        ##        self.CIRCLE=("/Users/imac25/Desktop/bitmaps/circle.png")
+        ##        self.SQUARE=("/Users/imac25/Desktop/bitmaps/square.png")
+        ##        self.TRIANGLE =("/Users/imac25/Desktop/bitmaps/triangle.png")
+        ##        self.PENTAGON=("/Users/imac25/Desktop/bitmaps/pentagon.png")
+        ##        self.HEXAGON =( "/Users/imac25/Desktop/bitmaps/hexagon.png")
+        ##        self.HEPTAGON=("/Users/imac25/Desktop/bitmaps/heptagon.png")
+        ##        self.OCTAGON=("/Users/imac25/Desktop/bitmaps/octagon.png")
+        ##        self.NONAGON =("/Users/imac25/Desktop/bitmaps/nonagon.png")
+        ##        self.DECAGON=("/Users/imac25/Desktop/bitmaps/decagon.png")
+        self.CIRCLE = resource_path("//circle.png")
+        self.SQUARE = resource_path("//square.png")
+        self.TRIANGLE = resource_path("//triangle.png")
+        self.PENTAGON = resource_path("//pentagon.png")
+        self.HEXAGON = resource_path("//hexagon.png")
+        self.HEPTAGON = resource_path("//heptagon.png")
+        self.OCTAGON = resource_path("//octagon.png")
+        self.NONAGON = resource_path("//nonagon.png")
+        self.DECAGON = resource_path("//decagon.png")
 
         menubar = self.menuBar()
         menubar.setNativeMenuBar(False)
@@ -712,185 +599,55 @@ class MAINWindow(QMainWindow):
         exitAct.setShortcut("Ctrl+Q")
         exitAct.setStatusTip("Exit GEM")
         exitAct.triggered.connect(self.closeEvent)
-
-        GITPULLSNEFF = QAction(" &Pull Sneffles Paintstyle from Github", self)
-        GITPULLSNEFF.setStatusTip("Import .Mapcss from Github")
-        GITPULLSNEFF.triggered.connect(lambda: self.GITPULL_clicked("Sneffles"))
-
-        GITPULLSANITAS = QAction(" &Pull Sanitas Paintstyle from Github", self)
-        GITPULLSANITAS.setStatusTip("Import .Mapcss from Github")
-        GITPULLSANITAS.triggered.connect(lambda: self.GITPULL_clicked("Sanitas"))
-
-        GITPULLQUANDRY = QAction(" &Pull Quandry Paintstyle from Github", self)
-        GITPULLQUANDRY.setStatusTip("Import .Mapcss from Github")
-        GITPULLQUANDRY.triggered.connect(lambda: self.GITPULL_clicked("Quandry"))
-
-        GITPUSH = QAction(" &Github Push", self)
-        GITPUSH.setStatusTip("Export .Mapcss to Github")
-        GITPUSH.triggered.connect(self.CONFIRMPUSH)
-
         FILE = menubar.addMenu("&File")
         GITPULL = FILE.addMenu("Git Pull")
-        GITPULL.addAction(GITPULLSNEFF)
-        GITPULL.addAction(GITPULLSANITAS)
-        GITPULL.addAction(GITPULLQUANDRY)
-
+        GITPUSH = QAction(" &Git Push", self)
+        GITPUSH.setStatusTip("Export .Mapcss to Github")
+        GITPUSH.triggered.connect(self.CONFIRMPUSH)
         GITPUSH = FILE.addAction(GITPUSH)
         FILE.addAction(exitAct)
+        git = Github("AUTH TOKEN")
+        org = git.get_user("Kaart-labs")
+        self.repo = org.get_repo("GEM")
+        self.contents = self.repo.get_contents("")
+        self.pulllist = {}
+        self.pullcount = 0
+        self.pullcountlist = []
+        for i in self.contents:
+            i = str(i)
+            i = i.split('"')
+            i = i[1]
 
-        EDIT = menubar.addMenu("Edit")
-        EDIT.addAction("New")
-        #############################################GUM GUI#############################
-        self.GUMTABLE = QtWidgets.QTableView(self.TAB2)
-        self.GUMTABLE.resize(400, 330)
-        self.GUMTABLE.move(255, 30)
-        self.GUMTABLE.clicked.connect(self.SETGUM)
+            if "mapcss" in i:
+                i = i.split(".")
+                i = i[0]
+                self.pullcount += 1
+                self.pullcountlist.append(self.pullcount)
+                self.pulllist[self.pullcount] = i
+        self.PULLS = []
+        for j in range(self.pullcount):
+            NUM = j + 1
+            TEXT = self.pulllist[j + 1]
+            ACT = str("ACT%s" % (j))
+            ACT = QAction(" &Pull %s Paintstyle from Github" % (TEXT), self)
+            ACT.setStatusTip("Import .Mapcss from Github")
+            GITPULL.addAction(ACT)
+            self.PULLS.append(ACT)
 
-        self.GUMREMOVE = QtWidgets.QPushButton(self.TAB2)
-        self.GUMREMOVE.setText("REMOVE")
-        self.GUMREMOVE.resize(110, 25)
-        self.GUMREMOVE.move(250, 367)
-        self.GUMREMOVE.clicked.connect(self.GUMREMOVE_clicked)
+        for j in self.PULLS:
+            j.triggered.connect(self.GITPULL_clicked)
 
-        self.GUMREMOVEALL = QPushButton(self.TAB2)
-        self.GUMREMOVEALL.setText("REMOVE ALL")
-        self.GUMREMOVEALL.resize(110, 25)
-        self.GUMREMOVEALL.move(250, 392)
-        self.GUMREMOVEALL.clicked.connect(self.GUMREMOVEALL_clicked)
+        ##        self.PULLS[1].triggered.connect(lambda:self.GITPULL_clicked(self.PULLS[1].text()))
+        ##        self.PULLS[2].triggered.connect(lambda:self.GITPULL_clicked(self.PULLS[2].text()))
 
-        self.GUMEXPORT = QPushButton(self.TAB2)
-        self.GUMEXPORT.setText("EXPORT")
-        self.GUMEXPORT.resize(110, 25)
-        self.GUMEXPORT.move(350, 392)
-        self.GUMEXPORT.clicked.connect(self.GUMEXPORT_clicked)
+        ##        EDIT = menubar.addMenu("Edit")
+        ##        EDIT.addAction("New")
 
-        self.GUMIMPORT = QtWidgets.QComboBox(self.TAB2)
-        self.GUMIMPORT.addItem("IMPORT:")
-        self.GUMIMPORT.addItem("SNEFFLES")
-        self.GUMIMPORT.addItem("SANITAS")
-        self.GUMIMPORT.addItem("QUANDRY")
-        self.GUMIMPORT.addItem("NOHKU")
-        self.GUMIMPORT.resize(110, 25)
-        self.GUMIMPORT.move(350, 370)
-        self.GUMIMPORT.blockSignals(False)
-        self.GUMIMPORT.currentIndexChanged.connect(self.GUMGITPULLER)
-
-        self.GUMRESTACK = QPushButton(self.TAB2)
-        self.GUMRESTACK.setText("RESTACK")
-        self.GUMRESTACK.resize(110, 25)
-        self.GUMRESTACK.move(550, 367)
-        self.GUMRESTACK.clicked.connect(self.GUMRESTACK_clicked)
-
-        self.GEMPULL = QPushButton(self.TAB2)
-        self.GEMPULL.setText("GEM PULL")
-        self.GEMPULL.resize(110, 25)
-        self.GEMPULL.move(550, 392)
-        self.GEMPULL.clicked.connect(self.GEMPULL_clicked)
-
-        self.GUMMOVEUP = QPushButton(self.TAB2)
-        self.GUMMOVEUP.setText("MOVE UP")
-        self.GUMMOVEUP.resize(110, 25)
-        self.GUMMOVEUP.move(450, 367)
-        self.GUMMOVEUP.clicked.connect(self.GUMMOVEUP_clicked)
-
-        self.GUMMOVEDOWN = QPushButton(self.TAB2)
-        self.GUMMOVEDOWN.setText("MOVE DOWN")
-        self.GUMMOVEDOWN.resize(110, 25)
-        self.GUMMOVEDOWN.move(450, 392)
-        self.GUMMOVEDOWN.clicked.connect(self.GUMMOVEDOWN_clicked)
-
-        #############
-
-        self.GUMgroupBox = QtWidgets.QGroupBox(self.TAB2)
-        self.GUMgroupBox.setGeometry(QtCore.QRect(5, 30, 245, 40))
-        self.GUMTEAMNAMELABEL = QtWidgets.QLabel(self.GUMgroupBox)
-        self.GUMTEAMNAMELABEL.setText("Team Name")
-        self.GUMTEAMNAMELABEL.resize(250, 20)
-        self.GUMTEAMNAMELABEL.move(10, 5)
-
-        self.GUMTEAMNAME = QtWidgets.QLineEdit(self.GUMgroupBox)
-        self.GUMTEAMNAME.resize(130, 20)
-        self.GUMTEAMNAME.move(105, 8)
-        ###############
-        self.GUMgroupBox3 = QtWidgets.QGroupBox(self.TAB2)
-        self.GUMgroupBox3.setGeometry(QtCore.QRect(5, 75, 245, 120))
-
-        ###############
-        self.GUMgroupBox2 = QtWidgets.QGroupBox(self.TAB2)
-        self.GUMgroupBox2.setGeometry(QtCore.QRect(5, 200, 245, 220))
-
-        self.GUMEDITSETTINGSLABEL = QtWidgets.QLabel(self.GUMgroupBox2)
-        self.GUMEDITSETTINGSLABEL.setText("Editor Settings:")
-        self.GUMEDITSETTINGSLABEL.resize(250, 20)
-        self.GUMEDITSETTINGSLABEL.move(10, 5)
-
-        self.GUMEDITNAMELABEL = QtWidgets.QLabel(self.GUMgroupBox2)
-        self.GUMEDITNAMELABEL.setText("Editor Name")
-        self.GUMEDITNAMELABEL.resize(250, 20)
-        self.GUMEDITNAMELABEL.move(10, 25)
-
-        self.GUMEDITORNAME = QtWidgets.QLineEdit(self.GUMgroupBox2)
-        self.GUMEDITORNAME.resize(120, 20)
-        self.GUMEDITORNAME.move(115, 25)
-
-        self.GUMEDITUIDLABEL = QtWidgets.QLabel(self.GUMgroupBox2)
-        self.GUMEDITUIDLABEL.setText("Editor UID")
-        self.GUMEDITUIDLABEL.resize(250, 20)
-        self.GUMEDITUIDLABEL.move(10, 50)
-
-        self.GUMEDITORUID = QtWidgets.QLineEdit(self.GUMgroupBox2)
-        self.GUMEDITORUID.resize(120, 20)
-        self.GUMEDITORUID.move(115, 50)
-
-        self.GUMEDITUSERNAMELABEL = QtWidgets.QLabel(self.GUMgroupBox2)
-        self.GUMEDITUSERNAMELABEL.setText("Editor Username")
-        self.GUMEDITUSERNAMELABEL.resize(250, 20)
-        self.GUMEDITUSERNAMELABEL.move(10, 75)
-
-        self.GUMEDITORUSERNAME = QtWidgets.QLineEdit(self.GUMgroupBox2)
-        self.GUMEDITORUSERNAME.resize(120, 20)
-        self.GUMEDITORUSERNAME.move(115, 75)
-
-        self.GUMEDITUSERTITLELABEL = QtWidgets.QLabel(self.GUMgroupBox2)
-        self.GUMEDITUSERTITLELABEL.setText("Editor Title")
-        self.GUMEDITUSERTITLELABEL.resize(250, 20)
-        self.GUMEDITUSERTITLELABEL.move(10, 100)
-
-        self.GUMEDITORTITLE = QtWidgets.QLineEdit(self.GUMgroupBox2)
-        self.GUMEDITORTITLE.resize(120, 20)
-        self.GUMEDITORTITLE.move(115, 100)
-
-        self.GUMADD = QPushButton(self.GUMgroupBox2)
-        self.GUMADD.setText("ADD")
-        self.GUMADD.resize(80, 25)
-        self.GUMADD.move(5, 145)
-        self.GUMADD.clicked.connect(self.GUMADD_clicked)
-
-        self.GUMCLEAR = QPushButton(self.GUMgroupBox2)
-        self.GUMCLEAR.setText("CLEAR")
-        self.GUMCLEAR.resize(80, 25)
-        self.GUMCLEAR.move(83, 145)
-        self.GUMCLEAR.clicked.connect(self.GUMCLEAR_clicked)
-
-        self.GUMEDIT = QPushButton(self.GUMgroupBox2)
-        self.GUMEDIT.setText("EDIT")
-        self.GUMEDIT.resize(80, 25)
-        self.GUMEDIT.move(160, 145)
-        self.GUMEDIT.clicked.connect(self.GUMEDIT_clicked)
-
-        self.GUMTOGGLELABEL = QtWidgets.QLabel(self.GUMgroupBox2)
-        self.GUMTOGGLELABEL.setText("GitHub Push Allowed")
-        self.GUMTOGGLELABEL.resize(250, 15)
-        self.GUMTOGGLELABEL.move(12, 125)
-
-        self.GUMTOGGLECHECK = QtWidgets.QCheckBox(self.GUMgroupBox2)
-        self.GUMTOGGLECHECK.move(220, 125)
-
-        ##
         #################################################################################
         self.retranslateUi(MAINWindow)
 
     #################################################################################
+
     def retranslateUi(self, MAINWindow):
 
         self.GEMheaders = ["NAME", "USER ID", "LINE HIGHLIGHT", "NODE HIGHLIGHT"]
@@ -904,19 +661,6 @@ class MAINWindow(QMainWindow):
         self.TABLE.setModel(self.tablemodel)
         self.TABLE.resizeRowsToContents()
         self.TABLE.resizeColumnsToContents()
-
-        self.GUMheaders = ["NAME", "USERNAME", "UID", "TITLE", "GIT ACCESS"]
-        self.GUMrowcount = 50
-        self.GUMcolcount = 4
-
-        self.GUMarray = [
-            [str(""), str(""), str(""), str(""), str("")]
-            for j in range(self.GUMrowcount)
-        ]
-        self.tablemodel = GModel(self.GUMarray, self.GUMheaders, self)
-        self.GUMTABLE.setModel(self.tablemodel)
-        self.GUMTABLE.resizeRowsToContents()
-        self.GUMTABLE.resizeColumnsToContents()
 
     #############################################
     def resource_path(relative_path):
@@ -941,11 +685,15 @@ class MAINWindow(QMainWindow):
         self.passdialog = CONFIRMPOPUP()
         self.passdialog.show()
 
-    def GITPULL_clicked(self, TEAM):
-        git = Github("8e7b6b2e033e9ac88413082c6961ef9cb8f97a57")
-        org = git.get_user("CEFgoose")
-        self.repo = org.get_repo("TEST")
-        self.contents = self.repo.get_contents("QAQC_%s.mapcss" % (TEAM))
+    def GITPULL_clicked(self):
+        SENDER = self.sender()
+        TEXT = SENDER.text()
+        TEXT = TEXT.replace(" &Pull ", "")
+        TEXT = TEXT.replace(" Paintstyle from Github", "")
+        git = Github("AUTH TOKEN")
+        org = git.get_user("Kaart-labs")
+        self.repo = org.get_repo("GEM")
+        self.contents = self.repo.get_contents("%s.mapcss" % (TEXT))
         self.c = self.contents.decoded_content
         self.IMPULLGO(self.c)
 
@@ -954,9 +702,16 @@ class MAINWindow(QMainWindow):
         self.MASTERENTERYTEXT = ""
         self.OUTUSERS = 0
         self.EXPORT_clicked(True)
-        self.repo.update_file(
-            self.contents.path, "TEST", self.OUTPUSHTEXT, self.contents.sha
-        )
+        NAME = "QAQC_%s.mapcss" % (self.TEAMNAME.text())
+        try:
+            self.contents = self.repo.get_contents(NAME)
+            self.c = self.contents.decoded_content
+            self.repo.update_file(
+                self.contents.path, "GEM", self.OUTPUSHTEXT, self.contents.sha
+            )
+        except Exception as error:
+            logger.exception(error)
+            self.repo.create_file(NAME, "GEM", self.OUTPUSHTEXT)
 
     ##########
     def RESTACK_clicked(self):
@@ -971,7 +726,7 @@ class MAINWindow(QMainWindow):
             if i != "" and type(i) != int:
                 self.GEMarray[count][0] = i.NAME
                 self.GEMarray[count][1] = i.UID
-                self.GEMGEMarray[count][2] = i.LINECOLORUI
+                self.GEMarray[count][2] = i.LINECOLORUI
                 self.GEMarray[count][3] = i.icon
                 self.RESTACKUSERS[str(count)] = i
                 count += 1
@@ -2080,7 +1835,6 @@ node:selected::selected_layer {
             CONSTRUCTOR.UID = i[0]
 
             CONSTRUCTOR.LINECOLORUI = QtGui.QColor(i[3])
-
             CONSTRUCTOR.NODECOLORUI = QtGui.QColor(i[8])
             CONSTRUCTOR.LINECOLORTEXT = i[3]
             CONSTRUCTOR.NODECOLORTEXT = i[8]
@@ -2203,6 +1957,7 @@ node:selected::selected_layer {
             pixmap.fill((QColor(self.TEMPUSERS[str(count)].NODECOLORUI)))
             pixmap.setMask(mask)
             self.TEMPUSERS[str(count)].icon = QtGui.QIcon(pixmap)
+
             self.GEMarray[count][3] = self.TEMPUSERS[str(count)].icon
         else:
             # TODO why is this else statement here?
@@ -2220,498 +1975,12 @@ node:selected::selected_layer {
             # TODO why is this else statement here?
             pass
 
-    #######################################################GUM INTERFACE#############################################
-    def GEMPULL_clicked(self):
-        self.PULLUSER == self.GUMTEMPUSERS[str(self.GUMSELECT)]
-        CONSTRUCTOR = str(self.usercount)
-        CONSTRUCTOR = EDITORINFO()
-        CONSTRUCTOR.NAME = self.GUMTEMPUSERS[str(self.GUMSELECT)].NAME
-        CONSTRUCTOR.UID = self.GUMTEMPUSERS[str(self.GUMSELECT)].USERNAME
-
-        CONSTRUCTOR.LINECOLORUI = QtGui.QColor("#B108D6")
-        CONSTRUCTOR.NODECOLORUI = QtGui.QColor("#0055ff")
-        CONSTRUCTOR.LINECOLORTEXT = "#B108D6"
-        CONSTRUCTOR.NODECOLORTEXT = "#0055ff"
-        CONSTRUCTOR.ICONSIZE = 4
-        CONSTRUCTOR.LINEWIDTH = 4
-        CONSTRUCTOR.ICONSHAPE = "Triangle"
-        self.NRSELECT = self.usercount
-        self.TEMPUSERS[str(self.usercount)] = CONSTRUCTOR
-        self.ADDUSERS.append(CONSTRUCTOR)
-        self.GEMarray[self.usercount][0] = str(CONSTRUCTOR.NAME)
-        self.GEMarray[self.usercount][1] = str(CONSTRUCTOR.UID)
-        self.GEMarray[self.usercount][2] = QtGui.QColor(CONSTRUCTOR.LINECOLORUI)
-        self.EDITORNODECOLORDISPLAY(self.usercount)
-
-    def GUMMOVEUP_clicked(self):
-        if self.GUMSELECT != "":
-            MOVETO = int(int(self.GUMSELECT) - 1)
-            MOVEFROM = int(self.GUMSELECT)
-            if MOVETO != int(-1):
-
-                if str(MOVETO) in self.GUMTEMPUSERS.keys():
-                    if self.GUMTEMPUSERS[str(MOVETO)] == 0:
-                        self.GUMarray[(MOVETO)][0] = self.GUMTEMPUSERS[
-                            str(MOVEFROM)
-                        ].NAME
-                        self.GUMarray[(MOVETO)][1] = self.GUMTEMPUSERS[
-                            str(MOVEFROM)
-                        ].USERNAME
-                        self.GUMarray[(MOVETO)][2] = self.GUMTEMPUSERS[
-                            str(MOVEFROM)
-                        ].UID
-                        self.GUMarray[(MOVETO)][3] = self.GUMTEMPUSERS[
-                            str(MOVEFROM)
-                        ].TITLE
-                        self.GUMarray[(MOVETO)][4] = self.GUMTEMPUSERS[
-                            str(MOVEFROM)
-                        ].GITACCESSTEXT
-
-                        self.GUMarray[(MOVEFROM)][0] = ""
-                        self.GUMarray[(MOVEFROM)][1] = ""
-                        self.GUMarray[(MOVEFROM)][2] = ""
-                        self.GUMarray[(MOVEFROM)][3] = ""
-                        self.GUMarray[(MOVEFROM)][4] = ""
-                        self.GUMTEMPUSERS[str(MOVETO)] = self.GUMTEMPUSERS[
-                            str(MOVEFROM)
-                        ]
-                        self.GUMTEMPUSERS[str(MOVEFROM)] = 0
-                        self.SETGUM()
-
-                    else:
-                        if str(MOVEFROM) in self.GUMTEMPUSERS.keys():
-                            self.MOVETOUSER = self.GUMTEMPUSERS[str(MOVEFROM)]
-                            self.MOVEFROMUSER = self.GUMTEMPUSERS[str(MOVETO)]
-                            self.GUMarray[(MOVEFROM)][0] = self.MOVEFROMUSER.NAME
-                            self.GUMarray[(MOVEFROM)][1] = self.MOVEFROMUSER.USERNAME
-                            self.GUMarray[(MOVEFROM)][2] = self.MOVEFROMUSER.UID
-                            self.GUMarray[(MOVEFROM)][3] = self.MOVEFROMUSER.TITLE
-                            self.GUMarray[(MOVEFROM)][
-                                4
-                            ] = self.MOVEFROMUSER.GITACCESSTEXT
-
-                            self.GUMarray[(MOVETO)][0] = self.MOVETOUSER.NAME
-                            self.GUMarray[(MOVETO)][1] = self.MOVETOUSER.USERNAME
-                            self.GUMarray[(MOVETO)][2] = self.MOVETOUSER.UID
-                            self.GUMarray[(MOVETO)][3] = self.MOVETOUSER.TITLE
-                            self.GUMarray[(MOVETO)][4] = self.MOVETOUSER.GITACCESSTEXT
-
-                            self.GUMTEMPUSERS[str(MOVETO)] = self.MOVETOUSER
-                            self.GUMTEMPUSERS[str(MOVEFROM)] = self.MOVEFROMUSER
-                            self.SETGUM()
-            else:
-                # TODO why is this else statement here?
-                pass
-
-    def GUMMOVEDOWN_clicked(self):
-        if self.GUMSELECT != "":
-            MOVETO = int(int(self.GUMSELECT) + 1)
-            MOVEFROM = int(self.GUMSELECT)
-
-            if str(MOVETO) in self.GUMTEMPUSERS.keys():
-                if self.GUMTEMPUSERS[str(MOVETO)] == 0:
-                    self.GUMarray[(MOVETO)][0] = self.GUMTEMPUSERS[str(MOVEFROM)].NAME
-                    self.GUMarray[(MOVETO)][1] = self.GUMTEMPUSERS[
-                        str(MOVEFROM)
-                    ].USERNAME
-                    self.GUMarray[(MOVETO)][2] = self.GUMTEMPUSERS[str(MOVEFROM)].UID
-                    self.GUMarray[(MOVETO)][3] = self.GUMTEMPUSERS[str(MOVEFROM)].TITLE
-                    self.GUMarray[(MOVETO)][4] = self.GUMTEMPUSERS[
-                        str(MOVEFROM)
-                    ].GITACCESSTEXT
-                    self.GUMarray[(MOVEFROM)][0] = ""
-                    self.GUMarray[(MOVEFROM)][1] = ""
-                    self.GUMarray[(MOVEFROM)][2] = ""
-                    self.GUMarray[(MOVEFROM)][3] = ""
-                    self.GUMarray[(MOVEFROM)][4] = ""
-                    self.GUMTEMPUSERS[str(MOVETO)] = self.GUMTEMPUSERS[str(MOVEFROM)]
-                    self.GUMTEMPUSERS[str(MOVEFROM)] = 0
-                    self.SETGUM()
-
-                else:
-                    self.MOVETOUSER = self.GUMTEMPUSERS[str(MOVEFROM)]
-                    self.MOVEFROMUSER = self.GUMTEMPUSERS[str(MOVETO)]
-                    self.GUMarray[(MOVEFROM)][0] = self.MOVEFROMUSER.NAME
-                    self.GUMarray[(MOVEFROM)][1] = self.MOVEFROMUSER.USERNAME
-                    self.GUMarray[(MOVEFROM)][2] = self.MOVEFROMUSER.UID
-                    self.GUMarray[(MOVEFROM)][3] = self.MOVEFROMUSER.TITLE
-                    self.GUMarray[(MOVEFROM)][4] = self.MOVEFROMUSER.GITACCESSTEXT
-
-                    self.GUMarray[(MOVETO)][0] = self.MOVETOUSER.NAME
-                    self.GUMarray[(MOVETO)][1] = self.MOVETOUSER.USERNAME
-                    self.GUMarray[(MOVETO)][2] = self.MOVETOUSER.UID
-                    self.GUMarray[(MOVETO)][3] = self.MOVETOUSER.TITLE
-                    self.GUMarray[(MOVETO)][4] = self.MOVETOUSER.GITACCESSTEXT
-                    self.GUMTEMPUSERS[str(MOVETO)] = self.MOVETOUSER
-                    self.GUMTEMPUSERS[str(MOVEFROM)] = self.MOVEFROMUSER
-                    self.SETGUM()
-
-        else:
-            # TODO why is this else statement here?
-            pass
-
-    def GUMRESTACK_clicked(self):
-        for i in range(50):
-            self.GUMarray[i][0] = ""
-            self.GUMarray[i][1] = ""
-            self.GUMarray[i][2] = ""
-            self.GUMarray[i][3] = ""
-            self.GUMarray[i][4] = ""
-            GUMcount = 0
-            self.GUMRESTACKUSERS = {}
-        for i in self.GUMTEMPUSERS.values():
-            if i != "" and type(i) != int:
-                self.GUMarray[GUMcount][0] = i.NAME
-                self.GUMarray[GUMcount][1] = i.USERNAME
-                self.GUMarray[GUMcount][2] = i.UID
-                self.GUMarray[GUMcount][3] = i.TITLE
-                self.GUMarray[GUMcount][4] = i.GITACCESSTEXT
-                self.GUMRESTACKUSERS[str(GUMcount)] = i
-                GUMcount += 1
-                self.GUMusercount = GUMcount
-        self.GUMTEMPUSERS = {}
-        self.GUMTEMPUSERS = self.GUMRESTACKUSERS
-
-    def GUMEXPORT_clicked(self):
-        self.GUMUSERENTRYBLOCK = ""
-        self.GUMMASTERENTERYTEXT = ""
-        self.GUMOUTUSERS = 0
-        for i in self.GUMADDUSERS:
-            self.GUMOUTUSERS += 1
-            if self.GUMOUTUSERS == self.GUMusercount:
-                self.GUMLASTUSERENTRY(
-                    i.TITLE, i.NAME, i.USERNAME, str(i.GITACCESS), i.UID
-                )
-            else:
-                self.GUMUSERENTRY(i.TITLE, i.NAME, i.USERNAME, str(i.GITACCESS), i.UID)
-        self.GUMMASTERENTRY(self.GUMUSERENTRYBLOCK)
-        self.GUMMASTERENTRYTEXT = self.GUMMASTERENTRYTEXT.strip("\n")
-        if self.repoGO != False:
-            self.repo.update_file(
-                self.contents.path, "TEST", self.GUMMASTERENTRYTEXT, self.contents.sha
-            )
-        else:
-            TEAMTEXT = self.GUMTEAMNAME.text()
-            self.GUMPULLTEXT = "%s.json" % (TEAMTEXT)
-            git = Github("8e7b6b2e033e9ac88413082c6961ef9cb8f97a57")
-            org = git.get_user("CEFgoose")
-            self.repo = org.get_repo("TEST")
-            self.contents = self.repo.get_contents(self.GUMPULLTEXT)
-            self.repo.update_file(
-                self.contents.path, "TEST", self.GUMMASTERENTRYTEXT, self.contents.sha
-            )
-
-    def GUMLASTUSERENTRY(self, title, name, username, access, uid):
-        self.GUMUSERENTRYBLOCK += """      {
-         "title": "%s",
-         "name": "%s",
-         "username": "%s",
-         "gitaccess":"%s",
-         "uid": "%s"
-      }""" % (
-            title,
-            name,
-            username,
-            access,
-            uid,
-        )
-
-    def GUMUSERENTRY(self, title, name, username, access, uid):
-        self.GUMUSERENTRYBLOCK += """      {
-         "comment": "%s",
-         "name": "%s",
-         "username": "%s",
-         "gitaccess":"%s",
-         "uid": "%s"
-      },""" % (
-            title,
-            name,
-            username,
-            access,
-            uid,
-        )
-
-    def GUMMASTERENTRY(self, GUMUSERLOG):
-        self.GUMMASTERENTRYTEXT = str(
-            """{
-   "USERS": [
-      %s
-          ]
-}"""
-            % (GUMUSERLOG)
-        )
-
-    def GUMREMOVE_clicked(self):
-        self.dialog = QMessageBox.question(
-            self,
-            "PyQt5 message",
-            "Are you sure you want to remove this editor?",
-            QMessageBox.Yes | QMessageBox.No,
-            QMessageBox.No,
-        )
-        if self.dialog == QMessageBox.Yes:
-            one.GUMREMOVE_GO()
-        else:
-            # TODO why is this else statement here?
-            pass
-
-    def GUMREMOVEALL_clicked(self):
-        self.GUMGOREMOVEALL = True
-        self.dialog = QMessageBox.question(
-            self,
-            "PyQt5 message",
-            "Are you sure you want to remove all editors?",
-            QMessageBox.Yes | QMessageBox.No,
-            QMessageBox.No,
-        )
-        if self.dialog == QMessageBox.Yes:
-            one.GUMREMOVEALL_GO()
-        else:
-            # TODO why is this else statement here?
-            pass
-
-    def GUMREMOVEALL_GO(self):
-        try:
-            self.GUMusercount = 0
-            self.GUMADDUSERS = []
-            self.GUMTEMPUSERS = {}
-            self.GUMTEAMNAME.setText("")
-            self.GUMTEAMNAME.repaint()
-
-            for i in range(0, 50):
-                self.GUMarray[i][0] = str("")
-                self.GUMarray[i][1] = str("")
-                self.GUMarray[i][2] = str("")
-                self.GUMarray[i][3] = str("")
-                self.GUMarray[i][4] = str("")
-            self.GUMGOREMOVEALL = False
-        except Exception as e:
-            logger.exception(e)
-
-    def GUMREMOVE_GO(self):
-        for ix in self.GUMTABLE.selectedIndexes():
-            column = ix.column()
-            dat = ix.data()
-            row = ix.row()
-            if dat != None:
-                self.GUMSELECT = row
-            else:
-                self.GUMSELECT = ""
-            try:
-                self.GUMADDUSERS[int(self.GUMSELECT)] = ""
-
-            except Exception as e:
-                logger.exception(e)
-            try:
-                self.GUMTEMPUSERS[str(self.GUMSELECT)] = 0
-            except Exception as e:
-                logger.exception(e)
-            self.GUMarray[self.GUMSELECT][0] = str("")
-            self.GUMarray[self.GUMSELECT][1] = str("")
-            self.GUMarray[self.GUMSELECT][2] = str("")
-            self.GUMarray[self.GUMSELECT][3] = str("")
-            self.GUMarray[self.GUMSELECT][4] = str("")
-            self.GUMSELECT = ""
-            self.GUMusercount -= 1
-
-    def GUMCLEAR_clicked(self):
-        try:
-            self.GUMSELECT = ""
-            self.GUMEDITORNAME.setText("")
-            self.GUMEDITORUID.setText("")
-            self.GUMEDITORUSERNAME.setText("")
-            self.GUMEDITORTITLE.setText("")
-            self.GUMEDITORUID.repaint()
-            self.GUMEDITORNAME.repaint()
-            self.GUMEDITORUSERNAME.repaint()
-            self.GUMEDITORTITLE.repaint()
-            self.GUMADD.setText("ADD")
-            self.GUMADD.repaint()
-        except Exception as e:
-            logger.exception(e)
-
-    def GUMADD_clicked(self):
-        if self.GUMSELECT == "":
-            if self.GUMEDITORNAME.text() != "":
-                GUMENAME = self.GUMEDITORNAME.text()
-                GUMEUID = self.GUMEDITORUID.text()
-                GUMEUSERNAME = self.GUMEDITORUSERNAME.text()
-                GUMETITLE = self.GUMEDITORTITLE.text()
-
-                GUMECLASS = EDITORINFO()
-
-                GUMECLASS.NAME = GUMENAME
-                GUMECLASS.UID = GUMEUID
-                GUMECLASS.USERNAME = GUMEUSERNAME
-                GUMECLASS.TITLE = GUMETITLE
-
-                self.GUMTEMPUSERS[str(self.GUMusercount)] = GUMECLASS
-
-                self.GUMarray[self.GUMusercount][0] = str(GUMECLASS.NAME)
-                self.GUMarray[self.GUMusercount][1] = str(GUMECLASS.USERNAME)
-                self.GUMarray[self.GUMusercount][2] = str(GUMECLASS.UID)
-                self.GUMarray[self.GUMusercount][3] = str(GUMECLASS.TITLE)
-                if self.GUMTOGGLECHECK.isChecked():
-                    self.GUMTEMPUSERS[str(self.GUMusercount)].GITACCESSTEXT = "Yes"
-                    self.GUMTEMPUSERS[str(self.GUMusercount)].GITACCESS = True
-                else:
-                    self.GUMTEMPUSERS[str(self.GUMusercount)].GITACCESSTEXT = "No"
-                    self.GUMTEMPUSERS[str(self.GUMusercount)].GITACCESS = False
-                self.GUMarray[self.GUMusercount][4] = str(GUMECLASS.GITACCESSTEXT)
-                self.GUMADDUSERS.append(GUMECLASS)
-
-                self.GUMEDITORNAME.setText("")
-                self.GUMEDITORUID.setText("")
-                self.GUMEDITORUSERNAME.setText("")
-                self.GUMEDITORTITLE.setText("")
-
-                self.GUMEDITORNAME.repaint()
-                self.GUMEDITORUID.repaint()
-                self.GUMEDITORUSERNAME.repaint()
-                self.GUMEDITORTITLE.repaint()
-                self.GUMTABLE.resizeRowsToContents()
-                self.GUMTABLE.resizeColumnsToContents()
-                self.GUMTABLE.repaint()
-                self.GUMusercount += 1
-
-        if self.GUMSELECT != "":
-            if self.GUMEDITORNAME.text() != "":
-                GUMENAME = self.GUMEDITORNAME.text()
-                GUMEUID = self.GUMEDITORUID.text()
-                GUMEUSERNAME = self.GUMEDITORUSERNAME.text()
-                GUMETITLE = self.GUMEDITORTITLE.text()
-
-                self.GUMTEMPUSERS[str(self.GUMSELECT)].NAME = GUMENAME
-                self.GUMTEMPUSERS[str(self.GUMSELECT)].UID = GUMEUID
-                self.GUMTEMPUSERS[str(self.GUMSELECT)].USERNAME = GUMEUSERNAME
-                self.GUMTEMPUSERS[str(self.GUMSELECT)].TITLE = GUMETITLE
-                if self.GUMTOGGLECHECK.isChecked():
-                    self.GUMTEMPUSERS[str(self.GUMSELECT)].GITACCESSTEXT = "Yes"
-                    self.GUMTEMPUSERS[str(self.GUMSELECT)].GITACCESS = True
-                else:
-                    self.GUMTEMPUSERS[str(self.GUMSELECT)].GITACCESSTEXT = "No"
-                    self.GUMTEMPUSERS[str(self.GUMSELECT)].GITACCESS = False
-                self.GUMarray[self.GUMSELECT][0] = str(
-                    self.GUMTEMPUSERS[str(self.GUMSELECT)].NAME
-                )
-                self.GUMarray[self.GUMSELECT][1] = str(
-                    self.GUMTEMPUSERS[str(self.GUMSELECT)].USERNAME
-                )
-                self.GUMarray[self.GUMSELECT][2] = str(
-                    self.GUMTEMPUSERS[str(self.GUMSELECT)].UID
-                )
-                self.GUMarray[self.GUMSELECT][3] = str(
-                    self.GUMTEMPUSERS[str(self.GUMSELECT)].TITLE
-                )
-                self.GUMarray[self.GUMSELECT][4] = str(
-                    self.GUMTEMPUSERS[str(self.GUMSELECT)].GITACCESSTEXT
-                )
-
-                self.GUMEDITORNAME.setText("")
-                self.GUMEDITORUID.setText("")
-                self.GUMEDITORUSERNAME.setText("")
-                self.GUMEDITORTITLE.setText("")
-
-                self.GUMEDITORNAME.repaint()
-                self.GUMEDITORUID.repaint()
-                self.GUMEDITORUSERNAME.repaint()
-                self.GUMEDITORTITLE.repaint()
-
-                self.GUMSELECT = ""
-                self.GUMADD.setText("ADD")
-                self.GUMTABLE.resizeRowsToContents()
-                self.GUMTABLE.resizeColumnsToContents()
-
-    def GUMGITPULLER(self):
-        if self.GUMIMPORT.currentText() != "IMPORT:":
-            TEAMTEXT = self.GUMIMPORT.currentText()
-            self.GUMPULLTEXT = "%s.json" % (TEAMTEXT)
-            git = Github("8e7b6b2e033e9ac88413082c6961ef9cb8f97a57")
-            org = git.get_user("CEFgoose")
-            self.repo = org.get_repo("TEST")
-            self.contents = self.repo.get_contents(self.GUMPULLTEXT)
-            self.c = self.contents.decoded_content
-            DATA = json.loads(self.c)
-            SEARCH = DATA["USERS"]
-            for i in SEARCH:
-                CONSTRUCTOR = str(self.GUMusercount)
-                CONSTRUCTOR = EDITORINFO()
-                CONSTRUCTOR.NAME = i["name"]
-                CONSTRUCTOR.UID = i["uid"]
-                CONSTRUCTOR.USERNAME = i["username"]
-                try:
-                    CONSTRUCTOR.TITLE = i["comment"]
-                except Exception as e:
-                    logger.exception(e)
-                    CONSTRUCTOR.TITLE = i["title"]
-                if i["gitaccess"] == "False":
-                    CONSTRUCTOR.GITACCESSTEXT = "No"
-                    CONSTRUCTOR.GITACCESS = False
-                else:
-                    CONSTRUCTOR.GITACCESSTEXT = "Yes"
-                    CONSTRUCTOR.GITACCESS = True
-                self.GUMTEMPUSERS[str(self.GUMusercount)] = CONSTRUCTOR
-                self.GUMADDUSERS.append(CONSTRUCTOR)
-                self.GUMarray[self.GUMusercount][0] = str(CONSTRUCTOR.NAME)
-                self.GUMarray[self.GUMusercount][1] = str(CONSTRUCTOR.USERNAME)
-                self.GUMarray[self.GUMusercount][2] = str(CONSTRUCTOR.UID)
-                self.GUMarray[self.GUMusercount][3] = str(CONSTRUCTOR.TITLE)
-                self.GUMarray[self.GUMusercount][4] = str(CONSTRUCTOR.GITACCESSTEXT)
-                self.GUMusercount += 1
-                self.GUMTABLE.resizeRowsToContents()
-                self.GUMTABLE.resizeColumnsToContents()
-                self.GUMTABLE.repaint()
-                self.GUMTEAMNAME.setText(TEAMTEXT)
-                self.GUMTEAMNAME.repaint()
-                self.repoGO = True
-
-    def GUMEDIT_clicked(self):
-        try:
-            self.GUMADD.setText("UPDATE")
-
-            for ix in self.GUMTABLE.selectedIndexes():
-                column = ix.column()
-                dat = ix.data()
-                row = ix.row()
-                if dat != None:
-                    self.GUMSELECT = row
-                else:
-                    self.GUMSELECT = None
-            self.GUMEDITORNAME.setText(self.GUMTEMPUSERS[str(self.GUMSELECT)].NAME)
-            self.GUMEDITORUID.setText(self.GUMTEMPUSERS[str(self.GUMSELECT)].UID)
-            self.GUMEDITORUSERNAME.setText(
-                self.GUMTEMPUSERS[str(self.GUMSELECT)].USERNAME
-            )
-            self.GUMEDITORTITLE.setText(self.GUMTEMPUSERS[str(self.GUMSELECT)].TITLE)
-            if self.GUMTEMPUSERS[str(self.GUMSELECT)].GITACCESS == True:
-                self.GUMTOGGLECHECK.setChecked(True)
-            else:
-                self.GUMTOGGLECHECK.setChecked(False)
-            self.GUMTOGGLECHECK.repaint()
-            self.GUMEDITORNAME.repaint()
-            self.GUMEDITORID.repaint()
-            self.GUMEDITORUSERNAME.repaint()
-            self.GUMEDITORTITLE.repaint()
-        except Exception as e:
-            logger.exception(e)
-
-    def SETGUM(self):
-        for ix in self.GUMTABLE.selectedIndexes():
-            column = ix.column()
-            dat = ix.data()
-            row = ix.row()
-            if dat != "":
-                self.GUMSELECT = row
-            else:
-                self.GUMSELECT = ""
-
 
 ######################################################MAIN LOOP##################################################
 def main(args):
     app = QtWidgets.QApplication(args)
     global one
     one = MAINWindow()
-
     one.show()
     sys.exit(app.exec_())
     if self.EXIT == 1:
@@ -2729,5 +1998,6 @@ def exception_hook(exctype, value, traceback):
 
 
 sys.excepthook = exception_hook
+
 while True:
     main(sys.argv)
