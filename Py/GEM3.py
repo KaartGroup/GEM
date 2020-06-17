@@ -1749,28 +1749,10 @@ node:selected::selected_layer {
         EDITNAMEBLOCK = EDITNAMEBLOCK.split("*")
         FIXEDEDITNAMEBLOCK = []
         for i in EDITNAMEBLOCK:
-            i = i.replace('[eval(JOSM_search("user:', "")
-            i = i.replace(""""))][setting("user_""", ";")
-            i = i.replace("}", ";")
-            i = i.replace(
-                """")] {
-##  set .""",
-                ":",
-            )
-            i = i.split(".")
-            i = i[0]
-            i = i.replace('")] {', "")
-            i = i.replace("set", ";")
-            i = i.replace("\n", "")
-            if " " in i:
-                i = i.replace('"', "")
-                i = str(i)
-                i = i.replace("\\", "")
-            i = i.replace("  ;", ";")
-
-            if i != "":
-                FIXEDEDITNAMEBLOCK.append(i)
-
+            username = re.findall(r"user:\\?\"?(.*?)\\?\"?\"", i)
+            personname = re.findall(r"user_(.*?)\"", i)
+            if len(username) == 1 and len(personname) == 1:
+                FIXEDEDITNAMEBLOCK.append(";".join([username[0], personname[0]]))
         SETUPBLOCK = SETUPBLOCK.split(
             """/* Styling of ways and nodes once they belong to "history" for each individual user */"""
         )
