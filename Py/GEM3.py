@@ -607,38 +607,41 @@ class MAINWindow(QMainWindow):
         GITPUSH = FILE.addAction(GITPUSH)
         FILE.addAction(exitAct)
         git = Github("AUTH TOKEN")
-        org = git.get_user("Kaart-labs")
-        self.repo = org.get_repo("GEM")
-        self.contents = self.repo.get_contents("")
-        self.pulllist = {}
-        self.pullcount = 0
-        self.pullcountlist = []
-        for i in self.contents:
-            i = str(i)
-            i = i.split('"')
-            i = i[1]
+        try:
+            org = git.get_user("Kaart-labs")
+            self.repo = org.get_repo("GEM")
+            self.contents = self.repo.get_contents("")
+            self.pulllist = {}
+            self.pullcount = 0
+            self.pullcountlist = []
+            for i in self.contents:
+                i = str(i)
+                i = i.split('"')
+                i = i[1]
 
-            if "mapcss" in i:
-                i = i.split(".")
-                i = i[0]
-                self.pullcount += 1
-                self.pullcountlist.append(self.pullcount)
-                self.pulllist[self.pullcount] = i
-        self.PULLS = []
-        for j in range(self.pullcount):
-            NUM = j + 1
-            TEXT = self.pulllist[j + 1]
-            ACT = str("ACT%s" % (j))
-            ACT = QAction(" &Pull %s Paintstyle from Github" % (TEXT), self)
-            ACT.setStatusTip("Import .Mapcss from Github")
-            GITPULL.addAction(ACT)
-            self.PULLS.append(ACT)
+                if "mapcss" in i:
+                    i = i.split(".")
+                    i = i[0]
+                    self.pullcount += 1
+                    self.pullcountlist.append(self.pullcount)
+                    self.pulllist[self.pullcount] = i
+            self.PULLS = []
+            for j in range(self.pullcount):
+                NUM = j + 1
+                TEXT = self.pulllist[j + 1]
+                ACT = str("ACT%s" % (j))
+                ACT = QAction(" &Pull %s Paintstyle from Github" % (TEXT), self)
+                ACT.setStatusTip("Import .Mapcss from Github")
+                GITPULL.addAction(ACT)
+                self.PULLS.append(ACT)
 
-        for j in self.PULLS:
-            j.triggered.connect(self.GITPULL_clicked)
+            for j in self.PULLS:
+                j.triggered.connect(self.GITPULL_clicked)
 
         ##        self.PULLS[1].triggered.connect(lambda:self.GITPULL_clicked(self.PULLS[1].text()))
         ##        self.PULLS[2].triggered.connect(lambda:self.GITPULL_clicked(self.PULLS[2].text()))
+        except github.BadCredentialsException as error:
+            logger.debug(error)
 
         ##        EDIT = menubar.addMenu("Edit")
         ##        EDIT.addAction("New")
