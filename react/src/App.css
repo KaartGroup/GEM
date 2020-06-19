@@ -17,7 +17,7 @@ body {
     background-color: #FFFFFF;
     border-bottom: 2px solid #f4753c;
   }
-  
+
   .mod-nav .container {
   padding: 21px 15px 17px;
   max-width: 1270px;
@@ -232,20 +232,22 @@ body {
     display: block;
     font: 1rem 'Fira Sans', sans-serif;
     width: 200px;
-    text-decoration-color: #f4753c;
+    height:25px;
+    color: black;
     border-bottom: 2px solid #f4753c;
-    border-right: 2px solid #f4753c;
+    border-top: 2px solid #f4753c;
+    background-color: darkgrey;
   }
 
   input,
   label{
     margin: .4rem 0;
+    align-self: center;
   }
 
   p,
   label{
     font: 1rem 'Fira Sans', sans-serif;
-    text-decoration-color: #f4753c;
 
   }
 
@@ -266,23 +268,54 @@ body {
     width: 300px
   }
   .editor-settings{
-    grid-template-columns: 200px 200px;
-    display: grid;
-    align-items: start;
+    justify-content: space-between;
   }
+  
   .body-style{
     border-left: 2px solid #f4753c;
     line-height: 1;
+    border-right: 2px solid #f4753c;
+    border-top: 2px solid #f4753c;
+    display: flex;
+    width: 100%;
   }
   .editor-buttons{
     background-color:#f4753c;
     grid-template-columns: 100px 100px 100px;
     display: grid;
     width: 300px;
-    align-items: start;
+    height:50px;
   }
   .editor-way{
-    grid-template-columns: 200px 200px;
+    align-content: right;
+    width: 500px;
+  }
+
+  table{
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 600px;
+    align-content: center;
+  }
+
+  td, th{
+    padding: 8px;
+    border: 2px solid #f4753c;
+  }
+
+  th{
+    font-weight: bold;
+    text-transform: uppercase;
+
+  }
+  .left-side{
+    display: block;
+
+  }
+  .eshape-buttons{
+    background-color:#f4753c;
+    grid-template-columns: 100px 100px 100px;
     display: grid;
-    align-items: start;
+    width: 300px;
+    height: 90px;
   }

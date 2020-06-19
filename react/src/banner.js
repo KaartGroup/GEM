@@ -1,17 +1,14 @@
 import React from 'react';
 
 export function Banner() {
-   
-
     return (
         <div className="body-style">
-        <section className="Team">
             <label for="team">Team Name:</label>
             <input type="text" id="team" team="team" required
             minLength="4" maxLength="16" size="20"></input>
-            <div>
+            <div className="left-side">
                 <p >Choose Highlight Colors</p> 
-                <div className="way-values">
+            <div className="way-values">
                 <label for="linecolor"> Line Color: </label> 
                 <input type="color" id="linecolor" name="linecolor" value="#FF0000"></input>
                 <label for="linewidth">Line Width:</label>
@@ -22,7 +19,7 @@ export function Banner() {
                 <input type="number" id="nodesize" name="nodesize" min="10" max="50"></input>
                 </div>
                 <label for="nodeshape" >Node Shape:</label> 
-                <div className="shape-buttons"> 
+            <div className="shape-buttons"> 
                 <input class="button-container" type="button" value="Circle"></input> 
                 <input class="button-container" type="button" value="Triangle"></input> 
                 <input class="button-container" type="button" value="Square"></input>
@@ -33,9 +30,8 @@ export function Banner() {
                 <input class="button-container" type="button" value="Nonagon"></input>
                 <input class="button-container" type="button" value="Decagon"></input></div>
                 </div>
-                <p> </p>
+            <div className="editor-settings">
                 <p>Editor Settings</p>
-                <div className="editor-settings">
                 <label for="editorname">Editor Name:</label>
                 <input type="text" id="editorname" editorname="editorname" required minLength="4" maxLength="16" size="20"></input>
                 <label for="editoruid">Editor User ID:</label>
@@ -45,8 +41,7 @@ export function Banner() {
                 <input class="button-container" type="button" value="Clear"></input> 
                 <input class="button-container" type="button" value="Edit"></input>
                 </div>
-                <p> </p>
-                <div className="editor-way">
+            <div className="editor-way">
                 <label for="linecolor"> Line Color: </label> 
                 <input type="color" id="linecolor" name="linecolor" value="#FF0000"></input>
                 <label for="linewidth">Line Width:</label>
@@ -55,9 +50,11 @@ export function Banner() {
                 <input type="color" id="nodecolor" name="nodecolor" value="#0000FF"></input>
                 <label for="nodesize">Node Size:</label>
                 <input type="number" id="nodesize" name="nodesize" min="10" max="50"></input>
+                </div>
+                </div>
+            <div className="eshape-buttons"> 
                 <label for="toggleUID">Toggle User ID in the Menu </label>
                 <input type="checkbox" id="toggleUID" name="toggle" ></input>
-                <div className="shape-buttons"> 
                 <input class="button-container" type="button" value="Circle"></input> 
                 <input class="button-container" type="button" value="Triangle"></input> 
                 <input class="button-container" type="button" value="Square"></input>
@@ -68,9 +65,6 @@ export function Banner() {
                 <input class="button-container" type="button" value="Nonagon"></input>
                 <input class="button-container" type="button" value="Decagon"></input>
                 </div>
-                </div>
-                </div> 
-        </section>
-        </div>
+    </div>
     );
 }
