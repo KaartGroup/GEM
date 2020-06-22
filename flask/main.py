@@ -10,9 +10,7 @@ app = Flask("__main__")
 def my_index():
     return render_template('index.html')
 
-@app.route("/gui")
-def gui():
-    return render_template('gempage.html')
+
 
 
 
