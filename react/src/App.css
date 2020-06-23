@@ -251,6 +251,7 @@ body {
     text-size-adjust: 18pt;
     color: #f4753c;
     border-bottom: black;
+    font-weight: bolder;
   }
 
 
@@ -273,6 +274,7 @@ body {
   .editor-settings{
     justify-content: space-between;
     border-right: 2px solid #f4753c;
+    height: 660px;
   }
   
   .body-style{
@@ -282,9 +284,10 @@ body {
     border-top: 2px solid #f4753c;
     display: inline-flex;
     width: 100%;
-    padding: 10px;
+    padding: 25px;
+    height: 100%;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
   }
   .editor-buttons{
     background-color:#f4753c;
@@ -318,8 +321,7 @@ body {
   .left-side{
     display: block;
     border-right: 2px solid #f4753c;
-    height: 527px;
-    width: 502px; 
+    height: 660px;
 
   }
   .eshape-buttons{
@@ -327,7 +329,7 @@ body {
   color: #fff;
   padding: 10px;
   font-size: 18px;
-  width: 195px;
+  width: 146px;
   margin: 4px 0;
   border: none;
   cursor: pointer;
@@ -335,23 +337,77 @@ body {
   justify-content: space-between;
   display: grid;
   grid-template-rows: 25px;
+  border-radius: 9px ;
   justify-content: center;
   }
   .uidcheckbox{
-      display: block;
-      font: 1rem 'Fira Sans', sans-serif;
-      color: black;
+  display: block;
+  font: 1rem 'Fira Sans', sans-serif;
+  color: black;
+  border-right: 2px solid #f4753c;
+  height: 660px;
     }
 
-    .ebtns {
-    background-color: #f4753c;
-    color: white;
-    padding: 14px 20px;
-    font-size: 18px;
-    width: auto;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    font-weight: 600;
+  .ebtns {
+ background-color: #f4753c;
+  color: #fff;
+  padding: 10px;
+  font-size: 18px;
+  width: 146px;
+  margin: 4px 0;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  justify-content: space-between;
+  display: grid;
+  grid-template-rows: 25px;
+  border-radius: 9px ;
+  justify-content: center;
     }
+
+.ebtns-container{
+  display: grid;
+  grid-template-columns: 166px 166px 166px;
+  padding:2px;
+  align-content: center;
+}
+
+.eshape-container{
+  display: grid;
+  grid-template-columns: 166px 166px 166px;
+  height: 262px;
+  width: 504px;
+  align-content: center;
+}
+.ace-container{
+  display: grid;
+  padding: 12px;
+  border-top: #f4753c;
+}
+.export-buttons{
+  background-color: #f4753c;
+  color: #fff;
+  padding: 10px;
+  font-size: 18px;
+  width: 146px;
+  margin: 4px 0;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  justify-content: space-between;
+  display: grid;
+  grid-template-rows: 25px;
+  border-radius: 9px ;
+  justify-content: center;
+}
+.m-container{
+  display: grid;
+  padding: 25px;
+  align-self: center;
+}
+
+button:hover{
+  color: #4A4A4A;
+  background-color: #FFFFFF;
+}
+
