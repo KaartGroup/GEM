@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import json
 import requests
 import urllib
@@ -9,14 +10,11 @@ import os
 import sys
 import logging
 import re
-from PySide2.QtWidgets import QApplication
-from PySide2 import QtCore, QtGui, QtWidgets
+from enum import Enum, auto
 import PyQt5
-from PyQt5 import QtGui, QtCore
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
-from PyQt5 import QtGui, QtCore, uic
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtGui, QtCore, QtWidgets, uic
+from PyQt5.QtCore import QAbstractTableModel, Qt
+from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtWidgets import (
     QMainWindow,
     QLabel,
@@ -45,6 +43,8 @@ __status__ = "Development"
 #########################################
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
+
+
 def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
     try:
@@ -86,6 +86,25 @@ except AttributeError as e:
 
 
 ###############################################
+
+
+class MapCSSParseExceptionType(Enum):
+    UNKNOWN = auto()
+    UNKNOWN_USER = auto()
+
+
+class MapCSSParseException(Exception):
+    """
+    Thrown when there is an issue parsing the mapcss
+    """
+
+    def __init__(
+        self,
+        message: str,
+        exception_type: MapCSSParseExceptionType = MapCSSParseExceptionType.UNKNOWN,
+    ):
+        self.exception_type = exception_type
+        super().__init__(message)
 
 
 class TABMOD(QAbstractTableModel):
@@ -149,7 +168,7 @@ class TABMOD(QAbstractTableModel):
                 self.dataChanged.emit(index, index)
                 return Sicon
 
-    def setData(self, index, value):
+    def setData(self, index, value, role: int):
         if role == QtCore.Qt.DisplayRole:
             row = index.row()
             column = index.column()
@@ -182,6 +201,7 @@ class TABMOD(QAbstractTableModel):
                 Sicon = self.GEMarraydata[row][column]
                 self.dataChanged.emit(index, index)
                 return Sicon
+        return False
 
     def headerData(self, section, orientation, role):
         if role == QtCore.Qt.DisplayRole:
@@ -253,9 +273,6 @@ class CONFIRMPOPUP(QMainWindow):
 
         if TESTPASS == one.ADMINPASS:
             one.GITPUSH_GO()
-        else:
-            # TODO why is this else statement here?
-            pass
         self.close()
 
     def CANCEL_clicked(self):
@@ -322,7 +339,7 @@ class MAINWindow(QMainWindow):
         self.TAB2 = QWidget()
         self.TABS.addTab(self.TAB1, "GEM")
         self.PULLUSER = ""
-        ################################TABLE BUTTONS#######################################
+# ###############################TABLE BUTTONS############################## #
 
         self.TABLE = QtWidgets.QTableView(self.TAB1)
         self.TABLE.resize(400, 330)
@@ -370,7 +387,7 @@ class MAINWindow(QMainWindow):
         self.MOVEDOWN.resize(110, 25)
         self.MOVEDOWN.move(450, 392)
         self.MOVEDOWN.clicked.connect(self.MOVEDOWN_clicked)
-        ######################################TEAM SETTINGS#####################################
+# #####################################TEAM SETTINGS######################### #
         self.groupBox = QtWidgets.QGroupBox(self.TAB1)
 
         self.groupBox.setGeometry(QtCore.QRect(5, 30, 245, 40))
@@ -383,7 +400,7 @@ class MAINWindow(QMainWindow):
         self.TEAMNAME = QtWidgets.QLineEdit(self.groupBox)
         self.TEAMNAME.resize(130, 20)
         self.TEAMNAME.move(105, 8)
-        ######################################HIGHLIGHT SETTINGS#####################################
+# #####################################HIGHLIGHT SETTINGS#################### #
         self.groupBox3 = QtWidgets.QGroupBox(self.TAB1)
         self.groupBox3.setGeometry(QtCore.QRect(5, 75, 245, 120))
 
@@ -456,7 +473,7 @@ class MAINWindow(QMainWindow):
         self.TEAMICONSHAPEBOX.addItem("Decagon")
         self.TEAMICONSHAPEBOX.move(105, 85)
 
-        ## ##############################EDITOR SETTINGS######################################
+# ##############################EDITOR SETTINGS############################## #
 
         self.groupBox2 = QtWidgets.QGroupBox(self.TAB1)
         self.groupBox2.setGeometry(QtCore.QRect(5, 200, 245, 220))
@@ -627,10 +644,11 @@ class MAINWindow(QMainWindow):
                     self.pulllist[self.pullcount] = i
             self.PULLS = []
             for j in range(self.pullcount):
-                NUM = j + 1
                 TEXT = self.pulllist[j + 1]
                 ACT = str("ACT%s" % (j))
-                ACT = QAction(" &Pull %s Paintstyle from Github" % (TEXT), self)
+                ACT = QAction(
+                    " &Pull %s Paintstyle from Github" % (TEXT), self
+                )
                 ACT.setStatusTip("Import .Mapcss from Github")
                 GITPULL.addAction(ACT)
                 self.PULLS.append(ACT)
@@ -638,26 +656,33 @@ class MAINWindow(QMainWindow):
             for j in self.PULLS:
                 j.triggered.connect(self.GITPULL_clicked)
 
-        ##        self.PULLS[1].triggered.connect(lambda:self.GITPULL_clicked(self.PULLS[1].text()))
-        ##        self.PULLS[2].triggered.connect(lambda:self.GITPULL_clicked(self.PULLS[2].text()))
+        # self.PULLS[1].triggered.connect(lambda:self.GITPULL_clicked(self.PULLS[1].text()))
+        # self.PULLS[2].triggered.connect(lambda:self.GITPULL_clicked(self.PULLS[2].text()))
         except github.BadCredentialsException as error:
-            logger.debug(error)
+            logger.exception(error)
 
-        ##        EDIT = menubar.addMenu("Edit")
-        ##        EDIT.addAction("New")
+        """
+        EDIT = menubar.addMenu("Edit")
+        EDIT.addAction("New")
+        """
 
-        #################################################################################
+# ########################################################################### #
         self.retranslateUi(MAINWindow)
 
-    #################################################################################
+# ########################################################################### #
 
     def retranslateUi(self, MAINWindow):
 
-        self.GEMheaders = ["NAME", "USER ID", "LINE HIGHLIGHT", "NODE HIGHLIGHT"]
+        self.GEMheaders = [
+            "NAME",
+            "USER ID",
+            "LINE HIGHLIGHT",
+            "NODE HIGHLIGHT",
+        ]
         self.rowcount = 50
         self.colcount = 4
         self.GEMarray = [
-            [str(""), str(""), QtGui.QColor(clear), QtGui.QColor(clear),]
+            [str(""), str(""), QtGui.QColor(clear), QtGui.QColor(clear), ]
             for j in range(self.rowcount)
         ]
         self.tablemodel = Model(self.GEMarray, self.GEMheaders, self)
@@ -676,7 +701,7 @@ class MAINWindow(QMainWindow):
 
         return os.path.join(base_path, relative_path)
 
-    ####################################################################################GEM: EDITOR FUNCTIONS#########################################################
+# ########################   GEM: EDITOR FUNCTIONS   ###################### #
     def closeEvent(self, event):
         self.setParent(None)
         self.deleteLater()
@@ -760,7 +785,9 @@ class MAINWindow(QMainWindow):
                         self.GEMGEMarray[(MOVEFROM)][1] = ""
                         self.GEMGEMarray[(MOVEFROM)][2] = clear
                         self.GEMGEMarray[(MOVEFROM)][3] = clear
-                        self.TEMPUSERS[str(MOVETO)] = self.TEMPUSERS[str(MOVEFROM)]
+                        self.TEMPUSERS[str(MOVETO)] = self.TEMPUSERS[
+                            str(MOVEFROM)
+                        ]
                         self.TEMPUSERS[str(MOVEFROM)] = 0
                         self.SETNR()
 
@@ -768,22 +795,27 @@ class MAINWindow(QMainWindow):
                         if str(MOVEFROM) in self.TEMPUSERS.keys():
                             self.MOVETOUSER = self.TEMPUSERS[str(MOVEFROM)]
                             self.MOVEFROMUSER = self.TEMPUSERS[str(MOVETO)]
-                            self.GEMGEMarray[(MOVEFROM)][0] = self.MOVEFROMUSER.NAME
-                            self.GEMGEMarray[(MOVEFROM)][1] = self.MOVEFROMUSER.UID
+                            self.GEMGEMarray[(MOVEFROM)][
+                                0
+                            ] = self.MOVEFROMUSER.NAME
+                            self.GEMGEMarray[(MOVEFROM)][
+                                1
+                            ] = self.MOVEFROMUSER.UID
                             self.GEMGEMarray[(MOVEFROM)][
                                 2
                             ] = self.MOVEFROMUSER.LINECOLORUI
-                            self.GEMarray[(MOVEFROM)][3] = self.MOVEFROMUSER.icon
+                            self.GEMarray[(MOVEFROM)][
+                                3
+                            ] = self.MOVEFROMUSER.icon
                             self.GEMarray[(MOVETO)][0] = self.MOVETOUSER.NAME
                             self.GEMarray[(MOVETO)][1] = self.MOVETOUSER.UID
-                            self.GEMarray[(MOVETO)][2] = self.MOVETOUSER.LINECOLORUI
+                            self.GEMarray[(MOVETO)][
+                                2
+                            ] = self.MOVETOUSER.LINECOLORUI
                             self.GEMarray[(MOVETO)][3] = self.MOVETOUSER.icon
                             self.TEMPUSERS[str(MOVETO)] = self.MOVETOUSER
                             self.TEMPUSERS[str(MOVEFROM)] = self.MOVEFROMUSER
                             self.SETNR()
-            else:
-                # TODO why is this else statement here?
-                pass
 
     def MOVEDOWN_clicked(self):
         if self.NRSELECT != "":
@@ -792,12 +824,18 @@ class MAINWindow(QMainWindow):
 
             if str(MOVETO) in self.TEMPUSERS.keys():
                 if self.TEMPUSERS[str(MOVETO)] == 0:
-                    self.GEMarray[(MOVETO)][0] = self.TEMPUSERS[str(MOVEFROM)].NAME
-                    self.GEMarray[(MOVETO)][1] = self.TEMPUSERS[str(MOVEFROM)].UID
+                    self.GEMarray[(MOVETO)][0] = self.TEMPUSERS[
+                        str(MOVEFROM)
+                    ].NAME
+                    self.GEMarray[(MOVETO)][1] = self.TEMPUSERS[
+                        str(MOVEFROM)
+                    ].UID
                     self.GEMarray[(MOVETO)][2] = self.TEMPUSERS[
                         str(MOVEFROM)
                     ].LINECOLORUI
-                    self.GEMarray[(MOVETO)][3] = self.TEMPUSERS[str(MOVEFROM)].icon
+                    self.GEMarray[(MOVETO)][3] = self.TEMPUSERS[
+                        str(MOVEFROM)
+                    ].icon
                     self.GEMarray[(MOVEFROM)][0] = ""
                     self.GEMarray[(MOVEFROM)][1] = ""
                     self.GEMarray[(MOVEFROM)][2] = clear
@@ -810,7 +848,9 @@ class MAINWindow(QMainWindow):
                     self.MOVEFROMUSER = self.TEMPUSERS[str(MOVETO)]
                     self.GEMarray[(MOVEFROM)][0] = self.MOVEFROMUSER.NAME
                     self.GEMarray[(MOVEFROM)][1] = self.MOVEFROMUSER.UID
-                    self.GEMarray[(MOVEFROM)][2] = self.MOVEFROMUSER.LINECOLORUI
+                    self.GEMarray[(MOVEFROM)][
+                        2
+                    ] = self.MOVEFROMUSER.LINECOLORUI
                     self.GEMarray[(MOVEFROM)][3] = self.MOVEFROMUSER.icon
                     self.GEMarray[(MOVETO)][0] = self.MOVETOUSER.NAME
                     self.GEMarray[(MOVETO)][1] = self.MOVETOUSER.UID
@@ -819,10 +859,6 @@ class MAINWindow(QMainWindow):
                     self.TEMPUSERS[str(MOVETO)] = self.MOVETOUSER
                     self.TEMPUSERS[str(MOVEFROM)] = self.MOVEFROMUSER
                     self.SETNR()
-
-        else:
-            # TODO why is this else statement here?
-            pass
 
     def EDITORLINECOLOR_clicked(self):
         color = QtWidgets.QColorDialog.getColor()
@@ -835,7 +871,9 @@ class MAINWindow(QMainWindow):
             if self.NRSELECT != "":
                 self.TEMPUSERS[str(self.NRSELECT)].LINECOLORTEXT = colr
                 self.TEMPUSERS[str(self.NRSELECT)].LINECOLORUI = color
-                self.pix.fill(QColor(self.TEMPUSERS[str(self.NRSELECT)].LINECOLORUI))
+                self.pix.fill(
+                    QColor(self.TEMPUSERS[str(self.NRSELECT)].LINECOLORUI)
+                )
                 self.EDITORLINECOLORICON.setPixmap(self.pix)
                 self.GEMarray[self.NRSELECT][2] = QtGui.QColor(
                     self.TEMPUSERS[str(self.NRSELECT)].LINECOLORUI
@@ -857,7 +895,9 @@ class MAINWindow(QMainWindow):
             if self.NRSELECT != "":
                 self.TEMPUSERS[str(self.NRSELECT)].NODECOLORTEXT = colr
                 self.TEMPUSERS[str(self.NRSELECT)].NODECOLORUI = color
-                self.pix.fill(QColor(self.TEMPUSERS[str(self.NRSELECT)].NODECOLORUI))
+                self.pix.fill(
+                    QColor(self.TEMPUSERS[str(self.NRSELECT)].NODECOLORUI)
+                )
                 self.EDITORNODECOLORICON.setPixmap(self.pix)
                 self.EDITORNODECOLORDISPLAY(self.NRSELECT)
 
@@ -868,7 +908,7 @@ class MAINWindow(QMainWindow):
                 self.EDITORNODECOLORICON.setPixmap(self.pix)
                 self.EDITORNODECOLORICON.repaint()
 
-    ##################################################################################TEAM FUNCTIONS###############################################################
+# ###########################   TEAM FUNCTIONS   #############################
 
     def TEAMLINECOLOR_clicked(self):
         color = QtWidgets.QColorDialog.getColor()
@@ -910,14 +950,14 @@ class MAINWindow(QMainWindow):
                     ECLASS.LINECOLORUI = self.TEMPLINECOLORUI
                 else:
                     ECLASS.LINECOLORTEXT = "#b600ff"
-                    ECLASS.LINECOLORUI = QColor("#b600ff")
+                    ECLASS.LINECOLORUI = QColor(ECLASS.LINECOLORTEXT)
 
                 if self.TEMPNODECOLORTEXT.strip():
                     ECLASS.NODECOLORTEXT = self.TEMPNODECOLORTEXT
                     ECLASS.NODECOLORUI = self.TEMPNODECOLORUI
                 else:
                     ECLASS.NODECOLORTEXT = "#4648ff"
-                    ECLASS.NODECOLORUI = "#4648ff"
+                    ECLASS.NODECOLORUI = ECLASS.NODECOLORUI
 
                 if self.TEMPEDITORICONSHAPE.strip():
 
@@ -966,7 +1006,7 @@ class MAINWindow(QMainWindow):
                     self.EDITORNODESIZESPIN.value()
                 )
 
-                if self.GOEDIT == True:
+                if self.GOEDIT is True:
                     self.GEMarray[self.EDITORSELECT][0] = str(
                         self.TEMPUSERS[str(self.EDITORSELECT)].NAME
                     )
@@ -1055,7 +1095,7 @@ class MAINWindow(QMainWindow):
             self.EDITORICONSHAPEBOX.setCurrentIndex(8)
             self.EDITORICONSHAPEBOX.repaint()
 
-    ##############################################################EXPORT BLOCK###########################
+# ############################   EXPORT BLOCK   ############################ #
 
     def TEAMSHAPESELECT(self):
         self.TEAMICONSHAPE = self.TEAMICONSHAPEBOX.currentText()
@@ -1068,9 +1108,10 @@ class MAINWindow(QMainWindow):
         self.TITLEENTRYBLOCK = str(self.TEAMNAME.text())
         self.TITLEENTRYBLOCK = self.TITLEENTRYBLOCK.strip()
         if self.TITLEENTRYBLOCK.strip():
-            if ISPUSH != True:
+            if ISPUSH is not True:
                 default_name = str(
-                    self.output_file_dir + ("/QAQC_%s.mapcss" % (self.TITLEENTRYBLOCK))
+                    self.output_file_dir
+                    + ("/QAQC_%s.mapcss" % (self.TITLEENTRYBLOCK))
                 )
                 self.OUTFILE = QtWidgets.QFileDialog.getSaveFileName(
                     self, directory=default_name
@@ -1095,7 +1136,9 @@ class MAINWindow(QMainWindow):
                         self.SETTINGENTRY(i.NAME, i.UID)
                     self.SETUPENTRY(i.NAME, i.UID)
 
-                    self.NODEENTRY(i.NAME, i.ICONSIZE, i.ICONSHAPE, i.NODECOLORTEXT)
+                    self.NODEENTRY(
+                        i.NAME, i.ICONSIZE, i.ICONSHAPE, i.NODECOLORTEXT
+                    )
                     self.WAYDENTRY(i.NAME, i.LINECOLORTEXT, i.LINEWIDTH)
             self.MASTEROUTPUT(True)
 
@@ -1121,7 +1164,7 @@ class MAINWindow(QMainWindow):
             )
 
     def SPACESETTINGENTRY(self, name, uid):
-        self.SETTINGBLOCK += """*[eval(JOSM_search("user:\\"%s\\""))][setting("user_%s")] {
+        self.SETTINGBLOCK += """*[osm_user_name() == \\"%s\\"][setting("user_%s")] {
   set .%s;
 }\n""" % (
             uid,
@@ -1130,13 +1173,7 @@ class MAINWindow(QMainWindow):
         )
 
     def SETTINGENTRY(self, name, uid):
-        self.SETTINGBLOCK += """*[eval(JOSM_search("user:%s"))][setting("user_%s")] {
-  set .%s
-}\n""" % (
-            uid,
-            name,
-            name,
-        )
+        return self.SPACESETTINGENTRY(name, uid)
 
     def NODEENTRY(self, name, iconsize, iconshape, nodecolor):
         self.NODEENTRYBLOCK += """node.%s{
@@ -1217,18 +1254,28 @@ setting::user_aaron {
 
 at which point, it becomes necessary to create a selector statement for your user:
 
-*[eval(JOSM_search("user:vespax"))][setting("user_aaron")] {
+*[osm_user_name() == "vespax"][setting("user_aaron")] {
   set .aaron;
 }
 
 -- * denotes what you are selecting, in this case, every element type in OSM
--- [eval(JOSM_search("user:vespax"))] -> this is necessary and should be constructed as such.
+-- [osm_user_name() == "user:vespax"] -> this is necessary and should be constructed as such.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In order to construct time stamps, you can use the following:
 
+(performance)
+For the performance path, you will need to convert the date to seconds since the epoch.
+On Mac OS X, you can use the following command, replacing "2016-02-20" with the appropriate date
+$ date -j -u -f "%Y-%m-%d %T" "2016-02-20 00:00:00" "+%s"
+String: "[osm_timestamp() > 1455926400]" can be modified in several ways.
+"[osm_timestamp() > 1455926400]" shows all edits after that time
+"[osm_timestamp() < 1455926400]" shows all edits prior to that time
+"[osm_timestamp() == 1455926400]" shows all edits that occurred at precisely that time
+"[osm_timestamp() > 1455926400][osm_timestamp() < 1456012800]" shows edits made on 2016-02-20
 
+(ease of use)
 String: "[eval(JOSM_search("timestamp:2016-02-20/"))]" can be modified in several ways
 "timestamp:2016-02-20/" -- Shows all edits edited after date
 "timestamp:2016-02-20/2016-02-22" -- Shows all edits after 02-20 but before 02-22
@@ -1238,7 +1285,7 @@ String: "[eval(JOSM_search("timestamp:2016-02-20/"))]" can be modified in severa
 
 So, a timestamped search would look like this:
 
-*[eval(JOSM_search("user:IndianaJones737"))][eval(JOSM_search("timestamp:2016-03-14/2016-03-15"))] {
+*[osm_user_name() == "IndianaJones737"][eval(JOSM_search("timestamp:2016-03-14/2016-03-15"))] {
   casing-width: 10;
   casing-color: green;
   casing-opacity: 0.2;
@@ -1312,7 +1359,7 @@ node:modified < way::modified_layer {
 
 /* This is how you search for someone with a space in their name
 
-*[eval(JOSM_search("user:\"Hector Vector\""))] {
+*[osm_user_name() == "Hector Vector"))] {
   set .jman;
 }
 
@@ -1345,7 +1392,7 @@ node:selected::selected_layer {
             self.SETTINGBLOCK,
             self.WAYENTRYBLOCK,
             self.NODEENTRYBLOCK,
-        )
+        ) # noqa: E501
 
         if ISPUSH != True:
             if path.strip():
@@ -1354,7 +1401,7 @@ node:selected::selected_layer {
         else:
             self.OUTPUSHTEXT = OUTPUT
 
-    ##################################################################################################
+##############################################################################
 
     def CLEAR_clicked(self):
         try:
@@ -1386,9 +1433,6 @@ node:selected::selected_layer {
         )
         if self.dialog == QMessageBox.Yes:
             one.REMOVE_GO()
-        else:
-            # TODO why is this else statement here?
-            pass
 
     def REMOVEALL_clicked(self):
         self.GOREMOVEALL = True
@@ -1401,9 +1445,6 @@ node:selected::selected_layer {
         )
         if self.dialog == QMessageBox.Yes:
             one.REMOVEALL_GO()
-        else:
-            # TODO why is this else statement here?
-            pass
 
     def REMOVEALL_GO(self):
         try:
@@ -1433,7 +1474,7 @@ node:selected::selected_layer {
             column = ix.column()
             dat = ix.data()
             row = ix.row()
-            if dat != None:
+            if dat is not None:
                 self.NRSELECT = row
             else:
                 self.NRSELECT = ""
@@ -1478,14 +1519,20 @@ node:selected::selected_layer {
         if self.NRSELECT != "":
             if type(self.TEMPUSERS[str(self.NRSELECT)]) != str:
                 self.GOEDIT = True
-                self.EDITORNAME.setText(self.TEMPUSERS[str(self.NRSELECT)].NAME)
+                self.EDITORNAME.setText(
+                    self.TEMPUSERS[str(self.NRSELECT)].NAME
+                )
                 self.EDITORID.setText(self.TEMPUSERS[str(self.NRSELECT)].UID)
                 self.EDITORNAME.repaint()
                 self.EDITORID.repaint()
-                self.pix.fill(QColor(self.TEMPUSERS[str(self.NRSELECT)].NODECOLORUI))
+                self.pix.fill(
+                    QColor(self.TEMPUSERS[str(self.NRSELECT)].NODECOLORUI)
+                )
                 self.EDITORNODECOLORICON.setPixmap(self.pix)
                 self.EDITORNODECOLORICON.repaint()
-                self.pix.fill(QColor(self.TEMPUSERS[str(self.NRSELECT)].LINECOLORUI))
+                self.pix.fill(
+                    QColor(self.TEMPUSERS[str(self.NRSELECT)].LINECOLORUI)
+                )
                 self.EDITORLINECOLORICON.setPixmap(self.pix)
                 self.EDITORLINECOLORICON.repaint()
                 self.GETEDITORSHAPETEXT()
@@ -1498,182 +1545,175 @@ node:selected::selected_layer {
                 self.EDITORLINEWIDTHSPIN.repaint()
                 self.EDITORNODESIZESPIN.repaint()
                 self.EDITORSELECT = self.NRSELECT
-        else:
-            # TODO why is this else statement here?
-            pass
 
-    def IMPULLGO(self, PULL):
-        INFILETEXT = str(PULL)
-        TEAMBLOCK = INFILETEXT.split(
-            "/* Tracking Selectors -- Way and node style BEFORE they are uploaded */"
+    @staticmethod
+    def get_index_parsed_users(parsed_users: dict, user_key: str) -> str:
+        """
+        Parse a user dict to find the index key. It assumes that the user_key
+        is unique in the dict. The primary purpose is if someone used different
+        methods for determining the `set .class` in the mapcss file.
+        """
+        if user_key in parsed_users:
+            return user_key
+        for user in parsed_users:
+            for key in parsed_users[user]:
+                if parsed_users[user][key] == user_key:
+                    return user
+        return None
+
+    def parse_mapcss_text(self, INFILETEXT: str):
+        # parsed_users = {user_class: {name: user_name, ...}}
+        parsed_users = {}
+        original_text = str(INFILETEXT)
+        # Remove all comments from the original text (this just makes some
+        # regexes easier). While the replaces/substitutions could be squashed
+        # together, this is more readable in my opinion
+        text_no_newline = original_text.replace("\n", " ")
+        text_no_newline = re.sub(r"//.*?\n", "",
+            re.sub(
+                r"//.*?\\n", " ",
+                re.sub(r"/\*.*?\*/", " ", text_no_newline)
+            ),
         )
-        TEAMBLOCK = TEAMBLOCK[1]
-        TEAMBLOCK = TEAMBLOCK.split("/* QC Styles */")
-        TEAMBLOCK = TEAMBLOCK[0]
-        INFILETEXT = INFILETEXT.replace(
-            """}
-  z-index: -10;
-  casing-color: #B108D6;
-  casing-width: 7;
-  casing-opacity: 0.6;
-  z-index: -10;
-  casing-color: #B108D6;
-  casing-width: 5;
-  casing-opacity: 0.6;
-  /*
-  text: eval(concat("Highway type =", " ", tag("highway")));
-  text-offset: -20;
-  */
-
-
-}""",
-            "",
+        title = re.findall(r"title: \"(.*?)\"", INFILETEXT)
+        title = title[0] if isinstance(title, list) else title
+        teamname = (
+            re.findall(r".*For\s?(.*?)\s?Team.*?", title) if title else None
         )
-        INFILETEXT = INFILETEXT.split("""Team";""")
-        TEAMNAMEBLOCK = INFILETEXT[0]
-        TEAMNAMEBLOCK = TEAMNAMEBLOCK.split("For ")
-        TEAMNAME = TEAMNAMEBLOCK[1]
-        TEAMNAME = TEAMNAME.replace("\n", "")
-        TEAMNAME = TEAMNAME.replace(" ", "")
-        self.TEAMNAME.setText(TEAMNAME)
-        INFILETEXT = INFILETEXT[1]
-        INFILETEXT = INFILETEXT.split("/* User specific styles */")
-        INFILETEXT = INFILETEXT[1]
-        INFILETEXT = INFILETEXT.split(
-            "/* This is how you search for someone with a space in their name"
-        )
-        SETUPBLOCK = INFILETEXT[1]
-        INFILETEXT = INFILETEXT[0]
-        EDITNAMEBLOCK = INFILETEXT
-
-        EDITNAMEBLOCK = EDITNAMEBLOCK.split("*")
-        FIXEDEDITNAMEBLOCK = []
-
-        for i in EDITNAMEBLOCK:
-
-            i = str(i).split("{")
-            i = i[0]
-            i = i.strip("\\n")
-            i = i.strip("\\r")
-            i = i.replace('[eval(JOSM_search("user:', "")
-            i = i.replace(""""))][setting("user_""", ";")
-            i = i.replace("}", ";")
-            i = i.replace(
-                """")] {
-          ##  set .""",
-                ":",
+        teamname = teamname[0] if isinstance(teamname, list) else teamname
+        self.TEAMNAME.setText(teamname)
+        for i in re.finditer(
+            r"\*\s*(\[\s*osm_user_name\s*\(\s*\)|\[\s*setting\(\s*\"user_.*?\"\s*\)).*?}",  # noqa: E501
+            text_no_newline,
+        ):
+            temp = i.group()
+            username = re.findall(
+                r"osm_user_name\(\)\s*==\s*\\?\"?(.*?)\\?\"?\"", temp
             )
+            if len(username) != 1:
+                username = re.findall(r"user:\\?\"?(.*?)\\?\"?\"", temp)
+            personname = re.findall(r"setting\(\s*\"user_(.*?)\"", temp)
+            if len(username) == 1 and len(personname) == 1:
+                parsed_users[username[0]] = {"name": personname[0]}
 
-            i = i.split(".")
-            i = i[0]
-            i = i.replace(")]", "")
-            i = i.replace("set", ";")
-
-            if " " in i:
-                i = i.replace('"', "")
-                i = str(i)
-                i = i.replace("\\", "")
-            i = i.replace("  ;", ";")
-
-            if i != "":
-                FIXEDEDITNAMEBLOCK.append(i)
-
-        SETUPBLOCK = SETUPBLOCK.split(
-            """/* Styling of ways and nodes once they belong to "history" for each individual user */"""
+        self.TEAMLINECOLORTEXT = re.findall(
+            r"way:modified.*?casing-color:\s?([#0-9A-Za-z]*)", text_no_newline
         )
-        TEAMBLOCK = TEAMBLOCK.replace("node:modified::modified_layer {", "")
-        TEAMBLOCK = TEAMBLOCK.replace("    symbol-shape: ", "")
-        TEAMBLOCK = TEAMBLOCK.replace("    symbol-size: ", "")
-        TEAMBLOCK = TEAMBLOCK.replace("    symbol-stroke-color: ", "")
-        TEAMBLOCK = TEAMBLOCK.replace("    symbol-stroke-width: ", "")
-        TEAMBLOCK = TEAMBLOCK.replace("    symbol-fill-opacity: ", "")
-        TEAMBLOCK = TEAMBLOCK.replace("    z-index: -5;", "")
-        TEAMBLOCK = TEAMBLOCK.replace("}", "")
-        TEAMBLOCK = TEAMBLOCK.replace("way:modified::modified_layer,", "")
-        TEAMBLOCK = TEAMBLOCK.replace("node:modified < way::modified_layer {", "")
-        TEAMBLOCK = TEAMBLOCK.replace("    width: ", "")
-        TEAMBLOCK = TEAMBLOCK.replace("    color: ", "")
-        TEAMBLOCK = TEAMBLOCK.replace("    opacity: ", "")
-        TEAMBLOCK = TEAMBLOCK.replace("    casing-width: ", "")
-        TEAMBLOCK = TEAMBLOCK.replace("    casing-color: ", "")
-        TEAMBLOCK = TEAMBLOCK.replace("    casing-opacity: ", "")
-        TEAMBLOCK = TEAMBLOCK.replace(" ", "")
-        TEAMBLOCK = TEAMBLOCK.replace("\\n", "")
-        TEAMBLOCK = TEAMBLOCK.split(";")
-        self.TEAMLINECOLORTEXT = TEAMBLOCK[9]
-        self.TEAMNODECOLORTEXT = TEAMBLOCK[2]
-        self.TEAMLINECOLORUI = QtGui.QColor(TEAMBLOCK[9])
-        self.TEAMNODECOLORUI = QtGui.QColor(TEAMBLOCK[2])
-        self.LINEWIDTH = TEAMBLOCK[8]
-        self.ICONSIZE = TEAMBLOCK[1]
-        self.TEAMICONSHAPE = TEAMBLOCK[0]
-        SETTINGSBLOCK = SETUPBLOCK[1]
-        SETTINGSBLOCK = SETTINGSBLOCK.split("node:selected::selected_layer {")
-        SETTINGSBLOCK = SETTINGSBLOCK[0]
-        SETTINGSBLOCK = SETTINGSBLOCK.split("node.")
-        WAYSETTINGSBLOCK = str(SETTINGSBLOCK[0])
-        NODESETTINGSBLOCK = SETTINGSBLOCK[1:]
-        EDITWAYSETTINGS = []
-        WAYSETTINGSBLOCK = WAYSETTINGSBLOCK.replace("NODESTYLE", "")
-        WAYSETTINGSBLOCK = WAYSETTINGSBLOCK.split("/*")
+        self.TEAMLINECOLORTEXT = (
+            self.TEAMLINECOLORTEXT[0]
+            if isinstance(self.TEAMLINECOLORTEXT, list)
+            else self.TEAMLINECOLORTEXT
+        )
+        self.TEAMNODECOLORTEXT = re.findall(
+            r"node:modified.*?symbol-stroke-color:\s?([#0-9A-Za-z]*)",
+            text_no_newline,
+        )
+        self.TEAMNODECOLORTEXT = (
+            self.TEAMNODECOLORTEXT[0]
+            if isinstance(self.TEAMNODECOLORTEXT, list)
+            else self.TEAMNODECOLORTEXT
+        )
+        self.TEAMLINECOLORUI = QtGui.QColor(self.TEAMLINECOLORTEXT)
+        self.TEAMNODECOLORUI = QtGui.QColor(self.TEAMNODECOLORTEXT)
+        self.LINEWIDTH = re.findall(
+            r"way:modified.*?casing-width\s?:\s?([0-9px]+)", text_no_newline
+        )
+        self.LINEWIDTH = (
+            self.LINEWIDTH[0]
+            if isinstance(self.LINEWIDTH, list)
+            else self.LINEWIDTH
+        )
+        self.ICONSIZE = re.findall(
+            r"node:modified.*?symbol-size:\s?([0-9px]+)", text_no_newline
+        )
+        self.ICONSIZE = (
+            self.ICONSIZE[0]
+            if isinstance(self.ICONSIZE, list)
+            else self.ICONSIZE
+        )
+        self.TEAMICONSHAPE = re.findall(
+            r"node:modified.*?symbol-shape:\s?([a-zA-Z]+)", text_no_newline
+        )
+        self.TEAMICONSHAPE = (
+            self.TEAMICONSHAPE[0]
+            if isinstance(self.TEAMICONSHAPE, list)
+            else self.TEAMICONSHAPE
+        )
+
+        WAYSETTINGSBLOCK = re.findall(r"way\..*?}", text_no_newline)
         for i in WAYSETTINGSBLOCK:
-            i = i.replace("\\n", "")
-            i = i.replace("way.", "")
-            i = i.replace("}", "")
-            i = i.replace("{", "")
-            i = i.replace("  z-index: -10;", ";")
-            i = i.replace("  casing-color: ", "")
-            i = i.replace("  casing-width: ", "")
-            i = i.replace("  casing-opacity: 0.6;", "")
-            i = i.replace(" /*", "")
-            i = i.replace("*/", "")
-            i = i.replace("  text-offset: -20;", "")
-            i = i.replace(
-                """  text: eval(concat("Highway type =", " ", tag("highway")));""", ""
-            )
-            i = i.replace(" ", "")
-            EDITWAYSETTINGS.append(i)
-        EDITNODESETTINGSBLOCK = []
+            color = re.search(
+                r"casing-color:\s*([#A-Za-z0-9]+)\s*;", i
+            ).group()
+            width = re.search(r"casing-width:\s*([0-9px]+)\s*;", i).group()
+            for user in re.findall(r"way\.(.*?)\s*[,{]", i):
+                key = self.get_index_parsed_users(parsed_users, user)
+                if key in parsed_users:
+                    parsed_users[key]["casing-color"] = color
+                    parsed_users[key]["casing_width"] = width
+                else:
+                    logger.debug(WAYSETTINGSBLOCK)
+                    logger.debug(parsed_users)
+                    raise MapCSSParseException(
+                        "Unknown user: " + user,
+                        exception_type=MapCSSParseExceptionType.UNKNOWN_USER,
+                    )
+
+        NODESETTINGSBLOCK = re.findall(r"node\..*?}", text_no_newline)
         for i in NODESETTINGSBLOCK:
-            i = i.replace("\\n", "")
-            i = i.replace("{", "")
-            i = i.replace("}", "")
-            i = i.replace("  symbol-size: ", ";")
-            i = i.replace("  symbol-shape: ", "")
-            i = i.replace("  symbol-stroke-color: ", "")
-            i = i.replace("  symbol-stroke-width: ", "")
-            i = i.replace("  symbol-fill-opacity: 0.5;", "")
-            i = i.replace("  z-index: -5;", "")
+            size = re.search(r"symbol-size:\s*([0-9px]+)\s*;", i).group()
+            shape = re.search(
+                r"symbol-shape:\s*([#A-Za-z0-9]+)\s*;", i
+            ).group()
+            color = re.search(
+                r"symbol-stroke-color:\s*([#A-Za-z0-9]+)\s*;", i
+            ).group()
+            width = re.search(
+                r"symbol-stroke-width:\s*([0-9px]+)\s*;", i
+            ).group()
+            for user in re.findall(r"node\.(.*?)\s*[,{]", i):
+                key = self.get_index_parsed_users(parsed_users, user)
+                if key in parsed_users:
+                    parsed_users[key]["symbol-size"] = size
+                    parsed_users[key]["symbol-shape"] = shape
+                    parsed_users[key]["symbol-stroke-color"] = color
+                    parsed_users[key]["symbol-stroke-width"] = width
+                else:
+                    logger.debug(NODESETTINGSBLOCK)
+                    logger.debug(parsed_users)
+                    raise MapCSSParseException(
+                        "Unknown user: " + user,
+                        exception_type=MapCSSParseExceptionType.UNKNOWN_USER,
+                    )
+        return parsed_users
 
-            EDITNODESETTINGSBLOCK.append(i)
-        FINISHEDSETTINGSBLOCK = []
-        for a, b, c in zip(FIXEDEDITNAMEBLOCK, EDITWAYSETTINGS, EDITNODESETTINGSBLOCK):
-            a += b
-            a += c
-            a = a.replace(":", ";")
-            FINISHEDSETTINGSBLOCK.append(a)
-
-        for i in FINISHEDSETTINGSBLOCK:
-            i = i.replace("}", "")
-            i = i.split(";")
+    def construct_table(self, parsed_users: dict):
+        for user in parsed_users:
             CONSTRUCTOR = str(self.usercount)
             CONSTRUCTOR = EDITORINFO()
-            NAME = str(i[1]).split(" ")
-            NAME = NAME[0]
+            NAME = parsed_users[user]["name"]
             CONSTRUCTOR.NAME = NAME
-            CONSTRUCTOR.UID = i[0]
-            CONSTRUCTOR.LINECOLORUI = QtGui.QColor(i[2])
-            CONSTRUCTOR.NODECOLORUI = QtGui.QColor(i[7])
-            CONSTRUCTOR.LINECOLORTEXT = i[2]
-            CONSTRUCTOR.NODECOLORTEXT = i[7]
-            CONSTRUCTOR.ICONSIZE = i[5]
-            CONSTRUCTOR.LINEWIDTH = i[3]
-            CONSTRUCTOR.ICONSHAPE = i[6]
+            CONSTRUCTOR.UID = user
+            CONSTRUCTOR.LINECOLORUI = QtGui.QColor(
+                parsed_users[user]["casing-color"]
+            )
+            CONSTRUCTOR.NODECOLORUI = QtGui.QColor(
+                parsed_users[user]["symbol-stroke-color"]
+            )
+            CONSTRUCTOR.LINECOLORTEXT = parsed_users[user]["casing-color"]
+            CONSTRUCTOR.NODECOLORTEXT = parsed_users[user][
+                "symbol-stroke-color"
+            ]
+            CONSTRUCTOR.ICONSIZE = parsed_users[user]["symbol-size"]
+            CONSTRUCTOR.LINEWIDTH = parsed_users[user]["symbol-stroke-width"]
+            CONSTRUCTOR.ICONSHAPE = parsed_users[user]["symbol-shape"]
             self.TEMPUSERS[str(self.usercount)] = CONSTRUCTOR
             self.ADDUSERS.append(CONSTRUCTOR)
             self.GEMarray[self.usercount][0] = str(CONSTRUCTOR.NAME)
             self.GEMarray[self.usercount][1] = str(CONSTRUCTOR.UID)
-            self.GEMarray[self.usercount][2] = QtGui.QColor(CONSTRUCTOR.LINECOLORUI)
+            self.GEMarray[self.usercount][2] = QtGui.QColor(
+                CONSTRUCTOR.LINECOLORUI
+            )
             self.EDITORNODECOLORDISPLAY(self.usercount)
             self.pix.fill(QColor(self.TEAMNODECOLORUI))
             self.TEAMNODECOLORICON.setPixmap(self.pix)
@@ -1688,184 +1728,30 @@ node:selected::selected_layer {
             self.TABLE.resizeColumnsToContents()
             self.GETTEAMSHAPETEXT()
 
-    #         self.IMPORT_clicked(INFILETEXT)
+    def IMPULLGO(self, PULL):
+        parsed_users = self.parse_mapcss_text(str(PULL))
+        self.construct_table(parsed_users)
+
 
     def IMPORTGO(self):
         try:
-            INFILE = QtWidgets.QFileDialog.getOpenFileName(
+            infile = QtWidgets.QFileDialog.getOpenFileName(
                 self, self.filters, self.output_file_dir, self.select_filters
             )
-            INFILE = str(INFILE[0])
+            infile = str(infile[0])
             global INKML
-            with open(INFILE, "r+") as IN:
-                INFILETEXT = IN.read()
+            with open(infile, "r+") as reader:
+                infile_text = reader.read()
         except Exception as e:
             logger.exception(e)
         try:
-            self.IMPORT_clicked(INFILETEXT)
+            self.IMPORT_clicked(infile_text)
         except Exception as e:
             logger.exception(e)
 
     def IMPORT_clicked(self, PULL):
-        INFILETEXT = str(PULL)
-        TEAMBLOCK = INFILETEXT.split(
-            "/* Tracking Selectors -- Way and node style BEFORE they are uploaded */"
-        )
-        TEAMBLOCK = TEAMBLOCK[1]
-        TEAMBLOCK = TEAMBLOCK.split("/* QC Styles */")
-        TEAMBLOCK = TEAMBLOCK[0]
-        INFILETEXT = INFILETEXT.replace(
-            """}
-  z-index: -10;
-  casing-color: #B108D6;
-  casing-width: 7;
-  casing-opacity: 0.6;
-  z-index: -10;
-  casing-color: #B108D6;
-  casing-width: 5;
-  casing-opacity: 0.6;
-  /*
-  text: eval(concat("Highway type =", " ", tag("highway")));
-  text-offset: -20;
-  */
-
-
-}""",
-            "",
-        )
-        INFILETEXT = INFILETEXT.split("""Team";""")
-        TEAMNAMEBLOCK = INFILETEXT[0]
-        TEAMNAMEBLOCK = TEAMNAMEBLOCK.split("For ")
-        TEAMNAME = TEAMNAMEBLOCK[1]
-        TEAMNAME = TEAMNAME.replace("\n", "")
-        TEAMNAME = TEAMNAME.replace(" ", "")
-        self.TEAMNAME.setText(TEAMNAME)
-        INFILETEXT = INFILETEXT[1]
-        INFILETEXT = INFILETEXT.split("/* User specific styles */")
-        INFILETEXT = INFILETEXT[1]
-        INFILETEXT = INFILETEXT.split(
-            "/* This is how you search for someone with a space in their name"
-        )
-        SETUPBLOCK = INFILETEXT[1]
-        INFILETEXT = INFILETEXT[0]
-        EDITNAMEBLOCK = INFILETEXT
-        EDITNAMEBLOCK = EDITNAMEBLOCK.split("*")
-        FIXEDEDITNAMEBLOCK = []
-        for i in EDITNAMEBLOCK:
-            username = re.findall(r"user:\\?\"?(.*?)\\?\"?\"", i)
-            personname = re.findall(r"user_(.*?)\"", i)
-            if len(username) == 1 and len(personname) == 1:
-                FIXEDEDITNAMEBLOCK.append(";".join([username[0], personname[0]]))
-        SETUPBLOCK = SETUPBLOCK.split(
-            """/* Styling of ways and nodes once they belong to "history" for each individual user */"""
-        )
-        TEAMBLOCK = TEAMBLOCK.replace("node:modified::modified_layer {", "")
-        TEAMBLOCK = TEAMBLOCK.replace("    symbol-shape: ", "")
-        TEAMBLOCK = TEAMBLOCK.replace("    symbol-size: ", "")
-        TEAMBLOCK = TEAMBLOCK.replace("    symbol-stroke-color: ", "")
-        TEAMBLOCK = TEAMBLOCK.replace("    symbol-stroke-width: ", "")
-        TEAMBLOCK = TEAMBLOCK.replace("    symbol-fill-opacity: ", "")
-        TEAMBLOCK = TEAMBLOCK.replace("    z-index: -5;", "")
-        TEAMBLOCK = TEAMBLOCK.replace("}", "")
-        TEAMBLOCK = TEAMBLOCK.replace("way:modified::modified_layer,", "")
-        TEAMBLOCK = TEAMBLOCK.replace("node:modified < way::modified_layer {", "")
-        TEAMBLOCK = TEAMBLOCK.replace("    width: ", "")
-        TEAMBLOCK = TEAMBLOCK.replace("    color: ", "")
-        TEAMBLOCK = TEAMBLOCK.replace("    opacity: ", "")
-        TEAMBLOCK = TEAMBLOCK.replace("    casing-width: ", "")
-        TEAMBLOCK = TEAMBLOCK.replace("    casing-color: ", "")
-        TEAMBLOCK = TEAMBLOCK.replace("    casing-opacity: ", "")
-        TEAMBLOCK = TEAMBLOCK.replace(" ", "")
-        TEAMBLOCK = TEAMBLOCK.replace("\n", "")
-        TEAMBLOCK = TEAMBLOCK.split(";")
-        self.TEAMLINECOLORTEXT = TEAMBLOCK[9]
-        self.TEAMNODECOLORTEXT = TEAMBLOCK[2]
-        self.TEAMLINECOLORUI = QtGui.QColor(TEAMBLOCK[9])
-        self.TEAMNODECOLORUI = QtGui.QColor(TEAMBLOCK[2])
-        self.LINEWIDTH = TEAMBLOCK[8]
-        self.ICONSIZE = TEAMBLOCK[1]
-        self.TEAMICONSHAPE = TEAMBLOCK[0]
-        SETTINGSBLOCK = SETUPBLOCK[1]
-        SETTINGSBLOCK = SETTINGSBLOCK.split("node:selected::selected_layer {")
-        SETTINGSBLOCK = SETTINGSBLOCK[0]
-        SETTINGSBLOCK = SETTINGSBLOCK.split("node.")
-        WAYSETTINGSBLOCK = str(SETTINGSBLOCK[0])
-        NODESETTINGSBLOCK = SETTINGSBLOCK[1:]
-        EDITWAYSETTINGS = []
-        WAYSETTINGSBLOCK = WAYSETTINGSBLOCK.split("/*")
-        for i in WAYSETTINGSBLOCK:
-            i = i.replace("\n", "")
-            i = i.replace("way.", "")
-            i = i.replace("}", "")
-            i = i.replace("{", "")
-            i = i.replace("  z-index: -10;", ";")
-            i = i.replace("  casing-color: ", "")
-            i = i.replace("  casing-width: ", "")
-            i = i.replace("  casing-opacity: 0.6;", "")
-            i = i.replace(" /*", "")
-            i = i.replace("*/", "")
-            i = i.replace("  text-offset: -20;", "")
-            i = i.replace(
-                """  text: eval(concat("Highway type =", " ", tag("highway")));""", ""
-            )
-            i = i.replace(" ", "")
-            EDITWAYSETTINGS.append(i)
-        EDITNODESETTINGSBLOCK = []
-        for i in NODESETTINGSBLOCK:
-            i = i.replace("\n", "")
-            i = i.replace("{", "")
-            i = i.replace("},", "")
-            i = i.replace("  symbol-size: ", ";")
-            i = i.replace("  symbol-shape: ", "")
-            i = i.replace("  symbol-stroke-color: ", "")
-            i = i.replace("  symbol-stroke-width: ", "")
-            i = i.replace("  symbol-fill-opacity: 0.5;", "")
-            i = i.replace("  z-index: -5;", "")
-            EDITNODESETTINGSBLOCK.append(i)
-        FINISHEDSETTINGSBLOCK = []
-        for a, b, c in zip(FIXEDEDITNAMEBLOCK, EDITWAYSETTINGS, EDITNODESETTINGSBLOCK):
-            a += b
-            a += c
-            a = a.replace(":", ";")
-            FINISHEDSETTINGSBLOCK.append(a)
-
-        for i in FINISHEDSETTINGSBLOCK:
-            i = i.replace("}", "")
-            i = i.split(";")
-            CONSTRUCTOR = str(self.usercount)
-            CONSTRUCTOR = EDITORINFO()
-            CONSTRUCTOR.NAME = i[1]
-            CONSTRUCTOR.UID = i[0]
-
-            CONSTRUCTOR.LINECOLORUI = QtGui.QColor(i[3])
-            CONSTRUCTOR.NODECOLORUI = QtGui.QColor(i[8])
-            CONSTRUCTOR.LINECOLORTEXT = i[3]
-            CONSTRUCTOR.NODECOLORTEXT = i[8]
-            CONSTRUCTOR.ICONSIZE = i[6]
-            CONSTRUCTOR.LINEWIDTH = i[4]
-            CONSTRUCTOR.ICONSHAPE = i[7]
-            self.TEMPUSERS[str(self.usercount)] = CONSTRUCTOR
-            self.ADDUSERS.append(CONSTRUCTOR)
-            self.GEMarray[self.usercount][0] = str(CONSTRUCTOR.NAME)
-            self.GEMarray[self.usercount][1] = str(CONSTRUCTOR.UID)
-            self.GEMarray[self.usercount][2] = QtGui.QColor(CONSTRUCTOR.LINECOLORUI)
-            self.EDITORNODECOLORDISPLAY(self.usercount)
-            self.pix.fill(QColor(self.TEAMNODECOLORUI))
-            self.TEAMNODECOLORICON.setPixmap(self.pix)
-            self.TEAMNODECOLORICON.repaint()
-            self.TEAMLINEWIDTHSPIN.setValue(int(self.LINEWIDTH))
-            self.TEAMICONSIZESPIN.setValue(int(self.ICONSIZE))
-            self.pix.fill(QColor(self.TEAMLINECOLORUI))
-            self.TEAMLINECOLORICON.setPixmap(self.pix)
-            self.TEAMLINECOLORICON.repaint()
-            self.usercount += 1
-            self.TABLE.resizeRowsToContents()
-            self.TABLE.resizeColumnsToContents()
-            self.GETTEAMSHAPETEXT()
-
-    ##
-    ##     except:
-    ##        pass
+        parsed_users = self.parse_mapcss_text(str(PULL))
+        self.construct_table(parsed_users)
 
     def EDITORNODECOLORDISPLAY(self, count):
 
@@ -1877,9 +1763,6 @@ node:selected::selected_layer {
             pixmap.setMask(mask)
             self.TEMPUSERS[str(count)].icon = QtGui.QIcon(pixmap)
             self.GEMarray[count][3] = self.TEMPUSERS[str(count)].icon
-        else:
-            # TODO why is this else statement here?
-            pass
 
         if self.TEMPUSERS[str(count)].ICONSHAPE == "Square":
             pixmap = QtGui.QPixmap(self.SQUARE)
@@ -1889,9 +1772,6 @@ node:selected::selected_layer {
             pixmap.setMask(mask)
             self.TEMPUSERS[str(count)].icon = QtGui.QIcon(pixmap)
             self.GEMarray[count][3] = self.TEMPUSERS[str(count)].icon
-        else:
-            # TODO why is this else statement here?
-            pass
 
         if self.TEMPUSERS[str(count)].ICONSHAPE == "Triangle":
             pixmap = QtGui.QPixmap(self.TRIANGLE)
@@ -1901,9 +1781,6 @@ node:selected::selected_layer {
             pixmap.setMask(mask)
             self.TEMPUSERS[str(count)].icon = QtGui.QIcon(pixmap)
             self.GEMarray[count][3] = self.TEMPUSERS[str(count)].icon
-        else:
-            # TODO why is this else statement here?
-            pass
 
         if self.TEMPUSERS[str(count)].ICONSHAPE == "Pentagon":
             pixmap = QtGui.QPixmap(self.PENTAGON)
@@ -1913,9 +1790,6 @@ node:selected::selected_layer {
             pixmap.setMask(mask)
             self.TEMPUSERS[str(count)].icon = QtGui.QIcon(pixmap)
             self.GEMarray[count][3] = self.TEMPUSERS[str(count)].icon
-        else:
-            # TODO why is this else statement here?
-            pass
 
         if self.TEMPUSERS[str(count)].ICONSHAPE == "Hexagon":
             pixmap = QtGui.QPixmap(self.HEXAGON)
@@ -1925,9 +1799,6 @@ node:selected::selected_layer {
             pixmap.setMask(mask)
             self.TEMPUSERS[str(count)].icon = QtGui.QIcon(pixmap)
             self.GEMarray[count][3] = self.TEMPUSERS[str(count)].icon
-        else:
-            # TODO why is this else statement here?
-            pass
 
         if self.TEMPUSERS[str(count)].ICONSHAPE == "Heptagon":
             pixmap = QtGui.QPixmap(self.HEPTAGON)
@@ -1937,9 +1808,6 @@ node:selected::selected_layer {
             pixmap.setMask(mask)
             self.TEMPUSERS[str(count)].icon = QtGui.QIcon(pixmap)
             self.GEMarray[count][3] = self.TEMPUSERS[str(count)].icon
-        else:
-            # TODO why is this else statement here?
-            pass
 
         if self.TEMPUSERS[str(count)].ICONSHAPE == "Octagon":
             pixmap = QtGui.QPixmap(self.OCTAGON)
@@ -1949,9 +1817,6 @@ node:selected::selected_layer {
             pixmap.setMask(mask)
             self.TEMPUSERS[str(count)].icon = QtGui.QIcon(pixmap)
             self.GEMarray[count][3] = self.TEMPUSERS[str(count)].icon
-        else:
-            # TODO why is this else statement here?
-            pass
 
         if self.TEMPUSERS[str(count)].ICONSHAPE == "Nonagon":
             pixmap = QtGui.QPixmap(self.NONAGON)
@@ -1962,9 +1827,6 @@ node:selected::selected_layer {
             self.TEMPUSERS[str(count)].icon = QtGui.QIcon(pixmap)
 
             self.GEMarray[count][3] = self.TEMPUSERS[str(count)].icon
-        else:
-            # TODO why is this else statement here?
-            pass
 
         if self.TEMPUSERS[str(count)].ICONSHAPE == "Decagon":
             pixmap = QtGui.QPixmap(self.DECAGON)
@@ -1974,12 +1836,9 @@ node:selected::selected_layer {
             pixmap.setMask(mask)
             self.TEMPUSERS[str(count)].icon = QtGui.QIcon(pixmap)
             self.GEMarray[count][3] = self.TEMPUSERS[str(count)].icon
-        else:
-            # TODO why is this else statement here?
-            pass
 
 
-######################################################MAIN LOOP##################################################
+# ################################   MAIN LOOP   ########################### #
 def main(args):
     app = QtWidgets.QApplication(args)
     global one
@@ -1989,6 +1848,7 @@ def main(args):
     if self.EXIT == 1:
         sys.exit(0)
     sys._excepthook = sys.excepthook
+    sys.excepthook = exception_hook
 
 
 def exception_hook(exctype, value, traceback):
@@ -1996,11 +1856,9 @@ def exception_hook(exctype, value, traceback):
     try:
         sys._excepthook(exctype, value, traceback)
     except Exception as error:
-        logger.critical(error)
+        logger.exception(error)
     sys.exit(1)
 
 
-sys.excepthook = exception_hook
-
-while True:
+if __name__ == "__main__":
     main(sys.argv)
