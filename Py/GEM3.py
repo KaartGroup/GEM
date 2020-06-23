@@ -1164,7 +1164,7 @@ class MAINWindow(QMainWindow):
             )
 
     def SPACESETTINGENTRY(self, name, uid):
-        self.SETTINGBLOCK += """*[eval(JOSM_search("user:\\"%s\\""))][setting("user_%s")] {
+        self.SETTINGBLOCK += """*[osm_user_name() == \\"%s\\"][setting("user_%s")] {
   set .%s;
 }\n""" % (
             uid,
@@ -1173,13 +1173,7 @@ class MAINWindow(QMainWindow):
         )
 
     def SETTINGENTRY(self, name, uid):
-        self.SETTINGBLOCK += """*[eval(JOSM_search("user:%s"))][setting("user_%s")] {
-  set .%s
-}\n""" % (
-            uid,
-            name,
-            name,
-        )
+        return self.SPACESETTINGENTRY(name, uid)
 
     def NODEENTRY(self, name, iconsize, iconshape, nodecolor):
         self.NODEENTRYBLOCK += """node.%s{
