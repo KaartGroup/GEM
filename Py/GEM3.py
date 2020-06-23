@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import argparse
 import json
 import requests
 import urllib
@@ -339,7 +340,7 @@ class MAINWindow(QMainWindow):
         self.TAB2 = QWidget()
         self.TABS.addTab(self.TAB1, "GEM")
         self.PULLUSER = ""
-# ###############################TABLE BUTTONS############################## #
+        # ###############################TABLE BUTTONS############################## #
 
         self.TABLE = QtWidgets.QTableView(self.TAB1)
         self.TABLE.resize(400, 330)
@@ -387,7 +388,7 @@ class MAINWindow(QMainWindow):
         self.MOVEDOWN.resize(110, 25)
         self.MOVEDOWN.move(450, 392)
         self.MOVEDOWN.clicked.connect(self.MOVEDOWN_clicked)
-# #####################################TEAM SETTINGS######################### #
+        # #####################################TEAM SETTINGS######################### #
         self.groupBox = QtWidgets.QGroupBox(self.TAB1)
 
         self.groupBox.setGeometry(QtCore.QRect(5, 30, 245, 40))
@@ -400,7 +401,7 @@ class MAINWindow(QMainWindow):
         self.TEAMNAME = QtWidgets.QLineEdit(self.groupBox)
         self.TEAMNAME.resize(130, 20)
         self.TEAMNAME.move(105, 8)
-# #####################################HIGHLIGHT SETTINGS#################### #
+        # #####################################HIGHLIGHT SETTINGS#################### #
         self.groupBox3 = QtWidgets.QGroupBox(self.TAB1)
         self.groupBox3.setGeometry(QtCore.QRect(5, 75, 245, 120))
 
@@ -473,7 +474,7 @@ class MAINWindow(QMainWindow):
         self.TEAMICONSHAPEBOX.addItem("Decagon")
         self.TEAMICONSHAPEBOX.move(105, 85)
 
-# ##############################EDITOR SETTINGS############################## #
+        # ##############################EDITOR SETTINGS############################## #
 
         self.groupBox2 = QtWidgets.QGroupBox(self.TAB1)
         self.groupBox2.setGeometry(QtCore.QRect(5, 200, 245, 220))
@@ -590,15 +591,6 @@ class MAINWindow(QMainWindow):
         self.EDITORICONSHAPEBOX.addItem("Nonagon")
         self.EDITORICONSHAPEBOX.addItem("Decagon")
         self.EDITORICONSHAPEBOX.move(105, 190)
-        ##        self.CIRCLE=("/Users/imac25/Desktop/bitmaps/circle.png")
-        ##        self.SQUARE=("/Users/imac25/Desktop/bitmaps/square.png")
-        ##        self.TRIANGLE =("/Users/imac25/Desktop/bitmaps/triangle.png")
-        ##        self.PENTAGON=("/Users/imac25/Desktop/bitmaps/pentagon.png")
-        ##        self.HEXAGON =( "/Users/imac25/Desktop/bitmaps/hexagon.png")
-        ##        self.HEPTAGON=("/Users/imac25/Desktop/bitmaps/heptagon.png")
-        ##        self.OCTAGON=("/Users/imac25/Desktop/bitmaps/octagon.png")
-        ##        self.NONAGON =("/Users/imac25/Desktop/bitmaps/nonagon.png")
-        ##        self.DECAGON=("/Users/imac25/Desktop/bitmaps/decagon.png")
         self.CIRCLE = resource_path("//circle.png")
         self.SQUARE = resource_path("//square.png")
         self.TRIANGLE = resource_path("//triangle.png")
@@ -646,9 +638,7 @@ class MAINWindow(QMainWindow):
             for j in range(self.pullcount):
                 TEXT = self.pulllist[j + 1]
                 ACT = str("ACT%s" % (j))
-                ACT = QAction(
-                    " &Pull %s Paintstyle from Github" % (TEXT), self
-                )
+                ACT = QAction(" &Pull %s Paintstyle from Github" % (TEXT), self)
                 ACT.setStatusTip("Import .Mapcss from Github")
                 GITPULL.addAction(ACT)
                 self.PULLS.append(ACT)
@@ -656,20 +646,13 @@ class MAINWindow(QMainWindow):
             for j in self.PULLS:
                 j.triggered.connect(self.GITPULL_clicked)
 
-        # self.PULLS[1].triggered.connect(lambda:self.GITPULL_clicked(self.PULLS[1].text()))
-        # self.PULLS[2].triggered.connect(lambda:self.GITPULL_clicked(self.PULLS[2].text()))
         except github.BadCredentialsException as error:
             logger.exception(error)
 
-        """
-        EDIT = menubar.addMenu("Edit")
-        EDIT.addAction("New")
-        """
-
-# ########################################################################### #
+        # ########################################################################### #
         self.retranslateUi(MAINWindow)
 
-# ########################################################################### #
+    # ########################################################################### #
 
     def retranslateUi(self, MAINWindow):
 
@@ -682,7 +665,7 @@ class MAINWindow(QMainWindow):
         self.rowcount = 50
         self.colcount = 4
         self.GEMarray = [
-            [str(""), str(""), QtGui.QColor(clear), QtGui.QColor(clear), ]
+            [str(""), str(""), QtGui.QColor(clear), QtGui.QColor(clear),]
             for j in range(self.rowcount)
         ]
         self.tablemodel = Model(self.GEMarray, self.GEMheaders, self)
@@ -701,7 +684,7 @@ class MAINWindow(QMainWindow):
 
         return os.path.join(base_path, relative_path)
 
-# ########################   GEM: EDITOR FUNCTIONS   ###################### #
+    # ########################   GEM: EDITOR FUNCTIONS   ###################### #
     def closeEvent(self, event):
         self.setParent(None)
         self.deleteLater()
@@ -785,9 +768,7 @@ class MAINWindow(QMainWindow):
                         self.GEMGEMarray[(MOVEFROM)][1] = ""
                         self.GEMGEMarray[(MOVEFROM)][2] = clear
                         self.GEMGEMarray[(MOVEFROM)][3] = clear
-                        self.TEMPUSERS[str(MOVETO)] = self.TEMPUSERS[
-                            str(MOVEFROM)
-                        ]
+                        self.TEMPUSERS[str(MOVETO)] = self.TEMPUSERS[str(MOVEFROM)]
                         self.TEMPUSERS[str(MOVEFROM)] = 0
                         self.SETNR()
 
@@ -795,23 +776,15 @@ class MAINWindow(QMainWindow):
                         if str(MOVEFROM) in self.TEMPUSERS.keys():
                             self.MOVETOUSER = self.TEMPUSERS[str(MOVEFROM)]
                             self.MOVEFROMUSER = self.TEMPUSERS[str(MOVETO)]
-                            self.GEMGEMarray[(MOVEFROM)][
-                                0
-                            ] = self.MOVEFROMUSER.NAME
-                            self.GEMGEMarray[(MOVEFROM)][
-                                1
-                            ] = self.MOVEFROMUSER.UID
+                            self.GEMGEMarray[(MOVEFROM)][0] = self.MOVEFROMUSER.NAME
+                            self.GEMGEMarray[(MOVEFROM)][1] = self.MOVEFROMUSER.UID
                             self.GEMGEMarray[(MOVEFROM)][
                                 2
                             ] = self.MOVEFROMUSER.LINECOLORUI
-                            self.GEMarray[(MOVEFROM)][
-                                3
-                            ] = self.MOVEFROMUSER.icon
+                            self.GEMarray[(MOVEFROM)][3] = self.MOVEFROMUSER.icon
                             self.GEMarray[(MOVETO)][0] = self.MOVETOUSER.NAME
                             self.GEMarray[(MOVETO)][1] = self.MOVETOUSER.UID
-                            self.GEMarray[(MOVETO)][
-                                2
-                            ] = self.MOVETOUSER.LINECOLORUI
+                            self.GEMarray[(MOVETO)][2] = self.MOVETOUSER.LINECOLORUI
                             self.GEMarray[(MOVETO)][3] = self.MOVETOUSER.icon
                             self.TEMPUSERS[str(MOVETO)] = self.MOVETOUSER
                             self.TEMPUSERS[str(MOVEFROM)] = self.MOVEFROMUSER
@@ -824,18 +797,12 @@ class MAINWindow(QMainWindow):
 
             if str(MOVETO) in self.TEMPUSERS.keys():
                 if self.TEMPUSERS[str(MOVETO)] == 0:
-                    self.GEMarray[(MOVETO)][0] = self.TEMPUSERS[
-                        str(MOVEFROM)
-                    ].NAME
-                    self.GEMarray[(MOVETO)][1] = self.TEMPUSERS[
-                        str(MOVEFROM)
-                    ].UID
+                    self.GEMarray[(MOVETO)][0] = self.TEMPUSERS[str(MOVEFROM)].NAME
+                    self.GEMarray[(MOVETO)][1] = self.TEMPUSERS[str(MOVEFROM)].UID
                     self.GEMarray[(MOVETO)][2] = self.TEMPUSERS[
                         str(MOVEFROM)
                     ].LINECOLORUI
-                    self.GEMarray[(MOVETO)][3] = self.TEMPUSERS[
-                        str(MOVEFROM)
-                    ].icon
+                    self.GEMarray[(MOVETO)][3] = self.TEMPUSERS[str(MOVEFROM)].icon
                     self.GEMarray[(MOVEFROM)][0] = ""
                     self.GEMarray[(MOVEFROM)][1] = ""
                     self.GEMarray[(MOVEFROM)][2] = clear
@@ -848,9 +815,7 @@ class MAINWindow(QMainWindow):
                     self.MOVEFROMUSER = self.TEMPUSERS[str(MOVETO)]
                     self.GEMarray[(MOVEFROM)][0] = self.MOVEFROMUSER.NAME
                     self.GEMarray[(MOVEFROM)][1] = self.MOVEFROMUSER.UID
-                    self.GEMarray[(MOVEFROM)][
-                        2
-                    ] = self.MOVEFROMUSER.LINECOLORUI
+                    self.GEMarray[(MOVEFROM)][2] = self.MOVEFROMUSER.LINECOLORUI
                     self.GEMarray[(MOVEFROM)][3] = self.MOVEFROMUSER.icon
                     self.GEMarray[(MOVETO)][0] = self.MOVETOUSER.NAME
                     self.GEMarray[(MOVETO)][1] = self.MOVETOUSER.UID
@@ -871,9 +836,7 @@ class MAINWindow(QMainWindow):
             if self.NRSELECT != "":
                 self.TEMPUSERS[str(self.NRSELECT)].LINECOLORTEXT = colr
                 self.TEMPUSERS[str(self.NRSELECT)].LINECOLORUI = color
-                self.pix.fill(
-                    QColor(self.TEMPUSERS[str(self.NRSELECT)].LINECOLORUI)
-                )
+                self.pix.fill(QColor(self.TEMPUSERS[str(self.NRSELECT)].LINECOLORUI))
                 self.EDITORLINECOLORICON.setPixmap(self.pix)
                 self.GEMarray[self.NRSELECT][2] = QtGui.QColor(
                     self.TEMPUSERS[str(self.NRSELECT)].LINECOLORUI
@@ -895,9 +858,7 @@ class MAINWindow(QMainWindow):
             if self.NRSELECT != "":
                 self.TEMPUSERS[str(self.NRSELECT)].NODECOLORTEXT = colr
                 self.TEMPUSERS[str(self.NRSELECT)].NODECOLORUI = color
-                self.pix.fill(
-                    QColor(self.TEMPUSERS[str(self.NRSELECT)].NODECOLORUI)
-                )
+                self.pix.fill(QColor(self.TEMPUSERS[str(self.NRSELECT)].NODECOLORUI))
                 self.EDITORNODECOLORICON.setPixmap(self.pix)
                 self.EDITORNODECOLORDISPLAY(self.NRSELECT)
 
@@ -908,7 +869,7 @@ class MAINWindow(QMainWindow):
                 self.EDITORNODECOLORICON.setPixmap(self.pix)
                 self.EDITORNODECOLORICON.repaint()
 
-# ###########################   TEAM FUNCTIONS   #############################
+    # ###########################   TEAM FUNCTIONS   #############################
 
     def TEAMLINECOLOR_clicked(self):
         color = QtWidgets.QColorDialog.getColor()
@@ -1095,7 +1056,7 @@ class MAINWindow(QMainWindow):
             self.EDITORICONSHAPEBOX.setCurrentIndex(8)
             self.EDITORICONSHAPEBOX.repaint()
 
-# ############################   EXPORT BLOCK   ############################ #
+    # ############################   EXPORT BLOCK   ############################ #
 
     def TEAMSHAPESELECT(self):
         self.TEAMICONSHAPE = self.TEAMICONSHAPEBOX.currentText()
@@ -1110,8 +1071,7 @@ class MAINWindow(QMainWindow):
         if self.TITLEENTRYBLOCK.strip():
             if ISPUSH is not True:
                 default_name = str(
-                    self.output_file_dir
-                    + ("/QAQC_%s.mapcss" % (self.TITLEENTRYBLOCK))
+                    self.output_file_dir + ("/QAQC_%s.mapcss" % (self.TITLEENTRYBLOCK))
                 )
                 self.OUTFILE = QtWidgets.QFileDialog.getSaveFileName(
                     self, directory=default_name
@@ -1136,9 +1096,7 @@ class MAINWindow(QMainWindow):
                         self.SETTINGENTRY(i.NAME, i.UID)
                     self.SETUPENTRY(i.NAME, i.UID)
 
-                    self.NODEENTRY(
-                        i.NAME, i.ICONSIZE, i.ICONSHAPE, i.NODECOLORTEXT
-                    )
+                    self.NODEENTRY(i.NAME, i.ICONSIZE, i.ICONSHAPE, i.NODECOLORTEXT)
                     self.WAYDENTRY(i.NAME, i.LINECOLORTEXT, i.LINEWIDTH)
             self.MASTEROUTPUT(True)
 
@@ -1392,7 +1350,7 @@ node:selected::selected_layer {
             self.SETTINGBLOCK,
             self.WAYENTRYBLOCK,
             self.NODEENTRYBLOCK,
-        ) # noqa: E501
+        )  # noqa: E501
 
         if ISPUSH != True:
             if path.strip():
@@ -1401,7 +1359,7 @@ node:selected::selected_layer {
         else:
             self.OUTPUSHTEXT = OUTPUT
 
-##############################################################################
+    ##############################################################################
 
     def CLEAR_clicked(self):
         try:
@@ -1519,20 +1477,14 @@ node:selected::selected_layer {
         if self.NRSELECT != "":
             if type(self.TEMPUSERS[str(self.NRSELECT)]) != str:
                 self.GOEDIT = True
-                self.EDITORNAME.setText(
-                    self.TEMPUSERS[str(self.NRSELECT)].NAME
-                )
+                self.EDITORNAME.setText(self.TEMPUSERS[str(self.NRSELECT)].NAME)
                 self.EDITORID.setText(self.TEMPUSERS[str(self.NRSELECT)].UID)
                 self.EDITORNAME.repaint()
                 self.EDITORID.repaint()
-                self.pix.fill(
-                    QColor(self.TEMPUSERS[str(self.NRSELECT)].NODECOLORUI)
-                )
+                self.pix.fill(QColor(self.TEMPUSERS[str(self.NRSELECT)].NODECOLORUI))
                 self.EDITORNODECOLORICON.setPixmap(self.pix)
                 self.EDITORNODECOLORICON.repaint()
-                self.pix.fill(
-                    QColor(self.TEMPUSERS[str(self.NRSELECT)].LINECOLORUI)
-                )
+                self.pix.fill(QColor(self.TEMPUSERS[str(self.NRSELECT)].LINECOLORUI))
                 self.EDITORLINECOLORICON.setPixmap(self.pix)
                 self.EDITORLINECOLORICON.repaint()
                 self.GETEDITORSHAPETEXT()
@@ -1565,36 +1517,42 @@ node:selected::selected_layer {
     def parse_team_from_mapcss(mapcss_text: str) -> str:
         title = re.findall(r"title: \"(.*?)\"", mapcss_text)
         title = title[0] if isinstance(title, list) else title
-        teamname = (
-            re.findall(r".*For\s?(.*?)\s?Team.*?", title) if title else None
-        )
+        teamname = re.findall(r".*For\s?(.*?)\s?Team.*?", title) if title else None
         teamname = teamname[0] if isinstance(teamname, list) else teamname
         return teamname
 
     @staticmethod
-    def parse_users_from_mapcss(mapcss_text: str, parsed_users: dict={}) -> dict:
+    def parse_users_from_mapcss(mapcss_text: str, parsed_users: dict = {}) -> dict:
         for i in re.finditer(
             r"\*\s*(\[\s*osm_user_name\s*\(\s*\)|\[\s*setting\(\s*\"user_.*?\"\s*\)).*?}",  # noqa: E501
             mapcss_text,
         ):
             temp = i.group()
-            username = re.findall(
-                r"osm_user_name\(\)\s*==\s*\\?\"?(.*?)\\?\"?\"", temp
-            )
+            username = re.findall(r"osm_user_name\(\)\s*==\s*\\?\"?(.*?)\\?\"?\"", temp)
             if len(username) != 1:
                 username = re.findall(r"user:\\?\"?(.*?)\\?\"?\"", temp)
             personname = re.findall(r"setting\(\s*\"user_(.*?)\"", temp)
             if len(username) == 1 and len(personname) == 1:
                 parsed_users[username[0]] = {"name": personname[0]}
+        return parsed_users
 
     @staticmethod
     def parse_line_colors_from_mapcss(mapcss_text: str, parsed_users: dict) -> dict:
+        """
+        This method parses way information from a mapcss file.
+        >>> mapcss = "way.Dain { z-index: -10; casing-color: #B108D6; casing-width: 7; casing-opacity: 0.6; }"
+        >>> MAINWindow.parse_line_colors_from_mapcss(mapcss, {})
+        Traceback (most recent call last):
+            ...
+        MapCSSParseException: Unknown user: Dain
+        >>> users = {"Dain": {}}
+        >>> MAINWindow.parse_line_colors_from_mapcss(mapcss, users)
+        {'Dain': {'casing-color': '#B108D6', 'casing_width': '7'}}
+        """
         WAYSETTINGSBLOCK = re.findall(r"way\..*?}", mapcss_text)
         for i in WAYSETTINGSBLOCK:
-            color = re.search(
-                r"casing-color:\s*([#A-Za-z0-9]+)\s*;", i
-            ).group()
-            width = re.search(r"casing-width:\s*([0-9px]+)\s*;", i).group()
+            color = re.findall(r"casing-color:\s*([#A-Za-z0-9]+)\s*;", i)[0]
+            width = re.findall(r"casing-width:\s*([0-9px]+)\s*;", i)[0]
             for user in re.findall(r"way\.(.*?)\s*[,{]", i):
                 # MAINWindow since this is the current class...
                 key = MAINWindow.get_index_parsed_users(parsed_users, user)
@@ -1612,18 +1570,23 @@ node:selected::selected_layer {
 
     @staticmethod
     def parse_node_colors_from_mapcss(mapcss_text: str, parsed_users: dict) -> dict:
+        """
+        This method parses node information from a mapcss file.
+        >>> mapcss = "node.Aaron { symbol-size: 15; symbol-shape: triangle; symbol-stroke-color: blue; symbol-stroke-width: 3px; symbol-fill-opacity: 0.5; z-index: -5; }"
+        >>> MAINWindow.parse_node_colors_from_mapcss(mapcss, {})
+        Traceback (most recent call last):
+            ...
+        MapCSSParseException: Unknown user: Aaron
+        >>> users = {"Aaron": {}}
+        >>> MAINWindow.parse_node_colors_from_mapcss(mapcss, users)
+        {'Aaron': {'symbol-size': '15', 'symbol-shape': 'triangle', 'symbol-stroke-color': 'blue', 'symbol-stroke-width': '3px'}}
+        """
         NODESETTINGSBLOCK = re.findall(r"node\..*?}", mapcss_text)
         for i in NODESETTINGSBLOCK:
-            size = re.search(r"symbol-size:\s*([0-9px]+)\s*;", i).group()
-            shape = re.search(
-                r"symbol-shape:\s*([#A-Za-z0-9]+)\s*;", i
-            ).group()
-            color = re.search(
-                r"symbol-stroke-color:\s*([#A-Za-z0-9]+)\s*;", i
-            ).group()
-            width = re.search(
-                r"symbol-stroke-width:\s*([0-9px]+)\s*;", i
-            ).group()
+            size = re.findall(r"symbol-size:\s*([0-9px]+)\s*;", i)[0]
+            shape = re.findall(r"symbol-shape:\s*([#A-Za-z0-9]+)\s*;", i)[0]
+            color = re.findall(r"symbol-stroke-color:\s*([#A-Za-z0-9]+)\s*;", i)[0]
+            width = re.findall(r"symbol-stroke-width:\s*([0-9px]+)\s*;", i)[0]
             for user in re.findall(r"node\.(.*?)\s*[,{]", i):
                 # MAINWindow since this is the current class...
                 key = MAINWindow.get_index_parsed_users(parsed_users, user)
@@ -1639,6 +1602,7 @@ node:selected::selected_layer {
                         "Unknown user: " + user,
                         exception_type=MapCSSParseExceptionType.UNKNOWN_USER,
                     )
+        return parsed_users
 
     def parse_mapcss_text(self, INFILETEXT: str) -> dict:
         # parsed_users = {user_class: {name: user_name, ...}}
@@ -1648,16 +1612,17 @@ node:selected::selected_layer {
         # regexes easier). While the replaces/substitutions could be squashed
         # together, this is more readable in my opinion
         text_no_newline = original_text.replace("\n", " ")
-        text_no_newline = re.sub(r"//.*?\n", "",
-            re.sub(
-                r"//.*?\\n", " ",
-                re.sub(r"/\*.*?\*/", " ", text_no_newline)
-            ),
+        text_no_newline = re.sub(
+            r"//.*?\n",
+            "",
+            re.sub(r"//.*?\\n", " ", re.sub(r"/\*.*?\*/", " ", text_no_newline)),
         )
 
         self.TEAMNAME.setText(self.parse_team_from_mapcss(text_no_newline))
 
-        parsed_users = self.parse_users_from_mapcss(text_no_newline, parsed_users=parsed_users)
+        parsed_users = self.parse_users_from_mapcss(
+            text_no_newline, parsed_users=parsed_users
+        )
 
         self.TEAMLINECOLORTEXT = re.findall(
             r"way:modified.*?casing-color:\s?([#0-9A-Za-z]*)", text_no_newline
@@ -1668,8 +1633,7 @@ node:selected::selected_layer {
             else self.TEAMLINECOLORTEXT
         )
         self.TEAMNODECOLORTEXT = re.findall(
-            r"node:modified.*?symbol-stroke-color:\s?([#0-9A-Za-z]*)",
-            text_no_newline,
+            r"node:modified.*?symbol-stroke-color:\s?([#0-9A-Za-z]*)", text_no_newline,
         )
         self.TEAMNODECOLORTEXT = (
             self.TEAMNODECOLORTEXT[0]
@@ -1682,17 +1646,13 @@ node:selected::selected_layer {
             r"way:modified.*?casing-width\s?:\s?([0-9px]+)", text_no_newline
         )
         self.LINEWIDTH = (
-            self.LINEWIDTH[0]
-            if isinstance(self.LINEWIDTH, list)
-            else self.LINEWIDTH
+            self.LINEWIDTH[0] if isinstance(self.LINEWIDTH, list) else self.LINEWIDTH
         )
         self.ICONSIZE = re.findall(
             r"node:modified.*?symbol-size:\s?([0-9px]+)", text_no_newline
         )
         self.ICONSIZE = (
-            self.ICONSIZE[0]
-            if isinstance(self.ICONSIZE, list)
-            else self.ICONSIZE
+            self.ICONSIZE[0] if isinstance(self.ICONSIZE, list) else self.ICONSIZE
         )
         self.TEAMICONSHAPE = re.findall(
             r"node:modified.*?symbol-shape:\s?([a-zA-Z]+)", text_no_newline
@@ -1702,7 +1662,6 @@ node:selected::selected_layer {
             if isinstance(self.TEAMICONSHAPE, list)
             else self.TEAMICONSHAPE
         )
-
 
         parsed_users = self.parse_line_colors_from_mapcss(text_no_newline, parsed_users)
         parsed_users = self.parse_node_colors_from_mapcss(text_no_newline, parsed_users)
@@ -1716,16 +1675,12 @@ node:selected::selected_layer {
             NAME = parsed_users[user]["name"]
             CONSTRUCTOR.NAME = NAME
             CONSTRUCTOR.UID = user
-            CONSTRUCTOR.LINECOLORUI = QtGui.QColor(
-                parsed_users[user]["casing-color"]
-            )
+            CONSTRUCTOR.LINECOLORUI = QtGui.QColor(parsed_users[user]["casing-color"])
             CONSTRUCTOR.NODECOLORUI = QtGui.QColor(
                 parsed_users[user]["symbol-stroke-color"]
             )
             CONSTRUCTOR.LINECOLORTEXT = parsed_users[user]["casing-color"]
-            CONSTRUCTOR.NODECOLORTEXT = parsed_users[user][
-                "symbol-stroke-color"
-            ]
+            CONSTRUCTOR.NODECOLORTEXT = parsed_users[user]["symbol-stroke-color"]
             CONSTRUCTOR.ICONSIZE = parsed_users[user]["symbol-size"]
             CONSTRUCTOR.LINEWIDTH = parsed_users[user]["symbol-stroke-width"]
             CONSTRUCTOR.ICONSHAPE = parsed_users[user]["symbol-shape"]
@@ -1733,9 +1688,7 @@ node:selected::selected_layer {
             self.ADDUSERS.append(CONSTRUCTOR)
             self.GEMarray[self.usercount][0] = str(CONSTRUCTOR.NAME)
             self.GEMarray[self.usercount][1] = str(CONSTRUCTOR.UID)
-            self.GEMarray[self.usercount][2] = QtGui.QColor(
-                CONSTRUCTOR.LINECOLORUI
-            )
+            self.GEMarray[self.usercount][2] = QtGui.QColor(CONSTRUCTOR.LINECOLORUI)
             self.EDITORNODECOLORDISPLAY(self.usercount)
             self.pix.fill(QColor(self.TEAMNODECOLORUI))
             self.TEAMNODECOLORICON.setPixmap(self.pix)
@@ -1753,7 +1706,6 @@ node:selected::selected_layer {
     def IMPULLGO(self, PULL):
         parsed_users = self.parse_mapcss_text(str(PULL))
         self.construct_table(parsed_users)
-
 
     def IMPORTGO(self):
         try:
@@ -1862,15 +1814,35 @@ node:selected::selected_layer {
 
 # ################################   MAIN LOOP   ########################### #
 def main(args):
-    app = QtWidgets.QApplication(args)
-    global one
-    one = MAINWindow()
-    one.show()
-    sys.exit(app.exec_())
-    if self.EXIT == 1:
-        sys.exit(0)
-    sys._excepthook = sys.excepthook
-    sys.excepthook = exception_hook
+    parser = argparse.ArgumentParser(description="Modify MapCSS files for QC purposes")
+    parser.add_argument(
+        "--test", action="store_true", required=False, help="Run doctests"
+    )
+    parser.add_argument(
+        "-f", "--file", required=False, help="A file to open the program with"
+    )
+    parsed_args = parser.parse_args()
+    if parsed_args.test:
+        import doctest
+
+        doctest.testmod()
+    else:
+        app = QtWidgets.QApplication(args)
+        global one
+        one = MAINWindow()
+        one.show()
+        if parsed_args.file is not None:
+            mapcss_file = parsed_args.file
+            if isinstance(mapcss_file, str):
+                mapcss_file = [mapcss_file]
+            for mfile in mapcss_file:
+                with open(mfile, "r") as f:
+                    one.IMPORT_clicked(f.read())
+        sys.exit(app.exec_())
+        if self.EXIT == 1:
+            sys.exit(0)
+        sys._excepthook = sys.excepthook
+        sys.excepthook = exception_hook
 
 
 def exception_hook(exctype, value, traceback):
