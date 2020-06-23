@@ -1561,7 +1561,86 @@ node:selected::selected_layer {
                     return user
         return None
 
-    def parse_mapcss_text(self, INFILETEXT: str):
+    @staticmethod
+    def parse_team_from_mapcss(mapcss_text: str) -> str:
+        title = re.findall(r"title: \"(.*?)\"", mapcss_text)
+        title = title[0] if isinstance(title, list) else title
+        teamname = (
+            re.findall(r".*For\s?(.*?)\s?Team.*?", title) if title else None
+        )
+        teamname = teamname[0] if isinstance(teamname, list) else teamname
+        return teamname
+
+    @staticmethod
+    def parse_users_from_mapcss(mapcss_text: str, parsed_users: dict={}) -> dict:
+        for i in re.finditer(
+            r"\*\s*(\[\s*osm_user_name\s*\(\s*\)|\[\s*setting\(\s*\"user_.*?\"\s*\)).*?}",  # noqa: E501
+            mapcss_text,
+        ):
+            temp = i.group()
+            username = re.findall(
+                r"osm_user_name\(\)\s*==\s*\\?\"?(.*?)\\?\"?\"", temp
+            )
+            if len(username) != 1:
+                username = re.findall(r"user:\\?\"?(.*?)\\?\"?\"", temp)
+            personname = re.findall(r"setting\(\s*\"user_(.*?)\"", temp)
+            if len(username) == 1 and len(personname) == 1:
+                parsed_users[username[0]] = {"name": personname[0]}
+
+    @staticmethod
+    def parse_line_colors_from_mapcss(mapcss_text: str, parsed_users: dict) -> dict:
+        WAYSETTINGSBLOCK = re.findall(r"way\..*?}", mapcss_text)
+        for i in WAYSETTINGSBLOCK:
+            color = re.search(
+                r"casing-color:\s*([#A-Za-z0-9]+)\s*;", i
+            ).group()
+            width = re.search(r"casing-width:\s*([0-9px]+)\s*;", i).group()
+            for user in re.findall(r"way\.(.*?)\s*[,{]", i):
+                # MAINWindow since this is the current class...
+                key = MAINWindow.get_index_parsed_users(parsed_users, user)
+                if key in parsed_users:
+                    parsed_users[key]["casing-color"] = color
+                    parsed_users[key]["casing_width"] = width
+                else:
+                    logger.debug(WAYSETTINGSBLOCK)
+                    logger.debug(parsed_users)
+                    raise MapCSSParseException(
+                        "Unknown user: " + user,
+                        exception_type=MapCSSParseExceptionType.UNKNOWN_USER,
+                    )
+        return parsed_users
+
+    @staticmethod
+    def parse_node_colors_from_mapcss(mapcss_text: str, parsed_users: dict) -> dict:
+        NODESETTINGSBLOCK = re.findall(r"node\..*?}", mapcss_text)
+        for i in NODESETTINGSBLOCK:
+            size = re.search(r"symbol-size:\s*([0-9px]+)\s*;", i).group()
+            shape = re.search(
+                r"symbol-shape:\s*([#A-Za-z0-9]+)\s*;", i
+            ).group()
+            color = re.search(
+                r"symbol-stroke-color:\s*([#A-Za-z0-9]+)\s*;", i
+            ).group()
+            width = re.search(
+                r"symbol-stroke-width:\s*([0-9px]+)\s*;", i
+            ).group()
+            for user in re.findall(r"node\.(.*?)\s*[,{]", i):
+                # MAINWindow since this is the current class...
+                key = MAINWindow.get_index_parsed_users(parsed_users, user)
+                if key in parsed_users:
+                    parsed_users[key]["symbol-size"] = size
+                    parsed_users[key]["symbol-shape"] = shape
+                    parsed_users[key]["symbol-stroke-color"] = color
+                    parsed_users[key]["symbol-stroke-width"] = width
+                else:
+                    logger.debug(NODESETTINGSBLOCK)
+                    logger.debug(parsed_users)
+                    raise MapCSSParseException(
+                        "Unknown user: " + user,
+                        exception_type=MapCSSParseExceptionType.UNKNOWN_USER,
+                    )
+
+    def parse_mapcss_text(self, INFILETEXT: str) -> dict:
         # parsed_users = {user_class: {name: user_name, ...}}
         parsed_users = {}
         original_text = str(INFILETEXT)
@@ -1575,26 +1654,10 @@ node:selected::selected_layer {
                 re.sub(r"/\*.*?\*/", " ", text_no_newline)
             ),
         )
-        title = re.findall(r"title: \"(.*?)\"", INFILETEXT)
-        title = title[0] if isinstance(title, list) else title
-        teamname = (
-            re.findall(r".*For\s?(.*?)\s?Team.*?", title) if title else None
-        )
-        teamname = teamname[0] if isinstance(teamname, list) else teamname
-        self.TEAMNAME.setText(teamname)
-        for i in re.finditer(
-            r"\*\s*(\[\s*osm_user_name\s*\(\s*\)|\[\s*setting\(\s*\"user_.*?\"\s*\)).*?}",  # noqa: E501
-            text_no_newline,
-        ):
-            temp = i.group()
-            username = re.findall(
-                r"osm_user_name\(\)\s*==\s*\\?\"?(.*?)\\?\"?\"", temp
-            )
-            if len(username) != 1:
-                username = re.findall(r"user:\\?\"?(.*?)\\?\"?\"", temp)
-            personname = re.findall(r"setting\(\s*\"user_(.*?)\"", temp)
-            if len(username) == 1 and len(personname) == 1:
-                parsed_users[username[0]] = {"name": personname[0]}
+
+        self.TEAMNAME.setText(self.parse_team_from_mapcss(text_no_newline))
+
+        parsed_users = self.parse_users_from_mapcss(text_no_newline, parsed_users=parsed_users)
 
         self.TEAMLINECOLORTEXT = re.findall(
             r"way:modified.*?casing-color:\s?([#0-9A-Za-z]*)", text_no_newline
@@ -1640,51 +1703,10 @@ node:selected::selected_layer {
             else self.TEAMICONSHAPE
         )
 
-        WAYSETTINGSBLOCK = re.findall(r"way\..*?}", text_no_newline)
-        for i in WAYSETTINGSBLOCK:
-            color = re.search(
-                r"casing-color:\s*([#A-Za-z0-9]+)\s*;", i
-            ).group()
-            width = re.search(r"casing-width:\s*([0-9px]+)\s*;", i).group()
-            for user in re.findall(r"way\.(.*?)\s*[,{]", i):
-                key = self.get_index_parsed_users(parsed_users, user)
-                if key in parsed_users:
-                    parsed_users[key]["casing-color"] = color
-                    parsed_users[key]["casing_width"] = width
-                else:
-                    logger.debug(WAYSETTINGSBLOCK)
-                    logger.debug(parsed_users)
-                    raise MapCSSParseException(
-                        "Unknown user: " + user,
-                        exception_type=MapCSSParseExceptionType.UNKNOWN_USER,
-                    )
 
-        NODESETTINGSBLOCK = re.findall(r"node\..*?}", text_no_newline)
-        for i in NODESETTINGSBLOCK:
-            size = re.search(r"symbol-size:\s*([0-9px]+)\s*;", i).group()
-            shape = re.search(
-                r"symbol-shape:\s*([#A-Za-z0-9]+)\s*;", i
-            ).group()
-            color = re.search(
-                r"symbol-stroke-color:\s*([#A-Za-z0-9]+)\s*;", i
-            ).group()
-            width = re.search(
-                r"symbol-stroke-width:\s*([0-9px]+)\s*;", i
-            ).group()
-            for user in re.findall(r"node\.(.*?)\s*[,{]", i):
-                key = self.get_index_parsed_users(parsed_users, user)
-                if key in parsed_users:
-                    parsed_users[key]["symbol-size"] = size
-                    parsed_users[key]["symbol-shape"] = shape
-                    parsed_users[key]["symbol-stroke-color"] = color
-                    parsed_users[key]["symbol-stroke-width"] = width
-                else:
-                    logger.debug(NODESETTINGSBLOCK)
-                    logger.debug(parsed_users)
-                    raise MapCSSParseException(
-                        "Unknown user: " + user,
-                        exception_type=MapCSSParseExceptionType.UNKNOWN_USER,
-                    )
+        parsed_users = self.parse_line_colors_from_mapcss(text_no_newline, parsed_users)
+        parsed_users = self.parse_node_colors_from_mapcss(text_no_newline, parsed_users)
+
         return parsed_users
 
     def construct_table(self, parsed_users: dict):
