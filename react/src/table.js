@@ -38,6 +38,12 @@ export class Table extends Component {
 
     const columns = [
       {
+        title: "Name",
+        field:"name",
+        align: "left",
+        headerFilter: "input"
+      },
+      {
         title: "User Name",
         field: "username",
         align: "left",

@@ -406,6 +406,10 @@ body {
   align-self: center;
 }
 
+.form{
+  display: inline;
+}
+
 button:hover{
   color: #4A4A4A;
   background-color: #FFFFFF;
