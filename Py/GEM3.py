@@ -4,8 +4,8 @@ import json
 import requests
 import urllib
 import httpbin
-import string
 import github
+import tempCSS
 from github import Github
 import os
 import sys
@@ -13,23 +13,20 @@ import logging
 import re
 from enum import Enum, auto
 import PyQt5
-from PyQt5 import QtGui, QtCore, QtWidgets, uic
+from PyQt5 import QtGui, QtCore, QtWidgets
 from PyQt5.QtCore import QAbstractTableModel, Qt
 from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtWidgets import (
     QMainWindow,
     QLabel,
-    QGridLayout,
     QWidget,
     QStatusBar,
     QMenuBar,
     QMenu,
-    QApplication,
     QAction,
 )
 from PyQt5.QtWidgets import QPushButton, QMessageBox, QTabWidget
-from PyQt5.QtCore import QSize
-import time
+
 
 ##################################################
 __author__ = "Chris Gousset"
@@ -60,35 +57,6 @@ def resource_path(relative_path):
 
 #########################################
 
-###########################################
-try:
-    _fromUtf8 = QtCore.QString.fromUtf8
-except AttributeError as e:
-    # TODO: We are detecting that QString doesn't exist?
-    logger.exception(e)
-
-    def _fromUtf8(s):
-        return s
-
-
-try:
-    _encoding = QtWidgets.QApplication.UnicodeUTF8
-
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-
-
-except AttributeError as e:
-    # TODO: We are detecting that something doesn't exist?
-    logger.exception(e)
-
-    def _translate(context, text, disambig):
-        return QtWidgets.QApplication.translate(context, text, disambig)
-
-
-###############################################
-
-
 class MapCSSParseExceptionType(Enum):
     UNKNOWN = auto()
     UNKNOWN_USER = auto()
@@ -102,11 +70,11 @@ class MapCSSParseException(Exception):
     def __init__(
         self,
         message: str,
-        exception_type: MapCSSParseExceptionType = MapCSSParseExceptionType.UNKNOWN,
+        exception_type:
+        MapCSSParseExceptionType = MapCSSParseExceptionType.UNKNOWN,
     ):
         self.exception_type = exception_type
         super().__init__(message)
-
 
 class TABMOD(QAbstractTableModel):
     def __init__(
@@ -213,7 +181,7 @@ class TABMOD(QAbstractTableModel):
 
 #####################################################
 Model = TABMOD
-
+OLDSTYLE = True
 clear = QtGui.QColor(0, 0, 0, 0)
 red = QtGui.QColor(255, 0, 0)
 
@@ -290,11 +258,12 @@ class MAINWindow(QMainWindow):
         self.output_file_dir = os.path.expanduser("~/Documents")
 
     def MWHOME(self, MAINWindow):
-
-        MAINWindow.setObjectName(_fromUtf8("MAINWindow"))
+        self.TITLE = ""
         self.ADMINPASS = "**********"
         self.repoGO = False
         self.GOREMOVEALL = False
+        self.FINSHEDUSERBLOCK = ""
+        self.BLOCK = ""
         self.TEAMNAMETEXT = ""
         self.SETUPENTRYBLOCK = ""
         self.SETTINGBLOCK = ""
@@ -388,7 +357,7 @@ class MAINWindow(QMainWindow):
         self.MOVEDOWN.resize(110, 25)
         self.MOVEDOWN.move(450, 392)
         self.MOVEDOWN.clicked.connect(self.MOVEDOWN_clicked)
-        # #####################################TEAM SETTINGS######################### #
+        # ##############################TEAM SETTINGS######################## #
         self.groupBox = QtWidgets.QGroupBox(self.TAB1)
 
         self.groupBox.setGeometry(QtCore.QRect(5, 30, 245, 40))
@@ -401,7 +370,7 @@ class MAINWindow(QMainWindow):
         self.TEAMNAME = QtWidgets.QLineEdit(self.groupBox)
         self.TEAMNAME.resize(130, 20)
         self.TEAMNAME.move(105, 8)
-        # #####################################HIGHLIGHT SETTINGS#################### #
+        # ##############################HIGHLIGHT SETTINGS################### #
         self.groupBox3 = QtWidgets.QGroupBox(self.TAB1)
         self.groupBox3.setGeometry(QtCore.QRect(5, 75, 245, 120))
 
@@ -466,6 +435,7 @@ class MAINWindow(QMainWindow):
         self.TEAMICONSHAPEBOX.addItem("Circle")
         self.TEAMICONSHAPEBOX.addItem("Triangle")
         self.TEAMICONSHAPEBOX.addItem("Square")
+        
         self.TEAMICONSHAPEBOX.addItem("Pentagon")
         self.TEAMICONSHAPEBOX.addItem("Hexagon")
         self.TEAMICONSHAPEBOX.addItem("Heptagon")
@@ -474,7 +444,7 @@ class MAINWindow(QMainWindow):
         self.TEAMICONSHAPEBOX.addItem("Decagon")
         self.TEAMICONSHAPEBOX.move(105, 85)
 
-        # ##############################EDITOR SETTINGS############################## #
+        # ##############################EDITOR SETTINGS###################### #
 
         self.groupBox2 = QtWidgets.QGroupBox(self.TAB1)
         self.groupBox2.setGeometry(QtCore.QRect(5, 200, 245, 220))
@@ -601,58 +571,60 @@ class MAINWindow(QMainWindow):
         self.NONAGON = resource_path("//nonagon.png")
         self.DECAGON = resource_path("//decagon.png")
 
-        menubar = self.menuBar()
-        menubar.setNativeMenuBar(False)
+##        menubar = self.menuBar()
+##        menubar.setNativeMenuBar(False)
+##
+##        exitAct = QAction(QIcon("exit.png"), " &Quit", self)
+##        exitAct.setShortcut("Ctrl+Q")
+##        exitAct.setStatusTip("Exit GEM")
+##        exitAct.triggered.connect(self.closeEvent)
+##        FILE = menubar.addMenu("&File")
+##        GITPULL = FILE.addMenu("Git Pull")
+##        GITPUSH = QAction(" &Git Push", self)
+##        GITPUSH.setStatusTip("Export .Mapcss to Github")
+##        GITPUSH.triggered.connect(self.CONFIRMPUSH)
+##        GITPUSH = FILE.addAction(GITPUSH)
+##        FILE.addAction(exitAct)
+##        git = Github("AUTH TOKEN")
+##        try:
+##            org = git.get_user("Kaart-labs")
+##            self.repo = org.get_repo("GEM")
+##            self.contents = self.repo.get_contents("")
+##            self.pulllist = {}
+##            self.pullcount = 0
+##            self.pullcountlist = []
+##            for i in self.contents:
+##                i = str(i)
+##                i = i.split('"')
+##                i = i[1]
+##
+##                if "mapcss" in i:
+##                    i = i.split(".")
+##                    i = i[0]
+##                    self.pullcount += 1
+##                    self.pullcountlist.append(self.pullcount)
+##                    self.pulllist[self.pullcount] = i
+##            self.PULLS = []
+##            for j in range(self.pullcount):
+##                TEXT = self.pulllist[j + 1]
+##                ACT = str("ACT%s" % (j))
+##                ACT = QAction("&Pull %s Paintstyle from Github" % (TEXT),self)
+##                ACT.setStatusTip("Import .Mapcss from Github")
+##                GITPULL.addAction(ACT)
+##                self.PULLS.append(ACT)
+##
+##            for j in self.PULLS:
+##                j.triggered.connect(self.GITPULL_clicked)
+##
+##        except github.BadCredentialsException as error:
+##            logger.exception(error)
 
-        exitAct = QAction(QIcon("exit.png"), " &Quit", self)
-        exitAct.setShortcut("Ctrl+Q")
-        exitAct.setStatusTip("Exit GEM")
-        exitAct.triggered.connect(self.closeEvent)
-        FILE = menubar.addMenu("&File")
-        GITPULL = FILE.addMenu("Git Pull")
-        GITPUSH = QAction(" &Git Push", self)
-        GITPUSH.setStatusTip("Export .Mapcss to Github")
-        GITPUSH.triggered.connect(self.CONFIRMPUSH)
-        GITPUSH = FILE.addAction(GITPUSH)
-        FILE.addAction(exitAct)
-        git = Github("AUTH TOKEN")
-        try:
-            org = git.get_user("Kaart-labs")
-            self.repo = org.get_repo("GEM")
-            self.contents = self.repo.get_contents("")
-            self.pulllist = {}
-            self.pullcount = 0
-            self.pullcountlist = []
-            for i in self.contents:
-                i = str(i)
-                i = i.split('"')
-                i = i[1]
-
-                if "mapcss" in i:
-                    i = i.split(".")
-                    i = i[0]
-                    self.pullcount += 1
-                    self.pullcountlist.append(self.pullcount)
-                    self.pulllist[self.pullcount] = i
-            self.PULLS = []
-            for j in range(self.pullcount):
-                TEXT = self.pulllist[j + 1]
-                ACT = str("ACT%s" % (j))
-                ACT = QAction(" &Pull %s Paintstyle from Github" % (TEXT), self)
-                ACT.setStatusTip("Import .Mapcss from Github")
-                GITPULL.addAction(ACT)
-                self.PULLS.append(ACT)
-
-            for j in self.PULLS:
-                j.triggered.connect(self.GITPULL_clicked)
-
-        except github.BadCredentialsException as error:
-            logger.exception(error)
-
-        # ########################################################################### #
+        # ################################################################### #
         self.retranslateUi(MAINWindow)
 
-    # ########################################################################### #
+
+
+        # ################################################################### #
 
     def retranslateUi(self, MAINWindow):
 
@@ -665,7 +637,8 @@ class MAINWindow(QMainWindow):
         self.rowcount = 50
         self.colcount = 4
         self.GEMarray = [
-            [str(""), str(""), QtGui.QColor(clear), QtGui.QColor(clear),]
+            [str(""), str(""), QtGui.QColor(clear), QtGui.QColor(clear),
+             ]
             for j in range(self.rowcount)
         ]
         self.tablemodel = Model(self.GEMarray, self.GEMheaders, self)
@@ -683,7 +656,6 @@ class MAINWindow(QMainWindow):
             base_path = os.path.abspath(".")
 
         return os.path.join(base_path, relative_path)
-
     # ########################   GEM: EDITOR FUNCTIONS   ###################### #
     def closeEvent(self, event):
         self.setParent(None)
@@ -692,37 +664,37 @@ class MAINWindow(QMainWindow):
 
     #############
 
-    def CONFIRMPUSH(self):
-        self.passdialog = CONFIRMPOPUP()
-        self.passdialog.show()
-
-    def GITPULL_clicked(self):
-        SENDER = self.sender()
-        TEXT = SENDER.text()
-        TEXT = TEXT.replace(" &Pull ", "")
-        TEXT = TEXT.replace(" Paintstyle from Github", "")
-        git = Github("AUTH TOKEN")
-        org = git.get_user("Kaart-labs")
-        self.repo = org.get_repo("GEM")
-        self.contents = self.repo.get_contents("%s.mapcss" % (TEXT))
-        self.c = self.contents.decoded_content
-        self.IMPULLGO(self.c)
-
-    def GITPUSH_GO(self):
-        self.USERENTRYBLOCK = ""
-        self.MASTERENTERYTEXT = ""
-        self.OUTUSERS = 0
-        self.EXPORT_clicked(True)
-        NAME = "QAQC_%s.mapcss" % (self.TEAMNAME.text())
-        try:
-            self.contents = self.repo.get_contents(NAME)
-            self.c = self.contents.decoded_content
-            self.repo.update_file(
-                self.contents.path, "GEM", self.OUTPUSHTEXT, self.contents.sha
-            )
-        except Exception as error:
-            logger.exception(error)
-            self.repo.create_file(NAME, "GEM", self.OUTPUSHTEXT)
+##    def CONFIRMPUSH(self):
+##        self.passdialog = CONFIRMPOPUP()
+##        self.passdialog.show()
+##
+##    def GITPULL_clicked(self):
+##        SENDER = self.sender()
+##        TEXT = SENDER.text()
+##        TEXT = TEXT.replace(" &Pull ", "")
+##        TEXT = TEXT.replace(" Paintstyle from Github", "")
+##        git = Github("AUTH TOKEN")
+##        org = git.get_user("Kaart-labs")
+##        self.repo = org.get_repo("GEM")
+##        self.contents = self.repo.get_contents("%s.mapcss" % (TEXT))
+##        self.c = self.contents.decoded_content
+##        self.IMPULLGO(self.c)
+##
+##    def GITPUSH_GO(self):
+##        self.USERENTRYBLOCK = ""
+##        self.MASTERENTERYTEXT = ""
+##        self.OUTUSERS = 0
+##        self.EXPORT_clicked(True)
+##        NAME = "QAQC_%s.mapcss" % (self.TEAMNAME.text())
+##        try:
+##            self.contents = self.repo.get_contents(NAME)
+##            self.c = self.contents.decoded_content
+##            self.repo.update_file(
+##                self.contents.path, "GEM", self.OUTPUSHTEXT, self.contents.sha
+##            )
+##        except Exception as error:
+##            logger.exception(error)
+##            self.repo.create_file(NAME, "GEM", self.OUTPUSHTEXT)
 
     ##########
     def RESTACK_clicked(self):
@@ -1064,300 +1036,53 @@ class MAINWindow(QMainWindow):
     def EDITORSHAPESELECT(self):
         self.TEMPEDITORICONSHAPE = self.EDITORICONSHAPEBOX.currentText()
 
-    def EXPORT_clicked(self, ISPUSH):
-        self.RESTACK_clicked()
-        self.TITLEENTRYBLOCK = str(self.TEAMNAME.text())
-        self.TITLEENTRYBLOCK = self.TITLEENTRYBLOCK.strip()
-        if self.TITLEENTRYBLOCK.strip():
-            if ISPUSH is not True:
-                default_name = str(
-                    self.output_file_dir + ("/QAQC_%s.mapcss" % (self.TITLEENTRYBLOCK))
-                )
-                self.OUTFILE = QtWidgets.QFileDialog.getSaveFileName(
-                    self, directory=default_name
-                )
-            else:
-                default_name = str("QAQC_%s.mapcss" % (self.TITLEENTRYBLOCK))
-
-            self.SETUPENTRYBLOCK = ""
-            self.SETTINGBLOCK = ""
-            self.NODEENTRYBLOCK = ""
-            self.WAYENTRYBLOCK = ""
-            self.MASTEROUTPUTBLOCK = ""
-            self.LINEWIDTH = str(self.TEAMLINEWIDTHSPIN.value())
-            self.ICONSIZE = str(self.TEAMICONSIZESPIN.value())
-            for i in self.ADDUSERS:
-                if i != "":
-                    if i.UID[-1] == " ":
-                        i.UID = i.UID[:-1]
-                    if " " in i.UID:
-                        self.SPACESETTINGENTRY(i.NAME, i.UID)
-                    else:
-                        self.SETTINGENTRY(i.NAME, i.UID)
-                    self.SETUPENTRY(i.NAME, i.UID)
-
-                    self.NODEENTRY(i.NAME, i.ICONSIZE, i.ICONSHAPE, i.NODECOLORTEXT)
-                    self.WAYDENTRY(i.NAME, i.LINECOLORTEXT, i.LINEWIDTH)
-            self.MASTEROUTPUT(True)
-
-    def SETUPENTRY(self, name, uid):
-
-        if self.TOGGLECHECK.isChecked():
-            self.SETUPENTRYBLOCK += """setting::user_%s {
-            type:boolean;
-            label:tr("Turn User %s On/Off");
-            default:true;
-            }\n""" % (
-                name,
-                name,
-            )
-        else:
-            self.SETUPENTRYBLOCK += """setting::user_%s {
-            type:boolean;
-            label:tr("Turn User %s On/Off");
-            default:true;
-            }\n""" % (
-                name,
-                uid,
-            )
-
-    def SPACESETTINGENTRY(self, name, uid):
-        self.SETTINGBLOCK += """*[osm_user_name() == \\"%s\\"][setting("user_%s")] {
-  set .%s;
-}\n""" % (
-            uid,
-            name,
-            name,
-        )
-
-    def SETTINGENTRY(self, name, uid):
-        return self.SPACESETTINGENTRY(name, uid)
-
-    def NODEENTRY(self, name, iconsize, iconshape, nodecolor):
-        self.NODEENTRYBLOCK += """node.%s{
-  symbol-size: %s;
-  symbol-shape: %s;
-  symbol-stroke-color: %s;
-  symbol-stroke-width: 3px;
-  symbol-fill-opacity: 0.5;
-  z-index: -5;
-}""" % (
-            name,
-            iconsize,
-            iconshape,
-            nodecolor,
-        )
-
-    def WAYDENTRY(self, name, color, width):
-        self.WAYENTRYBLOCK += """way.%s{
-  z-index: -10;
-  casing-color: %s;
-  casing-width: %s;
-  casing-opacity: 0.6;
-  /*
-  text: eval(concat("Highway type =", " ", tag("highway")));
-  text-offset: -20;
-  */
-}""" % (
-            name,
-            color,
-            width,
-        )
-
-    def MASTEROUTPUT(self, ISPUSH):
-        try:
-            path = self.OUTFILE[0]
-        except Exception as e:
-            logger.exception(e)
-
-        OUTPUT = """meta {
-  title: "QC Style For %s Team";
-  description: "Highlights features that were created/modified by users";
-  watch-modified: true;
-  version: "1.5";
-  icon: "http://uncrate.com/p/2016/02/smart-kart.jpg";
-
-}
-/* Notes
-
-1.0 Added styles -- provided by Jenn -- and users -- Ian -- 3/11/2019
-
-1.1 Configured styles -- Louis -- 3/13/2019
-
-1.2 Configured style colors and highlighting -- Ian -- 3/15/2019
-
-1.3 Simplified user lines -- Louis -- 3/18/2019
-
-1.4 Adjusted user, style lines and appearances -- 3/20/2019
-
-1.5 Alphabetized users, added new users, added tips, simplified node highlight & node modified overlays -- Louis,Ian,AndrewP -- 5/15/2019
-
-Tips:
-
-A setting should be created for each separate user:
-
-setting::user_aaron {
-  type: boolean;
-  label: tr("Turn User Aaron On/Off");
-  default: false;
-}
-
--- after :: comes your setting "class" which can be named as you will. Our example show user_aaron
--- Type: boolean; should always exist
--- label: tr("Anything you want to put here") -> This is what shows up under setting in JOSM
--- Default: false -> the setting will remain disabled on launch until a user enables it
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-at which point, it becomes necessary to create a selector statement for your user:
-
-*[osm_user_name() == "vespax"][setting("user_aaron")] {
-  set .aaron;
-}
-
--- * denotes what you are selecting, in this case, every element type in OSM
--- [osm_user_name() == "user:vespax"] -> this is necessary and should be constructed as such.
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-In order to construct time stamps, you can use the following:
-
-(performance)
-For the performance path, you will need to convert the date to seconds since the epoch.
-On Mac OS X, you can use the following command, replacing "2016-02-20" with the appropriate date
-$ date -j -u -f "%Y-%m-%d %T" "2016-02-20 00:00:00" "+%s"
-String: "[osm_timestamp() > 1455926400]" can be modified in several ways.
-"[osm_timestamp() > 1455926400]" shows all edits after that time
-"[osm_timestamp() < 1455926400]" shows all edits prior to that time
-"[osm_timestamp() == 1455926400]" shows all edits that occurred at precisely that time
-"[osm_timestamp() > 1455926400][osm_timestamp() < 1456012800]" shows edits made on 2016-02-20
-
-(ease of use)
-String: "[eval(JOSM_search("timestamp:2016-02-20/"))]" can be modified in several ways
-"timestamp:2016-02-20/" -- Shows all edits edited after date
-"timestamp:2016-02-20/2016-02-22" -- Shows all edits after 02-20 but before 02-22
-"timestamp:2016-02/ Day and Month can be removed to widen the range of edits shown, example here shows all edits starting in FEB2016.
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-So, a timestamped search would look like this:
-
-*[osm_user_name() == "IndianaJones737"][eval(JOSM_search("timestamp:2016-03-14/2016-03-15"))] {
-  casing-width: 10;
-  casing-color: green;
-  casing-opacity: 0.2;
-}
-
--- set .aaron; -> this is setting the class for this statement. This allows us to call it out later on. Classes
-can be set like that or as so -> set aaron;
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-way.aaron, & node.aaron,
-
--- This shows that we are looking for all ways/nodes which meet the "aaron" class. The comma here denotes
-that there is another selector we would like to call out after "aaron"
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-{
-  z-index: -10;
-  casing-color: lime;
-  casing-width: 10;
-  casing-opacity: 0.3;
-
-
-}
-
--- This is our code block which will style up whatever we called out as a selector
-
-*/
-
-/* Create Settings */
-
-
-/* User Settings */
-
-%s
-
-
-
-
-/* Tracking Selectors -- Way and node style BEFORE they are uploaded */
-
-node:modified::modified_layer {
-    symbol-shape: %s;
-    symbol-size: %s;
-    symbol-stroke-color: %s;
-    symbol-stroke-width: 3px;
-    symbol-fill-opacity: 0.5;
-    z-index: -5;
-}
-
-way:modified::modified_layer,
-node:modified < way::modified_layer {
-    width: 6;
-    color: transparent;
-    opacity: 0;
-    casing-width: %s;
-    casing-color: %s;
-    casing-opacity: 0.7;
-    z-index: -5;
-}
-
-/* QC Styles */
-
-
-/* User specific styles */
-
-%s
-
-
-/* This is how you search for someone with a space in their name
-
-*[osm_user_name() == "Hector Vector"))] {
-  set .jman;
-}
-
-*/
-
-/* Styling of ways and nodes once they belong to "history" for each individual user */
-
-
-%s
-/*NODESTYLE*/
-
-%s
-
-
-node:selected::selected_layer {
-    symbol-shape: circle;
-    symbol-size: 22;
-    symbol-stroke-color: #DF2E08;
-    symbol-stroke-width: 3px;
-    symbol-fill-opacity: 0.5;
-    z-index: -5;
-}""" % (
-            self.TITLEENTRYBLOCK,
-            self.SETUPENTRYBLOCK,
-            self.TEAMICONSHAPE,
-            self.ICONSIZE,
-            self.TEAMNODECOLORTEXT,
-            self.LINEWIDTH,
-            self.TEAMLINECOLORTEXT,
-            self.SETTINGBLOCK,
-            self.WAYENTRYBLOCK,
-            self.NODEENTRYBLOCK,
-        )  # noqa: E501
-
-        if ISPUSH != True:
-            if path.strip():
-                with open(path, "w+") as OUT:
-                    OUT.writelines(OUTPUT)
-        else:
-            self.OUTPUSHTEXT = OUTPUT
+    def EXPORT_clicked(self):
+        #self.RESTACK_clicked()
+        self.ICONSIZE = str(self.TEAMICONSIZESPIN.value())
+        self.LINEWIDTH = str(self.TEAMLINEWIDTHSPIN.value())
+        self.TEAMNAMETEXT = str(self.TEAMNAME.text())
+        self.FILENAME = str("Kaart_QC_Mexico.mapcss")
+        self.TITLE = "QC Styles For %s Team"%(self.TEAMNAMETEXT)
+        FINDUSERNAME = re.compile('(?:|)USERNAME(?:|\W)')
+        FINDUSERID = re.compile('(?:|)USERID(?:|\W)')
+        FINDUSERNODESIZE = re.compile('(?:|)USERNODESIZE(?:|\W)')
+        FINDUSERNODECOLOR = re.compile('(?:|)USERNODECOLOR(?:|\W)')
+        FINDUSERNODESHAPE = re.compile('(?:|)USERNODESHAPE(?:|\W)')
+        FINDUSERWAYWIDTH = re.compile('(?:|)USERWAYWIDTH(?:|\W)')
+        FINDUSERWAYCOLOR = re.compile('(?:|)USERWAYCOLOR(?:|\W)')
+        
+        FINDNOTUPNODESIZE = re.compile('(?:|)NOTUPNODESIZE(?:|\W)')
+        FINDNOTUPNODECOLOR = re.compile('(?:|)NOTUPNODECOLOR(?:|\W)')
+        
+        FINDNOTUPNODESHAPE = re.compile('(?:|)NOTUPNODESHAPE(?:|\W)')
+        FINDNOTUPWAYCOLOR = re.compile('(?:|)NOTUPWAYCOLOR(?:|\W)')
+        FINDNOTUPWAYWIDTH = re.compile('(?:|)NOTUPWAYWIDTH(?:|\W)')
+        FINDTITLE = re.compile('(?:|)TITLE(?:|\W)')
+        for i in self.ADDUSERS:
+            i.USERBLOCK = re.sub(FINDUSERNAME, i.NAME, tempCSS.USERBLOCK)
+            i.USERBLOCK= re.sub(FINDUSERID, i.UID, i.USERBLOCK)
+            i.USERBLOCK= re.sub(FINDUSERNAME, i.NAME, i.USERBLOCK)
+            i.USERBLOCK = re.sub(FINDUSERNODESIZE, i.ICONSIZE, i.USERBLOCK)
+            i.USERBLOCK= re.sub(FINDUSERNODECOLOR, i.NODECOLORTEXT, i.USERBLOCK)
+            i.USERBLOCK = re.sub(FINDUSERNODESHAPE, i.ICONSHAPE, i.USERBLOCK)
+            i.USERBLOCK= re.sub(FINDUSERNAME, i.NAME, i.USERBLOCK)
+            i.USERBLOCK = re.sub(FINDUSERWAYWIDTH, i.LINEWIDTH, i.USERBLOCK )
+            i.USERBLOCK  = re.sub(FINDUSERWAYCOLOR, i.LINECOLORTEXT, i.USERBLOCK )
+            self.FINSHEDUSERBLOCK  += str(i.USERBLOCK)
+            print(i.USERBLOCK)
+  
+        STATICBLOCK = re.sub(FINDNOTUPNODESIZE, self.ICONSIZE, tempCSS.STATICBLOCK)
+        STATICBLOCK = re.sub(FINDNOTUPNODECOLOR,self.TEAMNODECOLORTEXT, STATICBLOCK)
+        STATICBLOCK = re.sub(FINDNOTUPNODESHAPE, self.TEAMICONSHAPE, STATICBLOCK)
+        STATICBLOCK = re.sub(FINDNOTUPWAYCOLOR, self.TEAMLINECOLORTEXT, STATICBLOCK)
+        STATICBLOCK = re.sub(FINDNOTUPWAYWIDTH, self.LINEWIDTH, STATICBLOCK)
+        STATICBLOCK = re.sub(FINDTITLE, self.TITLE, STATICBLOCK)       
+        self.BLOCK = self.FINSHEDUSERBLOCK + STATICBLOCK
+        
+        file = self.output_file_dir+("/")+(self.FILENAME)
+        print(file)
+        with open(file, 'w+')as CSS:
+            CSS.writelines (self.BLOCK)
 
     ##############################################################################
 
@@ -1429,7 +1154,6 @@ node:selected::selected_layer {
 
     def REMOVE_GO(self):
         for ix in self.TABLE.selectedIndexes():
-            column = ix.column()
             dat = ix.data()
             row = ix.row()
             if dat is not None:
@@ -1454,7 +1178,6 @@ node:selected::selected_layer {
 
     def SETNR(self):
         for ix in self.TABLE.selectedIndexes():
-            column = ix.column()
             dat = ix.data()
             row = ix.row()
             if dat != "":
@@ -1464,7 +1187,6 @@ node:selected::selected_layer {
 
     def EDIT_clicked(self):
         for ix in self.TABLE.selectedIndexes():
-            column = ix.column()
             dat = ix.data()
             row = ix.row()
             if dat != "":
@@ -1490,6 +1212,7 @@ node:selected::selected_layer {
                 self.GETEDITORSHAPETEXT()
                 self.EDITORLINEWIDTHSPIN.setValue(
                     int(self.TEMPUSERS[str(self.NRSELECT)].LINEWIDTH)
+
                 )
                 self.EDITORNODESIZESPIN.setValue(
                     int(self.TEMPUSERS[str(self.NRSELECT)].ICONSIZE)
@@ -1505,6 +1228,7 @@ node:selected::selected_layer {
         is unique in the dict. The primary purpose is if someone used different
         methods for determining the `set .class` in the mapcss file.
         """
+        
         if user_key in parsed_users:
             return user_key
         for user in parsed_users:
@@ -1516,26 +1240,50 @@ node:selected::selected_layer {
     @staticmethod
     def parse_team_from_mapcss(mapcss_text: str) -> str:
         title = re.findall(r"title: \"(.*?)\"", mapcss_text)
-        title = title[0] if isinstance(title, list) else title
-        teamname = re.findall(r".*For\s?(.*?)\s?Team.*?", title) if title else None
-        teamname = teamname[0] if isinstance(teamname, list) else teamname
-        return teamname
 
+        title = (str(title).split(" "))
+        
+        title = title[3] if isinstance(title, list) else title
+        teamname = title.split(".")
+        teamname = (str(teamname[0]) )if title else None
+        #teamname = re.findall(r".*For\s?(.*?)\s?Team.*?", title) 
+        #teamname = teamname[0] if isinstance(teamname, list) else teamname
+        return teamname
+        
+
+        
     @staticmethod
     def parse_users_from_mapcss(mapcss_text: str, parsed_users: dict = {}) -> dict:
-        for i in re.finditer(
-            r"\*\s*(\[\s*osm_user_name\s*\(\s*\)|\[\s*setting\(\s*\"user_.*?\"\s*\)).*?}",  # noqa: E501
-            mapcss_text,
-        ):
-            temp = i.group()
-            username = re.findall(r"osm_user_name\(\)\s*==\s*\\?\"?(.*?)\\?\"?\"", temp)
-            if len(username) != 1:
-                username = re.findall(r"user:\\?\"?(.*?)\\?\"?\"", temp)
-            personname = re.findall(r"setting\(\s*\"user_(.*?)\"", temp)
-            if len(username) == 1 and len(personname) == 1:
-                parsed_users[username[0]] = {"name": personname[0]}
-        return parsed_users
 
+        if OLDSTYLE != True:
+            for i in re.finditer(
+                r"\*\s*(\[\s*osm_user_name\s*\(\s*\)|\[\s*setting\(\s*\"user_.*?\"\s*\)).*?}",  # noqa: E501
+                mapcss_text,
+                ):
+                temp = i.group()
+                j = str(temp).split("}") 
+                j = str(j).split("]")
+                j= str(j).split("= ")
+                j= str(j[1]).split('",')
+                username = j[0]
+                  
+                personname = re.findall(r"setting\(\s*\"user_(.*?)\"", temp)
+                parsed_users[username] = {"name": personname[0]}
+            return parsed_users
+        else:
+            for i in re.finditer(
+                r"\*\s*(\[\s*osm_user_name\s*\(\s*\)|\[\s*setting\(\s*\"user_.*?\"\s*\)).*?}",  # noqa: E501
+                mapcss_text,
+                ):
+                temp = i.group()
+                username = re.findall(r"osm_user_name\(\)\s*==\s*\\?\"?(.*?)\\?\"?\"", temp)
+                if len(username) != 1:
+                    username = re.findall(r"user:\\?\"?(.*?)\\?\"?\"", temp)
+                personname = re.findall(r"setting\(\s*\"user_(.*?)\"", temp)
+                if len(username) == 1 and len(personname) == 1:
+                    parsed_users[username[0]] = {"name": personname[0]}
+            return parsed_users
+    
     @staticmethod
     def parse_line_colors_from_mapcss(mapcss_text: str, parsed_users: dict) -> dict:
         """
@@ -1716,6 +1464,13 @@ node:selected::selected_layer {
             global INKML
             with open(infile, "r+") as reader:
                 infile_text = reader.read()
+                TYPETEST = infile_text.split("{")
+                if TYPETEST[0] == ("meta "):
+                    OLDSTYLE = True
+                else:
+                    OLDSTYLE = False
+                TYPETEST = ""
+                print (OLDSTYLE)
         except Exception as e:
             logger.exception(e)
         try:
@@ -1810,7 +1565,10 @@ node:selected::selected_layer {
             pixmap.setMask(mask)
             self.TEMPUSERS[str(count)].icon = QtGui.QIcon(pixmap)
             self.GEMarray[count][3] = self.TEMPUSERS[str(count)].icon
+###################################
 
+
+            
 
 # ################################   MAIN LOOP   ########################### #
 def main(args):
@@ -1839,8 +1597,6 @@ def main(args):
                 with open(mfile, "r") as f:
                     one.IMPORT_clicked(f.read())
         sys.exit(app.exec_())
-        if self.EXIT == 1:
-            sys.exit(0)
         sys._excepthook = sys.excepthook
         sys.excepthook = exception_hook
 

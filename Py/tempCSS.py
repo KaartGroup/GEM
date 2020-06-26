@@ -1,7 +1,7 @@
 
 STATICBLOCK = """
 meta {
-  title: "";
+  title: "TITLE";
   description: "";
   watch-modified: true;
   version: "";
@@ -25,8 +25,8 @@ node:modified < way::modified_layer {
     width: 6;
     color: transparent;
     opacity: 0;
-    casing-width: 1;
-    casing-color: #fffff;
+    casing-width: NOTUPWAYWIDTH;
+    casing-color: NOTUPWAYCOLOR;
     casing-opacity: 0.7;
     z-index: -5;
 }
@@ -35,7 +35,7 @@ node:modified < way::modified_layer {
 node:selected::selected_layer {
     symbol-shape: circle;
     symbol-size: 22;
-    symbol-stroke-color: #ffffff;
+    symbol-stroke-color: lime;
     symbol-stroke-width: 3px;
     symbol-fill-opacity: 0.5;
     z-index: -5;
@@ -52,9 +52,12 @@ setting::user_USERNAME {
             }
 /* USER SEARCH SETUP */
 
-*[eval(JOSM_search("user:USERID"))][setting("user_USERNAME")] {
-  set .USERNAME
+
+*[osm_user_name() == "USERID"][setting("user_USERNAME")] {
+  set .USERNAME;
 }
+
+
 
 /*USER WAY STYLE*/
 way.USERNAME{
@@ -77,9 +80,5 @@ node.USERNAME{
   symbol-fill-opacity: 0.5;
   z-index: -5;
 }"""
-
-
-
-
 
 
