@@ -367,7 +367,6 @@ body {
 
 .ebtns-container{
   display: grid;
-  grid-template-columns: 166px 166px 166px;
   padding:2px;
   align-content: center;
 }
