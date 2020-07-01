@@ -1,0 +1,1445 @@
+
+/* USER SEARCH SETTINGS */
+setting::user_AlexD {
+            type:boolean;
+            label:tr("Turn User AlexD On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "Soccersweeper"][setting("user_AlexD")] {
+  set .AlexD;
+}
+
+
+
+/*USER WAY STYLE*/
+way.AlexD{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.AlexD{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_ArleneC {
+            type:boolean;
+            label:tr("Turn User ArleneC On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "ArleneC"][setting("user_ArleneC")] {
+  set .ArleneC;
+}
+
+
+
+/*USER WAY STYLE*/
+way.ArleneC{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.ArleneC{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_Anthony {
+            type:boolean;
+            label:tr("Turn User Anthony On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "acrague"][setting("user_Anthony")] {
+  set .Anthony;
+}
+
+
+
+/*USER WAY STYLE*/
+way.Anthony{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.Anthony{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_BreiaV {
+            type:boolean;
+            label:tr("Turn User BreiaV On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "3agleOne"][setting("user_BreiaV")] {
+  set .BreiaV;
+}
+
+
+
+/*USER WAY STYLE*/
+way.BreiaV{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.BreiaV{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_BrianL {
+            type:boolean;
+            label:tr("Turn User BrianL On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "Unicorn Ostrich"][setting("user_BrianL")] {
+  set .BrianL;
+}
+
+
+
+/*USER WAY STYLE*/
+way.BrianL{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.BrianL{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_Casey {
+            type:boolean;
+            label:tr("Turn User Casey On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "CaseyIvanW"][setting("user_Casey")] {
+  set .Casey;
+}
+
+
+
+/*USER WAY STYLE*/
+way.Casey{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.Casey{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_David {
+            type:boolean;
+            label:tr("Turn User David On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "krinkov76239"][setting("user_David")] {
+  set .David;
+}
+
+
+
+/*USER WAY STYLE*/
+way.David{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.David{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_IanK {
+            type:boolean;
+            label:tr("Turn User IanK On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "Ikohl"][setting("user_IanK")] {
+  set .IanK;
+}
+
+
+
+/*USER WAY STYLE*/
+way.IanK{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.IanK{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_JacindaD {
+            type:boolean;
+            label:tr("Turn User JacindaD On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "Cinderblock"][setting("user_JacindaD")] {
+  set .JacindaD;
+}
+
+
+
+/*USER WAY STYLE*/
+way.JacindaD{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.JacindaD{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_Keeley {
+            type:boolean;
+            label:tr("Turn User Keeley On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "kebobo"][setting("user_Keeley")] {
+  set .Keeley;
+}
+
+
+
+/*USER WAY STYLE*/
+way.Keeley{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.Keeley{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_LeanneS {
+            type:boolean;
+            label:tr("Turn User LeanneS On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "LSkalayo"][setting("user_LeanneS")] {
+  set .LeanneS;
+}
+
+
+
+/*USER WAY STYLE*/
+way.LeanneS{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.LeanneS{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_LoganM {
+            type:boolean;
+            label:tr("Turn User LoganM On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "Dalekokarta"][setting("user_LoganM")] {
+  set .LoganM;
+}
+
+
+
+/*USER WAY STYLE*/
+way.LoganM{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.LoganM{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_LouisM {
+            type:boolean;
+            label:tr("Turn User LouisM On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "BlueRanger"][setting("user_LouisM")] {
+  set .LouisM;
+}
+
+
+
+/*USER WAY STYLE*/
+way.LouisM{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.LouisM{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_Marshall {
+            type:boolean;
+            label:tr("Turn User Marshall On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "MTG5093"][setting("user_Marshall")] {
+  set .Marshall;
+}
+
+
+
+/*USER WAY STYLE*/
+way.Marshall{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.Marshall{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_MattB {
+            type:boolean;
+            label:tr("Turn User MattB On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "MappnMatt"][setting("user_MattB")] {
+  set .MattB;
+}
+
+
+
+/*USER WAY STYLE*/
+way.MattB{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.MattB{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_MorgenM {
+            type:boolean;
+            label:tr("Turn User MorgenM On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "MMantlo"][setting("user_MorgenM")] {
+  set .MorgenM;
+}
+
+
+
+/*USER WAY STYLE*/
+way.MorgenM{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.MorgenM{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_NatashaS {
+            type:boolean;
+            label:tr("Turn User NatashaS On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "rallynukab"][setting("user_NatashaS")] {
+  set .NatashaS;
+}
+
+
+
+/*USER WAY STYLE*/
+way.NatashaS{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.NatashaS{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_NickE {
+            type:boolean;
+            label:tr("Turn User NickE On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "jedimasterflint"][setting("user_NickE")] {
+  set .NickE;
+}
+
+
+
+/*USER WAY STYLE*/
+way.NickE{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.NickE{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_Rob {
+            type:boolean;
+            label:tr("Turn User Rob On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "RouteRob"][setting("user_Rob")] {
+  set .Rob;
+}
+
+
+
+/*USER WAY STYLE*/
+way.Rob{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.Rob{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_RobinH {
+            type:boolean;
+            label:tr("Turn User RobinH On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "RobinNoodles"][setting("user_RobinH")] {
+  set .RobinH;
+}
+
+
+
+/*USER WAY STYLE*/
+way.RobinH{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.RobinH{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_RonmelR {
+            type:boolean;
+            label:tr("Turn User RonmelR On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "Mel_1"][setting("user_RonmelR")] {
+  set .RonmelR;
+}
+
+
+
+/*USER WAY STYLE*/
+way.RonmelR{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.RonmelR{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_Sarah {
+            type:boolean;
+            label:tr("Turn User Sarah On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "Yagni"][setting("user_Sarah")] {
+  set .Sarah;
+}
+
+
+
+/*USER WAY STYLE*/
+way.Sarah{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.Sarah{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_Savana {
+            type:boolean;
+            label:tr("Turn User Savana On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "staysavy"][setting("user_Savana")] {
+  set .Savana;
+}
+
+
+
+/*USER WAY STYLE*/
+way.Savana{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.Savana{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_Sharon {
+            type:boolean;
+            label:tr("Turn User Sharon On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "mapcraft"][setting("user_Sharon")] {
+  set .Sharon;
+}
+
+
+
+/*USER WAY STYLE*/
+way.Sharon{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.Sharon{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_SteveC {
+            type:boolean;
+            label:tr("Turn User SteveC On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "Smoothdog"][setting("user_SteveC")] {
+  set .SteveC;
+}
+
+
+
+/*USER WAY STYLE*/
+way.SteveC{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.SteveC{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_WilliamF {
+            type:boolean;
+            label:tr("Turn User WilliamF On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "Buddy-the-Elf"][setting("user_WilliamF")] {
+  set .WilliamF;
+}
+
+
+
+/*USER WAY STYLE*/
+way.WilliamF{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.WilliamF{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_Angie {
+            type:boolean;
+            label:tr("Turn User Angie On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "Inigo_Maptoya"][setting("user_Angie")] {
+  set .Angie;
+}
+
+
+
+/*USER WAY STYLE*/
+way.Angie{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.Angie{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_Anita {
+            type:boolean;
+            label:tr("Turn User Anita On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "natureandchill"][setting("user_Anita")] {
+  set .Anita;
+}
+
+
+
+/*USER WAY STYLE*/
+way.Anita{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.Anita{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_Anja {
+            type:boolean;
+            label:tr("Turn User Anja On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "Ajaie"][setting("user_Anja")] {
+  set .Anja;
+}
+
+
+
+/*USER WAY STYLE*/
+way.Anja{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.Anja{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_Daniel {
+            type:boolean;
+            label:tr("Turn User Daniel On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "The_Intern"][setting("user_Daniel")] {
+  set .Daniel;
+}
+
+
+
+/*USER WAY STYLE*/
+way.Daniel{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.Daniel{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_Joseph {
+            type:boolean;
+            label:tr("Turn User Joseph On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "Szekha"][setting("user_Joseph")] {
+  set .Joseph;
+}
+
+
+
+/*USER WAY STYLE*/
+way.Joseph{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.Joseph{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_LoganS {
+            type:boolean;
+            label:tr("Turn User LoganS On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "127logs"][setting("user_LoganS")] {
+  set .LoganS;
+}
+
+
+
+/*USER WAY STYLE*/
+way.LoganS{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.LoganS{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_Luis {
+            type:boolean;
+            label:tr("Turn User Luis On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "medrano93"][setting("user_Luis")] {
+  set .Luis;
+}
+
+
+
+/*USER WAY STYLE*/
+way.Luis{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.Luis{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_NickM {
+            type:boolean;
+            label:tr("Turn User NickM On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "nickmettauer"][setting("user_NickM")] {
+  set .NickM;
+}
+
+
+
+/*USER WAY STYLE*/
+way.NickM{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.NickM{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_RD {
+            type:boolean;
+            label:tr("Turn User RD On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "mr_et"][setting("user_RD")] {
+  set .RD;
+}
+
+
+
+/*USER WAY STYLE*/
+way.RD{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.RD{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_Riley {
+            type:boolean;
+            label:tr("Turn User Riley On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "AlwaysSunnyInMapadelphia"][setting("user_Riley")] {
+  set .Riley;
+}
+
+
+
+/*USER WAY STYLE*/
+way.Riley{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.Riley{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_RyanF {
+            type:boolean;
+            label:tr("Turn User RyanF On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "rytheking"][setting("user_RyanF")] {
+  set .RyanF;
+}
+
+
+
+/*USER WAY STYLE*/
+way.RyanF{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.RyanF{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_Sage {
+            type:boolean;
+            label:tr("Turn User Sage On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "BobGod"][setting("user_Sage")] {
+  set .Sage;
+}
+
+
+
+/*USER WAY STYLE*/
+way.Sage{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.Sage{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+/* USER SEARCH SETTINGS */
+setting::user_Sierra {
+            type:boolean;
+            label:tr("Turn User Sierra On/Off");
+            default:true;
+            }
+/* USER SEARCH SETUP */
+
+
+*[osm_user_name() == "sierrae-kaart"][setting("user_Sierra")] {
+  set .Sierra;
+}
+
+
+
+/*USER WAY STYLE*/
+way.Sierra{
+  z-index: -10;
+  casing-color: #B108D6;
+  casing-width: 3px;
+  casing-opacity: 0.6;
+  /*
+  text: eval(concat("Highway type =", " ", tag("highway")));
+  text-offset: -20;
+  */
+}
+
+/*USER NODE STYLE*/
+node.Sierra{
+  symbol-size: 15;
+  symbol-shape: triangle;
+  symbol-stroke-color: blue;
+  symbol-stroke-width: 3px;
+  symbol-fill-opacity: 0.5;
+  z-index: -5;
+}
+meta {
+  title: "QC Styles For Mexico Team";
+  description: "";
+  watch-modified: true;
+  version: "";
+  icon: "";
+
+}
+
+/* MODIFIED BUT NOT UPLOADED LAYER STYLE */
+
+node:modified::modified_layer {
+    symbol-shape: circle;
+    symbol-size: 22;
+    symbol-stroke-color: orange;
+    symbol-stroke-width: 3px;
+    symbol-fill-opacity: 0.5;
+    z-index: -5;
+}
+
+way:modified::modified_layer,
+node:modified < way::modified_layer {
+    width: 6;
+    color: transparent;
+    opacity: 0;
+    casing-width: 7;
+    casing-color: #47D608;
+    casing-opacity: 0.7;
+    z-index: -5;
+}
+
+/*SELECTED LAYER STYLE*/
+node:selected::selected_layer {
+    symbol-shape: circle;
+    symbol-size: 22;
+    symbol-stroke-color: lime;
+    symbol-stroke-width: 3px;
+    symbol-fill-opacity: 0.5;
+    z-index: -5;
+}

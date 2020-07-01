@@ -7,7 +7,7 @@ var enodecol;
 var lcolor = '#0000ff';
 var ncolor = '#ff0000';
 var elcolor = '#ff0000';
-var encolor = '#ffffff';
+var encolor = '#0000ff';
 
 window.addEventListener("load", startup, false);
 
@@ -22,11 +22,11 @@ function startup(){
     nodecolor.value = ncolor;
     nodecolor.select(ncolor);
 
-    elinecol = document.querySelector("#elinecol");
+    elinecol = document.querySelector("#elinecolor");
     elinecol.value = elcolor;
     elinecol.select(elcolor);
 
-    enodecol = document.querySelector("#enodecol");
+    enodecol = document.querySelector("#enodecolor");
     enodecol.value = encolor;
     enodecol.select(encolor);    
 }
@@ -57,8 +57,8 @@ function updateAll(event) {
 
 export function Banner() {
     return (
-    <form action="/gdat" method="POST" > 
     <div className="body-style">
+    <form action="/add" method="POST" className='form' > 
     <div className="left-side">
         <p>Team Settings:</p>
     <label for="team">Team Name:</label>
@@ -121,12 +121,18 @@ export function Banner() {
         </div>
     <p>Table Settings</p>
     <div className="ebtns-container">
+        <button class="export-buttons" type="submit">Submit</button>
         <button class="export-buttons" type="button" >Remove</button>
         <button class="export-buttons" type="button" >Remove All</button>
-        <button class="export-buttons" type="button" >Import</button>
         <button class="export-buttons" type="button" >Export</button>
-        <button class="export-buttons" type="submit">Submit</button>
-        </div></div>
-    </form>                     
+        </div>
+        </form>
+    <div className="ebtns-container">                     
+        <form  id="upload-form" className = "form" action="/upload" method="POST" encType="multipart/form-data">
+        <input type="file" name="upfile" id="upfile"></input>
+        <button class="export-buttons" type="submit" >Import</button>
+        </form>
+        </div>
+        </div>
     );
 }

@@ -235,7 +235,6 @@ body {
     height:25px;
     color: black;
     border-bottom: 2px solid #f4753c;
-    border-top: 2px solid #f4753c;
     background-color: seashell;
     padding-top: 2px;
   }
@@ -252,6 +251,7 @@ body {
     color: #f4753c;
     border-bottom: black;
     font-weight: bolder;
+    padding: 5px;
   }
 
 
@@ -406,7 +406,7 @@ body {
 }
 
 .form{
-  display: inline;
+  display: inline-flex;
 }
 
 button:hover{
