@@ -57,10 +57,11 @@ function updateAll(event) {
 
 export function Banner() {
     return (
+    
     <div className="body-style">
-    <form action="/add" method="POST" className='form' > 
+    <form action="/add" method="POST" className='form' >
     <div className="left-side">
-        <p>Team Settings:</p>
+        <p>Team Settings: </p>
     <label for="team">Team Name:</label>
     <input type="text" id="team" name="team" placeholder="Enter a Team Name" required minLength="4" maxLength="16" size="20"></input>
         <p >Choose Highlight Colors:</p> 

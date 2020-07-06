@@ -44,7 +44,13 @@ export class Table extends Component {
         headerFilter: "input"
       },
       {
-        title: "User Name",
+        title: "Username",
+        field:"username",
+        align: "left",
+        headerFilter: "input"
+      },
+      {
+        title: "User ID",
         field: "username",
         align: "left",
         headerFilter: "input"
@@ -62,8 +68,8 @@ export class Table extends Component {
         headerFilter: "input" 
      },
       {
-        title: "Highlight Color",
-        field: "waycolor",
+        title: "Line Color",
+        field: "linecolor",
         formatter:"color",
         align: "center",
         headerFilter: "input"
@@ -73,6 +79,24 @@ export class Table extends Component {
         field: "nodecolor",
         formatter:"color",
         align: "right",
+        headerFilter: "input"
+      },
+      {
+        title: "Line Width",
+        field:"linewidth",
+        align: "left",
+        headerFilter: "input"
+      }, 
+      {
+        title: "Node Size",
+        field:"nodesize",
+        align: "left",
+        headerFilter: "input"
+      },
+      {
+        title: "Node Shape",
+        field:"name",
+        align: "left",
         headerFilter: "input"
       }
     ];

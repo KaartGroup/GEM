@@ -17,9 +17,9 @@
     <title>GEM: An Online Mapcss Editor</title>
   </head>
   <body>
-    
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <div> 
+    <div id="root"> </div>
+    </div >
     <footer>
     </footer>
   </body>
@@ -36,7 +36,7 @@
 
     function setStorage() {
       var jsonData = getOrMakeStorage();
-      var flaskData = {{ flask_data }};
+      var flaskData = [{ {{ flask_data }} }];
       if (flaskData) {
         for (key in flaskData) {
           jsonData[key] = flaskData[key];
