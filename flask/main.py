@@ -13,9 +13,6 @@ import re
 
 editor = Editor()
 
-Editorlist = {}
-
-Editors = {}
 
 app = Flask("__main__")
 
@@ -26,35 +23,36 @@ def my_index():
     return render_template('index.html')
 
 @app.route("/add", methods=['GET','POST'] )
-def getdata():
+def getdata(req: dict = {}):
+    Editorlist = []
     if request.method == 'POST':
 
-        req = request.form.to_dict()
-        print('req',req)
+        req = request.form.copy()
+        print(req)
+        
+        payload = str(req)
+        rdata  = re.sub(r"(b')|(\&)|(\%23)|(\'$)"," " ,payload)
+        edata = re.sub(r"(\=)", ':', rdata)
+        cdata = re.sub(r"(\:\s)", ":", edata)
+        data = re.split("\s", cdata)
+        
+
+
+        ##jdata = json.dumps(data)
+
         editor.name = req["ename"]
         editor.team = req["team"]
         editor.username = req["username"]
-        editor.uid = req["editoruid"]
-        editor.linecolor = req["elinecolor"]
-        editor.nodecolor = req["enodecolor"]
-        editor.linewidth = req["elinewidth"]
-        editor.nodesize = req["enodesize"]
-        editor.nodeshape = req["enodeshape"]
+        editor.uid = req["uid"]
 
-        
-        for key, val in req.items():
-            Editorlist[key] = req[key]
+        json.dumps(req)
 
-        del Editorlist['ename']
-
-
-
-        Editors = { editor.name : Editorlist}
-        print(Editors)
+        ##print(req)
+        ##print(editor.team)
 
         return redirect(request.url)
 
-    return render_template("index.html", flask_data = )
+    return render_template("index.html", jedata=json.dumps(req))
 
 
 
@@ -88,7 +86,6 @@ def getinfile():
             oldstyle = False
         typecheck = ""
         print (oldstyle)
-
 
 if __name__ == "__main__":
     app.run(debug=True)

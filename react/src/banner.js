@@ -1,34 +1,35 @@
 import React from 'react';
 
-var linecolor;
-var nodecolor;
-var elinecol;
-var enodecol;
-var lcolor = '#0000ff';
-var ncolor = '#ff0000';
+
+var tlinecolor;
+var tnodecolor;
+var elinecolor;
+var enodecolor;
+var tlcolor = '#0000ff';
+var tncolor = '#ff0000';
 var elcolor = '#ff0000';
 var encolor = '#0000ff';
 
 window.addEventListener("load", startup, false);
 
 function startup(){
-    linecolor = document.querySelector("#linecolor");
-    linecolor.value = lcolor;
+    tlinecolor = document.querySelector("#tlinecolor");
+    tlinecolor.value = tlcolor;
     //linecolor.addEventListener("input", updateFirst,false);
     //linecolor.addEventListener("change", updateAll, false);
-    linecolor.select(lcolor);
+    tlinecolor.select(tlcolor);
 
-    nodecolor = document.querySelector("#nodecolor");
-    nodecolor.value = ncolor;
-    nodecolor.select(ncolor);
+    tnodecolor = document.querySelector("#tnodecolor");
+    tnodecolor.value = tncolor;
+    tnodecolor.select(tncolor);
 
-    elinecol = document.querySelector("#elinecolor");
-    elinecol.value = elcolor;
-    elinecol.select(elcolor);
+    elinecolor = document.querySelector("#elinecolor");
+    elinecolor.value = elcolor;
+    elinecolor.select(elcolor);
 
-    enodecol = document.querySelector("#enodecolor");
-    enodecol.value = encolor;
-    enodecol.select(encolor);    
+    enodecolor = document.querySelector("#enodecolor");
+    enodecolor.value = encolor;
+    enodecolor.select(encolor);    
 }
 
 function updateFirst(event) {
@@ -54,26 +55,52 @@ function updateAll(event) {
         p.style.color = event.target.value;
     });
   }
+  /**
+ * Retrieves input data from a form and returns it as a JSON object.
+ * @param  {HTMLFormControlsCollection} elements  the form elements
+ * @return {Object}                               form data as an object literal
+ */
+  const formToJSON = elements => [].reduce.call(elements, (data, element) =>{
+
+    data[element.name] = element.value;
+
+    return data;
+
+}, {});
+
+const reducerFunction = (data, element) => {
+    data[element.name] = element.value;
+    console.log(JSON.stringify(data));
+
+const handleFormSubmit = event =>{
+
+    event.preventDefault();
+
+    const data = formToJSON(form.elements);
+
+    const form = document.getElementsByClassName('form')[0];
+    form.addEventListener('submit', handleFormSubmit)
+
+  }
 
 export function Banner() {
     return (
-    
     <div className="body-style">
-    <form action="/add" method="POST" className='form' >
+    <form  className="form" >
     <div className="left-side">
         <p>Team Settings: </p>
     <label for="team">Team Name:</label>
     <input type="text" id="team" name="team" placeholder="Enter a Team Name" required minLength="4" maxLength="16" size="20"></input>
         <p >Choose Highlight Colors:</p> 
         <div className="way-values">
-        <label for="linecolor"> Line Color: </label> 
-        <input type="color" id="linecolor" name="tlinecolor" ></input>
-        <label for="linewidth">Line Width:</label>
-         <input type="number" id="lindewidth" name="tlinewidth" min="1" max="20" placeholder="1"></input>
-        <label for="nodecolor"> Node Color: </label> 
-            <input type="color" id="nodecolor" name="tnodecolor"  ></input>
-        <label for="nodesize">Node Size:</label>
-        <input type="number" id="nodesize" name="tnodesize" min="10" max="50" placeholder="10"></input> </div>
+        <label for="tlinecolor"> Line Color: </label> 
+        <input type="color" id="tlinecolor" name="tlinecolor" ></input>
+        <label for="tlinewidth">Line Width:</label>
+         <input type="number" id="tlindewidth" name="tlinewidth" min="1" max="20" placeholder="1"></input>
+        <label for="tnodecolor"> Node Color: </label> 
+            <input type="color" id="tnodecolor" name="tnodecolor"  ></input>
+        <label for="tnodesize">Node Size:</label>
+        <input type="number" id="tnodesize" name="tnodesize" min="10" max="50" placeholder="10"></input> </div>
         <label for="tnodeshape" >Node Shape:</label>
         <select name = "tnodeshape">
             <option value="">--Please Select an Option--</option>
@@ -95,15 +122,15 @@ export function Banner() {
             <label for="username">User Name:</label>
             <input type="text" id="username" placeholder="Enter a Username" name="username" required minLength="4" maxLength="16" size="20"></input>
             <label for="editoruid">User ID:</label>
-            <input type="text" id="editoruid" name="editoruid" placeholder="Enter a User ID" required minLength="4" maxLength="16" size="20"></input>
+            <input type="text" id="editoruid" name="uid" placeholder="Enter a User ID" required minLength="4" maxLength="16" size="20"></input>
     <div className="editor-way">
-        <label for="linecolor"> Line Color: </label> 
+        <label for="elinecolor"> Line Color: </label> 
         <input type="color" id="elinecolor" name="elinecolor" ></input>
-        <label for="linewidth">Line Width:</label>
+        <label for="elinewidth">Line Width:</label>
         <input type="number" id="elinewidth" name="elinewidth" min="1" max="20" placeholder="1"></input>
-        <label for="nodecolor"> Node Color: </label> 
+        <label for="enodecolor"> Node Color: </label> 
         <input type="color" id="enodecolor" name="enodecolor" ></input>
-        <label for="nodesize">Node Size:</label>
+        <label for="enodesize">Node Size:</label>
         <input type="number" id="enodesize" name="enodesize" min="10" max="50" placeholder="10"></input>
         </div>
         <label for="enodeshape" >Node Shape:</label>
@@ -122,7 +149,7 @@ export function Banner() {
         </div>
     <p>Table Settings</p>
     <div className="ebtns-container">
-        <button class="export-buttons" type="submit">Submit</button>
+        <button class="export-buttons" type="submit"> Add User</button>
         <button class="export-buttons" type="button" >Remove</button>
         <button class="export-buttons" type="button" >Remove All</button>
         <button class="export-buttons" type="button" >Export</button>

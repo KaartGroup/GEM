@@ -8,7 +8,7 @@ export class Table extends Component {
     super(props);
 
     this.state = {
-      todos: [],
+        data: [],
       errorMsg: ""
     };
   }
@@ -22,19 +22,19 @@ export class Table extends Component {
       }
     };
     axios
-      .get("https://my-json-server.typicode.com/farieberrie/supreme-disco/posts", config)
+      .get("http://127.0.0.1:5000/add", config)
       .then(response => {
         this.setState({ todos: response.data });
       })
       .catch(error => {
         this.setState({
-          errorMsg: `Error retreiving todo's data. Detailed error : ${error}`
+          errorMsg: `Error retreiving data. Detailed error : ${error}`
         });
       });
   }
 
   render() {
-    const { todos, errorMsg } = this.state;
+    const { data, errorMsg } = this.state;
 
     const columns = [
       {
@@ -51,14 +51,8 @@ export class Table extends Component {
       },
       {
         title: "User ID",
-        field: "username",
-        align: "left",
-        headerFilter: "input"
-      },
-      {
-        title: "User ID",
         field: "uid",
-        align: "center",
+        align: "left",
         headerFilter: "input"
       },
       { 
@@ -69,33 +63,33 @@ export class Table extends Component {
      },
       {
         title: "Line Color",
-        field: "linecolor",
+        field: "tlinecolor",
         formatter:"color",
         align: "center",
         headerFilter: "input"
       },
       {
         title: "Node Color",
-        field: "nodecolor",
+        field: "enodecolor",
         formatter:"color",
         align: "right",
         headerFilter: "input"
       },
       {
         title: "Line Width",
-        field:"linewidth",
+        field:"elinewidth",
         align: "left",
         headerFilter: "input"
       }, 
       {
         title: "Node Size",
-        field:"nodesize",
+        field:"enodesize",
         align: "left",
         headerFilter: "input"
       },
       {
         title: "Node Shape",
-        field:"name",
+        field:"enodeshape",
         align: "left",
         headerFilter: "input"
       }
@@ -119,7 +113,7 @@ export class Table extends Component {
     return (
       <div>
         <ReactTabulator
-          data={todos}
+          data={data}
           columns={columns}
           tooltips={true}
           layout={"fitData"}

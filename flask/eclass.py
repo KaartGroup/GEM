@@ -9,10 +9,17 @@ class Editor(object):
       self.linewidth = 10
       self.nodesize = 1
       self.nodeshape = ""
+class Team(object):
+   def __init__(self):
+      self.teamcolor = ""
+      self.teamlwidth = 10
+      self.teamnodecol = ""
+      self.teamnodesiz= 1
+      self.teamnodeshap= ""
 
-      def parseJSON():
-         return None
+def parseJSON():
+      return None
 
-      def readJSON():
-         return None
+def readJSON():
+      return None
 

@@ -36,8 +36,8 @@
 
     function setStorage() {
       var jsonData = getOrMakeStorage();
-      var flaskData = [{ {{ flask_data }} }];
-      if (flaskData) {
+      var flaskdata =  {};
+      if (data) {
         for (key in flaskData) {
           jsonData[key] = flaskData[key];
         }
