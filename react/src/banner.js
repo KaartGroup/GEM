@@ -1,5 +1,5 @@
 import React from 'react';
-
+import $ from 'jquery';
 
 var tlinecolor;
 var tnodecolor;
@@ -55,38 +55,47 @@ function updateAll(event) {
         p.style.color = event.target.value;
     });
   }
-  /**
- * Retrieves input data from a form and returns it as a JSON object.
- * @param  {HTMLFormControlsCollection} elements  the form elements
- * @return {Object}                               form data as an object literal
- */
-  const formToJSON = elements => [].reduce.call(elements, (data, element) =>{
+$(document).ready(function(){
+  
+  (function($){
+      $.fn.serializeFormJSON = function (){
+          
+          var o = {};
+          var a = this.serializeArray();
+          $.each(a, function(){
+              if(o[this.name].push){
+                  if (!o[this.name].push){
+                      o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';    
+                }
+            });
+            return o;
+        };
+    })($);
 
-    data[element.name] = element.value;
 
-    return data;
+  $('iform').submit(function(e){
+      e.preventDefault();
+      var data = $(this).serializeFormJSON();
+      console.log(data);
+  });
 
-}, {});
-
-const reducerFunction = (data, element) => {
-    data[element.name] = element.value;
-    console.log(JSON.stringify(data));
-
-const handleFormSubmit = event =>{
-
-    event.preventDefault();
-
-    const data = formToJSON(form.elements);
-
-    const form = document.getElementsByClassName('form')[0];
-    form.addEventListener('submit', handleFormSubmit)
-
-  }
+    $("#add").click(function(){
+        var x = $("form").serializeArray();
+        $.each(x, function(i, field){
+            $("#output").append(field.name + ":" 
+                        + field.value + " ");
+        });
+    });
+});
 
 export function Banner() {
     return (
     <div className="body-style">
-    <form  className="form" >
+    <form actions=""  id="iform" className="form">
     <div className="left-side">
         <p>Team Settings: </p>
     <label for="team">Team Name:</label>
@@ -149,12 +158,13 @@ export function Banner() {
         </div>
     <p>Table Settings</p>
     <div className="ebtns-container">
-        <button class="export-buttons" type="submit"> Add User</button>
+        <button id="add" class="export-buttons" type="submit"> Add User</button>
         <button class="export-buttons" type="button" >Remove</button>
         <button class="export-buttons" type="button" >Remove All</button>
         <button class="export-buttons" type="button" >Export</button>
         </div>
         </form>
+        <div id="output"></div>
     <div className="ebtns-container">                     
         <form  id="upload-form" className = "form" action="/upload" method="POST" encType="multipart/form-data">
         <input type="file" name="upfile" id="upfile"></input>
