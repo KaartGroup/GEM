@@ -1,5 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
+import jQuery from 'jquery';
 
 var tlinecolor;
 var tnodecolor;
@@ -10,23 +11,24 @@ var tncolor = '#ff0000';
 var elcolor = '#ff0000';
 var encolor = '#0000ff';
 
+
 window.addEventListener("load", startup, false);
 
 function startup(){
     tlinecolor = document.querySelector("#tlinecolor");
     tlinecolor.value = tlcolor;
-    //linecolor.addEventListener("input", updateFirst,false);
-    //linecolor.addEventListener("change", updateAll, false);
+    //tlinecolor.addEventListener("input", updateFirst,false);
+    //tlinecolor.addEventListener("change", updateAll, false);
     tlinecolor.select(tlcolor);
-
+    
     tnodecolor = document.querySelector("#tnodecolor");
     tnodecolor.value = tncolor;
     tnodecolor.select(tncolor);
-
+    
     elinecolor = document.querySelector("#elinecolor");
     elinecolor.value = elcolor;
     elinecolor.select(elcolor);
-
+    
     enodecolor = document.querySelector("#enodecolor");
     enodecolor.value = encolor;
     enodecolor.select(encolor);    
@@ -35,61 +37,62 @@ function startup(){
 function updateFirst(event) {
     var p = document.querySelector("p");
     var b = document.querySelector("button");
-
+    
     if(b){
         b.style.background = event.target.value
     }
-
+    
     if (p) {
         
         p.style.color = event.target.value;
     }
-  }
+}
 
 function updateAll(event) {
     document.querySelectorAll("button").forEach(function(b){
         b.style.background = event.target.value
-
+        
     });
     document.querySelectorAll("p").forEach(function(p) {
         p.style.color = event.target.value;
     });
-  }
+}
+
 $(document).ready(function(){
-  
-  (function($){
-      $.fn.serializeFormJSON = function (){
-          
-          var o = {};
-          var a = this.serializeArray();
-          $.each(a, function(){
-              if(o[this.name].push){
-                  if (!o[this.name].push){
-                      o[this.name] = [o[this.name]];
+    (function ($) {
+        $.fn.serializeFormJSON = function () {
+            
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function () {
+                if (o[this.name]) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
                     }
                     o[this.name].push(this.value || '');
                 } else {
-                    o[this.name] = this.value || '';    
+                    o[this.name] = this.value || '';
                 }
             });
             return o;
         };
-    })($);
-
-
-  $('iform').submit(function(e){
-      e.preventDefault();
-      var data = $(this).serializeFormJSON();
-      console.log(data);
-  });
-
-    $("#add").click(function(){
-        var x = $("form").serializeArray();
-        $.each(x, function(i, field){
-            $("#output").append(field.name + ":" 
-                        + field.value + " ");
-        });
+    })(jQuery);
+    
+    $('form').submit(function (e) {
+        e.preventDefault();
+        var data = $(this).serializeFormJSON();
+        
+        console.log(data);
+        
+        /* Object
+        Key : "value"
+        */
+       
+       var tableData = [ ]
+       tableData.push(0, data);
+       console.log(tableData);
     });
+    
 });
 
 export function Banner() {
