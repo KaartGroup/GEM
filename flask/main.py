@@ -1,9 +1,6 @@
 from flask import (Flask, render_template, redirect, request, jsonify, json)
 from eclass import Editor
 from werkzeug.utils import secure_filename
-from jinja2 import (Template, Environment, FileSystemLoader)
-import webview
-import threading
 import json
 import os
 import copy
