@@ -6,7 +6,7 @@ export function Header() {
             <div className = "container nav-container">
                 <div className="logo">
                     <a className="logo-link" href="http://kaartgroup.com">
-                        <img className="img-responsive" src="http://kaartgroup.com/wp-content/uploads/2019/09/kaart-curve_curve-colour.svg" alt="" />
+                        <img className="img-responsive" src="/static/react/res/Kaart Final Logo_Circle.svg" alt="" />
                     </a>
                     </div>
                 <div className="title"> GEM </div>

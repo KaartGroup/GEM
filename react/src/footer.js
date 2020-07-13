@@ -7,7 +7,7 @@ export function Footer() {
                 <div className="footer-content">
                     <div className="footer-info-left">
                         <div className="logo">
-                            <img src="http://kaartgroup.com/wp-content/uploads/2019/09/Kaart-Final-Logo_Horizontal.png" alt="" class="img-responsive" />
+                        <img className="img-responsive" src="/static/react/res/Kaart Final Logo_Circle.svg" alt="" />
                         </div>
                         <div className="social-networks">
                             <ul>
