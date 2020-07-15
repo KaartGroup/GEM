@@ -51,6 +51,7 @@
     "postcss-safe-parser": "4.0.1",
     "react": "^16.13.1",
     "react-app-polyfill": "^1.0.6",
+    "react-collapsing-table": "^1.0.3",
     "react-dev-utils": "^10.2.1",
     "react-dom": "^16.13.1",
     "react-tabulator": "^0.12.7",

@@ -57,44 +57,6 @@ function updateAll(event) {
         p.style.color = event.target.value;
     });
 }
-
-$(document).ready(function(){
-    (function ($) {
-        $.fn.serializeFormJSON = function () {
-            
-            var o = {};
-            var a = this.serializeArray();
-            $.each(a, function () {
-                if (o[this.name]) {
-                    if (!o[this.name].push) {
-                        o[this.name] = [o[this.name]];
-                    }
-                    o[this.name].push(this.value || '');
-                } else {
-                    o[this.name] = this.value || '';
-                }
-            });
-            return o;
-        };
-    })(jQuery);
-    
-    $('form').submit(function (e) {
-        e.preventDefault();
-        var data = $(this).serializeFormJSON();
-        
-        console.log(data);
-        
-        /* Object
-        Key : "value"
-        */
-       
-       var tableData = [ ]
-       tableData.push(0, data);
-       console.log(tableData);
-    });
-    
-});
-
 export function Banner() {
     return (
     <div className="body-style">

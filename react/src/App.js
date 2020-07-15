@@ -4,6 +4,7 @@ import { Footer } from './footer';
 import {Banner} from './banner';
 import './App.css';
 import Table from './table';
+//import Table from './testtable'
 
 function App() {
   return (
