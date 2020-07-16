@@ -6,6 +6,7 @@ import urllib
 import httpbin
 import github
 import tempCSS
+#import GITSTUFF
 from github import Github
 import os
 import sys
@@ -19,7 +20,7 @@ from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtWidgets import (
     QMainWindow,
     QLabel,
-    QWidget,
+     QWidget,
     QStatusBar,
     QMenuBar,
     QMenu,
@@ -28,7 +29,7 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtWidgets import QPushButton, QMessageBox, QTabWidget
 
 
-##################################################
+# ###### CREDITS ###### #
 __author__ = "Chris Gousset"
 __copyright__ = "N/A"
 __credits__ = ["Louis Morales", "Zack LaVergne"]
@@ -38,11 +39,12 @@ __maintainer__ = "Chris Gousset"
 __email__ = "chris.gousset@kaart.com"
 __status__ = "Development"
 
-#########################################
+# ###### DEBUG STUFF ###### #
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 
+# ###### RESOURCE PATH TO IMAGE FILES IN COMPILED APP ###### #
 def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
     try:
@@ -55,7 +57,7 @@ def resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 
-#########################################
+# ###### IMPORT PARSER STUFF ###### #
 
 class MapCSSParseExceptionType(Enum):
     UNKNOWN = auto()
@@ -66,7 +68,7 @@ class MapCSSParseException(Exception):
     """
     Thrown when there is an issue parsing the mapcss
     """
-
+    
     def __init__(
         self,
         message: str,
@@ -76,6 +78,8 @@ class MapCSSParseException(Exception):
         self.exception_type = exception_type
         super().__init__(message)
 
+
+# ###### ABSTRACT TABLE MODEL SETUP ###### #
 class TABMOD(QAbstractTableModel):
     def __init__(
         self, GEMarray, headers=[], parent=None,
@@ -179,12 +183,15 @@ class TABMOD(QAbstractTableModel):
                     return self.headers[section]
 
 
-#####################################################
+# ###### GLOBAL VARIABLE SETUP ###### #
+
+''' Here we make an instance of the abstract table model, set a boolean for the
+old/new style mapcss parser and setup a clear Qcolor used to fill in the empty places of the edito table'''
 Model = TABMOD
 OLDSTYLE = True
 clear = QtGui.QColor(0, 0, 0, 0)
-red = QtGui.QColor(255, 0, 0)
 
+# ###### EDITOR INFO CLASS SETUP ###### #
 
 class EDITORINFO(object):
     def __init__(self):
@@ -202,53 +209,7 @@ class EDITORINFO(object):
         self.ICONSHAPE = ""
         self.ICONSHAPELINK = ""
 
-
-###############################################
-
-
-class CONFIRMPOPUP(QMainWindow):
-    def __init__(self):
-        QMainWindow.__init__(self)
-        self.setGeometry(900, 100, 300, 80)
-        self.setWindowTitle("CONFIRMATION")
-        self.POPHOME()
-
-    def POPHOME(self):
-        self.LABEL = QtWidgets.QLabel(self)
-        self.LABEL.setText("Enter administrator password:")
-        self.LABEL.resize(300, 20)
-        self.LABEL.move(13, 5)
-
-        self.PASSFIELD = QtWidgets.QLineEdit(self)
-        self.PASSFIELD.setEchoMode(self.PASSFIELD.Password)
-        self.PASSFIELD.resize(275, 20)
-        self.PASSFIELD.move(12, 30)
-
-        self.CONFIRM = QPushButton(self)
-        self.CONFIRM.setText("CONFIRM")
-        self.CONFIRM.resize(150, 25)
-        self.CONFIRM.move(5, 50)
-        self.CONFIRM.clicked.connect(self.CONFIRMED_clicked)
-
-        self.CANCEL = QPushButton(self)
-        self.CANCEL.setText("CANCEL")
-        self.CANCEL.resize(150, 25)
-        self.CANCEL.move(145, 50)
-        self.CANCEL.clicked.connect(self.CANCEL_clicked)
-        self.show()
-
-    def CONFIRMED_clicked(self):
-        TESTPASS = self.PASSFIELD.text()
-
-        if TESTPASS == one.ADMINPASS:
-            one.GITPUSH_GO()
-        self.close()
-
-    def CANCEL_clicked(self):
-        self.close()
-
-
-############################################
+# ####### MAIN WINDOW CLASS ####### #
 class MAINWindow(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
@@ -429,19 +390,22 @@ class MAINWindow(QMainWindow):
         self.ICONSHAPELABEL.move(10, 84)
 
         self.TEAMICONSHAPEBOX = QtWidgets.QComboBox(self.groupBox3)
-        self.TEAMICONSHAPEBOX.activated.connect(self.TEAMSHAPESELECT)
-        self.TEAMICONSHAPEBOX.blockSignals(False)
+        self.TEAMICONSHAPEBOX.setEnabled(True)
+
+        self.TEAMICONSHAPEBOX.blockSignals(True)
         self.TEAMICONSHAPEBOX.resize(138, 20)
         self.TEAMICONSHAPEBOX.addItem("Circle")
         self.TEAMICONSHAPEBOX.addItem("Triangle")
         self.TEAMICONSHAPEBOX.addItem("Square")
-        
         self.TEAMICONSHAPEBOX.addItem("Pentagon")
         self.TEAMICONSHAPEBOX.addItem("Hexagon")
         self.TEAMICONSHAPEBOX.addItem("Heptagon")
         self.TEAMICONSHAPEBOX.addItem("Octagon")
         self.TEAMICONSHAPEBOX.addItem("Nonagon")
         self.TEAMICONSHAPEBOX.addItem("Decagon")
+        self.TEAMICONSHAPEBOX.setCurrentIndex(-1)
+        self.TEAMICONSHAPEBOX.blockSignals(False)
+        self.TEAMICONSHAPEBOX.activated[str].connect(self.TEAMSHAPESELECT)
         self.TEAMICONSHAPEBOX.move(105, 85)
 
         # ##############################EDITOR SETTINGS###################### #
@@ -548,9 +512,12 @@ class MAINWindow(QMainWindow):
         self.EDITORICONSHAPELABEL.move(12, 190)
 
         self.EDITORICONSHAPEBOX = QtWidgets.QComboBox(self.groupBox2)
-        self.EDITORICONSHAPEBOX.activated.connect(self.EDITORSHAPESELECT)
-        self.EDITORICONSHAPEBOX.blockSignals(False)
+        self.EDITORICONSHAPEBOX.setEnabled(True)
+
+        self.EDITORICONSHAPEBOX.blockSignals(True)
+        
         self.EDITORICONSHAPEBOX.resize(135, 20)
+        self.EDITORICONSHAPEBOX.clear()
         self.EDITORICONSHAPEBOX.addItem("Circle")
         self.EDITORICONSHAPEBOX.addItem("Triangle")
         self.EDITORICONSHAPEBOX.addItem("Square")
@@ -561,6 +528,10 @@ class MAINWindow(QMainWindow):
         self.EDITORICONSHAPEBOX.addItem("Nonagon")
         self.EDITORICONSHAPEBOX.addItem("Decagon")
         self.EDITORICONSHAPEBOX.move(105, 190)
+        self.EDITORICONSHAPEBOX.blockSignals(False)
+        self.EDITORICONSHAPEBOX.activated[str].connect(self.EDITORSHAPESELECT)
+        self.EDITORICONSHAPEBOX.setCurrentIndex(-1)
+        
         self.CIRCLE = resource_path("//circle.png")
         self.SQUARE = resource_path("//square.png")
         self.TRIANGLE = resource_path("//triangle.png")
@@ -571,60 +542,9 @@ class MAINWindow(QMainWindow):
         self.NONAGON = resource_path("//nonagon.png")
         self.DECAGON = resource_path("//decagon.png")
 
-##        menubar = self.menuBar()
-##        menubar.setNativeMenuBar(False)
-##
-##        exitAct = QAction(QIcon("exit.png"), " &Quit", self)
-##        exitAct.setShortcut("Ctrl+Q")
-##        exitAct.setStatusTip("Exit GEM")
-##        exitAct.triggered.connect(self.closeEvent)
-##        FILE = menubar.addMenu("&File")
-##        GITPULL = FILE.addMenu("Git Pull")
-##        GITPUSH = QAction(" &Git Push", self)
-##        GITPUSH.setStatusTip("Export .Mapcss to Github")
-##        GITPUSH.triggered.connect(self.CONFIRMPUSH)
-##        GITPUSH = FILE.addAction(GITPUSH)
-##        FILE.addAction(exitAct)
-##        git = Github("AUTH TOKEN")
-##        try:
-##            org = git.get_user("Kaart-labs")
-##            self.repo = org.get_repo("GEM")
-##            self.contents = self.repo.get_contents("")
-##            self.pulllist = {}
-##            self.pullcount = 0
-##            self.pullcountlist = []
-##            for i in self.contents:
-##                i = str(i)
-##                i = i.split('"')
-##                i = i[1]
-##
-##                if "mapcss" in i:
-##                    i = i.split(".")
-##                    i = i[0]
-##                    self.pullcount += 1
-##                    self.pullcountlist.append(self.pullcount)
-##                    self.pulllist[self.pullcount] = i
-##            self.PULLS = []
-##            for j in range(self.pullcount):
-##                TEXT = self.pulllist[j + 1]
-##                ACT = str("ACT%s" % (j))
-##                ACT = QAction("&Pull %s Paintstyle from Github" % (TEXT),self)
-##                ACT.setStatusTip("Import .Mapcss from Github")
-##                GITPULL.addAction(ACT)
-##                self.PULLS.append(ACT)
-##
-##            for j in self.PULLS:
-##                j.triggered.connect(self.GITPULL_clicked)
-##
-##        except github.BadCredentialsException as error:
-##            logger.exception(error)
-
-        # ################################################################### #
         self.retranslateUi(MAINWindow)
 
-
-
-        # ################################################################### #
+        # ####################### RETRANSLATE UI ########################## #
 
     def retranslateUi(self, MAINWindow):
 
@@ -646,7 +566,7 @@ class MAINWindow(QMainWindow):
         self.TABLE.resizeRowsToContents()
         self.TABLE.resizeColumnsToContents()
 
-    #############################################
+    # ######################## RESORUCE PATH TO IMAGE FILES IN COMPILED APP #################### #
     def resource_path(relative_path):
         try:
             # PyInstaller creates a temp folder and stores path in _MEIPASS
@@ -656,47 +576,21 @@ class MAINWindow(QMainWindow):
             base_path = os.path.abspath(".")
 
         return os.path.join(base_path, relative_path)
-    # ########################   GEM: EDITOR FUNCTIONS   ###################### #
+    # ###### CLOSE EVENT ###### #
     def closeEvent(self, event):
         self.setParent(None)
         self.deleteLater()
         self.close()
 
-    #############
-
-##    def CONFIRMPUSH(self):
-##        self.passdialog = CONFIRMPOPUP()
-##        self.passdialog.show()
-##
-##    def GITPULL_clicked(self):
-##        SENDER = self.sender()
-##        TEXT = SENDER.text()
-##        TEXT = TEXT.replace(" &Pull ", "")
-##        TEXT = TEXT.replace(" Paintstyle from Github", "")
-##        git = Github("AUTH TOKEN")
-##        org = git.get_user("Kaart-labs")
-##        self.repo = org.get_repo("GEM")
-##        self.contents = self.repo.get_contents("%s.mapcss" % (TEXT))
-##        self.c = self.contents.decoded_content
-##        self.IMPULLGO(self.c)
-##
-##    def GITPUSH_GO(self):
-##        self.USERENTRYBLOCK = ""
-##        self.MASTERENTERYTEXT = ""
-##        self.OUTUSERS = 0
-##        self.EXPORT_clicked(True)
-##        NAME = "QAQC_%s.mapcss" % (self.TEAMNAME.text())
-##        try:
-##            self.contents = self.repo.get_contents(NAME)
-##            self.c = self.contents.decoded_content
-##            self.repo.update_file(
-##                self.contents.path, "GEM", self.OUTPUSHTEXT, self.contents.sha
-##            )
-##        except Exception as error:
-##            logger.exception(error)
-##            self.repo.create_file(NAME, "GEM", self.OUTPUSHTEXT)
-
-    ##########
+    # ########################   GEM: EDITOR FUNCTIONS   ###################### #
+    '''
+    RESTACK clears the editor table, creates a temporary dict called restack users, then itterates through
+    the tempusers array. Tempusers still contains empty slots where the user may have removed editors from the
+    table, so restack checks each item in tempusers to make sure it isn't an empty value,
+    then repopulates all values from every valid editor instance into back into the editor table,
+    then each valid editor instance is added to the restackusers dict. At the end of the itteration,
+    tempusers is cleared and replaced with the values from restackusers (which now contains no empty values)
+    '''
     def RESTACK_clicked(self):
         for i in range(50):
             self.GEMarray[i][0] = ""
@@ -717,6 +611,17 @@ class MAINWindow(QMainWindow):
         self.TEMPUSERS = {}
         self.TEMPUSERS = self.RESTACKUSERS
 
+
+    '''
+    MOVEUP defines the selected cell and corresponding editor instance as "MOVEFROM"
+    and the cell above it as "MOVETO".
+    It then checks to see if the "MOVETO" cell is in the tempusers dict,
+    in order to determine if it is an empty cell in the table or not.
+    If the MOVETO cell is empty, all "MOVEFROM" editor info is moved to the MOVETO line in the table
+    and that editors instance is moved to the corresopnding index of the tempusers array.
+    If the MOVETO cell is not empty, then the table and array positions of the two editor
+    instances in question are swapped with each other.
+    '''
     def MOVEUP_clicked(self):
         if self.NRSELECT != "":
             MOVETO = int(int(self.NRSELECT) - 1)
@@ -762,6 +667,10 @@ class MAINWindow(QMainWindow):
                             self.TEMPUSERS[str(MOVEFROM)] = self.MOVEFROMUSER
                             self.SETNR()
 
+
+    '''
+    MOVEDOWN works the same way as MOVEUP but in reverse.
+    '''
     def MOVEDOWN_clicked(self):
         if self.NRSELECT != "":
             MOVETO = int(int(self.NRSELECT) + 1)
@@ -796,7 +705,17 @@ class MAINWindow(QMainWindow):
                     self.TEMPUSERS[str(MOVETO)] = self.MOVETOUSER
                     self.TEMPUSERS[str(MOVEFROM)] = self.MOVEFROMUSER
                     self.SETNR()
-
+    '''
+    EDITORLINECOLOR opens the hex color picker dialog. "color.name" to my knowledge the only way to
+    get the hex value of the chosen color string format, however it is returned
+    as an array of comma seprated characters, hence "colr += str(i)"to reconstruct it into a usable string.
+    The pyqt5 can accept the natve color picker output "color" as a Qcolor for the editor table,
+    however a string version of the hex color value is also needed for the final .Mapcss output.
+    If no new color is chosen and the picker closed, the picker returns the value of the color black, so the line
+    "if colr != "#000000":" checks to see if a new color was actually chosen bbefore changing the color values
+    in the table and editor array.
+    All of the color picker functions work in this way.
+    '''
     def EDITORLINECOLOR_clicked(self):
         color = QtWidgets.QColorDialog.getColor()
         clr = color.name()
@@ -867,17 +786,31 @@ class MAINWindow(QMainWindow):
             self.TEAMNODECOLORUI = color
             self.pix.fill(QColor(self.TEAMNODECOLORUI))
             self.TEAMNODECOLORICON.setPixmap(self.pix)
-
+    '''
+    ADD creates a new editor instance from the values entered in the editor info field,
+    then adds that instance to the editor array and updates the editor table with the new information.
+    ADD and UPDATE share the same button, the line (if self.NRSELECT == "":)
+    determines if an exisitng editor has been selected. If an existing editor is selected,
+    it will use the UPDATE (lower) half of the function, and no editor on the table is selected,
+    it will use the ADD (upper) half of the function.
+    '''
     def ADD_clicked(self):
+# ###### ADD ###### #
         if self.NRSELECT == "":
+            'retrieve editor name and uid from text fields'
             ENAME = self.EDITORNAME.text()
             ENAME = ENAME.strip()
             EUID = self.EDITORID.text()
             EUID = EUID.strip()
+            '''use .strip to make sure they are valid string values,
+               and if they pass, create a editor instance by that editor name. '''
             if ENAME and EUID.strip():
                 ECLASS = EDITORINFO()
                 ECLASS.NAME = ENAME
                 ECLASS.UID = EUID
+                '''use the same method to check if line, node color & shape have been selected for the
+                new user. If no new colors or shapes are chosen, default values for new editors are entered
+                '''
                 if self.TEMPLINECOLORTEXT.strip():
                     ECLASS.LINECOLORTEXT = self.TEMPLINECOLORTEXT
                     ECLASS.LINECOLORUI = self.TEMPLINECOLORUI
@@ -899,28 +832,52 @@ class MAINWindow(QMainWindow):
                     ECLASS.ICONSHAPE = "Circle"
                 ECLASS.LINEWIDTH = str(self.EDITORLINEWIDTHSPIN.value())
                 ECLASS.ICONSIZE = str(self.EDITORNODESIZESPIN.value())
+
+                '''
+                check that the current usercount matches the tempuser array count,
+                then add one to the count so that the new info will be placed
+                in the bottom most open line of the editor table. if there are no keys in the tempuser array,
+                we know the table is empty, so we can add the new info to the first line of the editor table
+                and the first position in the tempusers array (0).
+                '''
                 if str(self.usercount) in self.TEMPUSERS.keys():
                     if self.TEMPUSERS[str(self.usercount)] != 0:
                         self.usercount += 1
+         
+                'Add the new info to the appropriate position in the editor table and tempuser array'
 
                 self.TEMPUSERS[str(self.usercount)] = ECLASS
                 self.GEMarray[self.usercount][0] = str(ECLASS.NAME)
                 self.GEMarray[self.usercount][1] = str(ECLASS.UID)
                 self.GEMarray[self.usercount][2] = QColor(ECLASS.LINECOLORUI)
+                '''
+                 call the EDITORNODECOLORDISPLAY function,
+                 which repaints the corresponding QIcons in the editor table
+                 with the newly selected color value.
+                '''
                 self.EDITORNODECOLORDISPLAY((self.usercount))
-
+                'Add the new editor instance to the addusers array for later export'
                 self.ADDUSERS.append(ECLASS)
+                'clear the entry fields in the editor section after adding them to the table'
                 self.EDITORNAME.setText("")
                 self.EDITORID.setText("")
                 self.EDITORNAME.repaint()
                 self.EDITORID.repaint()
+                'add one to the usercount so the next entry will go into the next open line in the table'
                 self.usercount += 1
+                ' clear the colors dosplayed in the editor info entry field'
                 self.pix.fill(QColor(self.WHITE))
                 self.EDITORNODECOLORICON.setPixmap(self.pix)
                 self.EDITORLINECOLORICON.setPixmap(self.pix)
                 self.EDITORNODECOLORICON.repaint()
                 self.EDITORLINECOLORICON.repaint()
-
+# ###### UPDATE ###### #
+        '''
+        if NRSELECT is not a null value, then we know it is an existing editor being updated.
+        The only difference from ADD is that we simply update the chosen line of the editor table
+        as well as the tempuser and ADDUSER arrays with the new selected values. When the update is complete,
+        the button text is reset to "ADD" which is the default.
+        '''
         if self.NRSELECT != "":
             ENAME = self.EDITORNAME.text()
             ENAME = ENAME.strip()
@@ -971,6 +928,9 @@ class MAINWindow(QMainWindow):
                 self.NRSELECT = ""
 
     def GETTEAMSHAPETEXT(self):
+        '''
+        on import, The GETTEAMSHAPETEST sets the team node shape (unuploaded) QComboBox to the corresponding value
+        '''
         if self.TEAMICONSHAPE == "Circle":
             self.TEAMICONSHAPEBOX.setCurrentIndex(0)
             self.TEAMICONSHAPEBOX.repaint()
@@ -1000,6 +960,10 @@ class MAINWindow(QMainWindow):
             self.TEAMICONSHAPEBOX.repaint()
 
     def GETEDITORSHAPETEXT(self):
+        '''
+        on EDIT, The GETEDITORSHAPETEXT finds the node highlight shape for the selected editor in the table
+        and sets the QComboBox in the editor info field to the corresponding value
+        '''       
         if self.TEMPUSERS[str(self.NRSELECT)].ICONSHAPE == "Circle":
             self.EDITORICONSHAPEBOX.setCurrentIndex(0)
             self.EDITORICONSHAPEBOX.repaint()
@@ -1028,21 +992,34 @@ class MAINWindow(QMainWindow):
             self.EDITORICONSHAPEBOX.setCurrentIndex(8)
             self.EDITORICONSHAPEBOX.repaint()
 
-    # ############################   EXPORT BLOCK   ############################ #
 
+# ###### SELECTORS ###### #
+    '''
+    These functions are self explanitory. They connect to the signal from the corresponding combo boxes and
+    set new node highlight shapes for the team or editor based on the new selection.
+    '''
     def TEAMSHAPESELECT(self):
         self.TEAMICONSHAPE = self.TEAMICONSHAPEBOX.currentText()
 
     def EDITORSHAPESELECT(self):
         self.TEMPEDITORICONSHAPE = self.EDITORICONSHAPEBOX.currentText()
+    # ############################   EXPORT BLOCK   ############################ #
 
+    
     def EXPORT_clicked(self):
-        #self.RESTACK_clicked()
+        'retrieve a few more values we need from the appropriate entry fields'
+        
         self.ICONSIZE = str(self.TEAMICONSIZESPIN.value())
         self.LINEWIDTH = str(self.TEAMLINEWIDTHSPIN.value())
         self.TEAMNAMETEXT = str(self.TEAMNAME.text())
-        self.FILENAME = str("Kaart_QC_Mexico.mapcss")
+        
+        'set the file name for the new export and meta block title using the corresponding team name'
+        
+        self.FILENAME = str("Kaart_QC_%s.mapcss"%(self.TEAMNAMETEXT))
         self.TITLE = "QC Styles For %s Team"%(self.TEAMNAMETEXT)
+
+        'Use regexs to find the appropriate placeholder variables int he templateCSS blocks'
+        
         FINDUSERNAME = re.compile('(?:|)USERNAME(?:|\W)')
         FINDUSERID = re.compile('(?:|)USERID(?:|\W)')
         FINDUSERNODESIZE = re.compile('(?:|)USERNODESIZE(?:|\W)')
@@ -1058,8 +1035,17 @@ class MAINWindow(QMainWindow):
         FINDNOTUPWAYCOLOR = re.compile('(?:|)NOTUPWAYCOLOR(?:|\W)')
         FINDNOTUPWAYWIDTH = re.compile('(?:|)NOTUPWAYWIDTH(?:|\W)')
         FINDTITLE = re.compile('(?:|)TITLE(?:|\W)')
+
+        '''
+        itterate through the ADDUSERS array,
+        using the previously compiled regexes to sub out the placeholder variables in the template css blocks
+        with each editor's indivisual settings 
+        '''
         for i in self.ADDUSERS:
-            i.USERBLOCK = re.sub(FINDUSERNAME, i.NAME, tempCSS.USERBLOCK)
+            if self.TOGGLECHECK.isChecked():
+                i.USERBLOCK = re.sub(FINDUSERNAME, i.NAME, tempCSS.TOGGLEDUSERBLOCK)
+            else:
+                i.USERBLOCK = re.sub(FINDUSERNAME, i.NAME, tempCSS.USERBLOCK)
             i.USERBLOCK= re.sub(FINDUSERID, i.UID, i.USERBLOCK)
             i.USERBLOCK= re.sub(FINDUSERNAME, i.NAME, i.USERBLOCK)
             i.USERBLOCK = re.sub(FINDUSERNODESIZE, i.ICONSIZE, i.USERBLOCK)
@@ -1068,31 +1054,51 @@ class MAINWindow(QMainWindow):
             i.USERBLOCK= re.sub(FINDUSERNAME, i.NAME, i.USERBLOCK)
             i.USERBLOCK = re.sub(FINDUSERWAYWIDTH, i.LINEWIDTH, i.USERBLOCK )
             i.USERBLOCK  = re.sub(FINDUSERWAYCOLOR, i.LINECOLORTEXT, i.USERBLOCK )
+
+            ' Add the newest fisihed user block to the finished userblock'
+            
             self.FINSHEDUSERBLOCK  += str(i.USERBLOCK)
-            print(i.USERBLOCK)
-  
+            
+        'Do the same for the static CSS blocks only once to enter all Team (unuploaded) Highlight settings'
+        
         STATICBLOCK = re.sub(FINDNOTUPNODESIZE, self.ICONSIZE, tempCSS.STATICBLOCK)
         STATICBLOCK = re.sub(FINDNOTUPNODECOLOR,self.TEAMNODECOLORTEXT, STATICBLOCK)
         STATICBLOCK = re.sub(FINDNOTUPNODESHAPE, self.TEAMICONSHAPE, STATICBLOCK)
         STATICBLOCK = re.sub(FINDNOTUPWAYCOLOR, self.TEAMLINECOLORTEXT, STATICBLOCK)
         STATICBLOCK = re.sub(FINDNOTUPWAYWIDTH, self.LINEWIDTH, STATICBLOCK)
-        STATICBLOCK = re.sub(FINDTITLE, self.TITLE, STATICBLOCK)       
+        STATICBLOCK = re.sub(FINDTITLE, self.TITLE, STATICBLOCK)
+        
+        'glue the fisihed userblock to the static block on the end'
+        
         self.BLOCK = self.FINSHEDUSERBLOCK + STATICBLOCK
         
+        'define the export file location & name'
+        
         file = self.output_file_dir+("/")+(self.FILENAME)
-        print(file)
+        
+        'write out the finished MapCSS file to the chosen directory'
+        
         with open(file, 'w+')as CSS:
             CSS.writelines (self.BLOCK)
+
+            
 
     ##############################################################################
 
     def CLEAR_clicked(self):
+        '''Clear resets all of the values in the editor info fields,
+           i.e. if the user wants to clear the text fields and reset their current color and shape
+           selections to default, or if the user selected an editor to modify,
+           but then decided not to make any changes'''
         try:
             self.NRSELECT = ""
             self.EDITORNAME.setText("")
             self.EDITORID.setText("")
             self.EDITORID.repaint()
             self.EDITORNAME.repaint()
+            '''Repaint the ADD button with the appropriate text,
+            since there is now no info in the editor info field,
+            we can treat it as if adding a new editor'''
             self.ADD.setText("ADD")
             self.ADD.repaint()
             self.SELTEXT = ""
@@ -1107,6 +1113,10 @@ class MAINWindow(QMainWindow):
             logger.exception(e)
 
     def REMOVE_clicked(self):
+        '''
+        Remove_clicked opens a QDialog box asking the user if they are sure
+        that they wish to remove the currently selected editor from the Table
+        '''
         self.dialog = QMessageBox.question(
             self,
             "PyQt5 message",
@@ -1118,6 +1128,10 @@ class MAINWindow(QMainWindow):
             one.REMOVE_GO()
 
     def REMOVEALL_clicked(self):
+        '''
+        Remove_clicked opens a QDialog box asking the user if they are sure
+        that they wish to remove all editors from the Table
+        '''       
         self.GOREMOVEALL = True
         self.dialog = QMessageBox.question(
             self,
@@ -1130,6 +1144,10 @@ class MAINWindow(QMainWindow):
             one.REMOVEALL_GO()
 
     def REMOVEALL_GO(self):
+        '''
+        REMOVEALL_GO clears all editors from the table as well as
+        the ADDUSERS and TEMPUSERS array 
+        ''' 
         try:
             self.usercount = 0
             self.ADDUSERS = []
@@ -1153,6 +1171,10 @@ class MAINWindow(QMainWindow):
             logger.exception(e)
 
     def REMOVE_GO(self):
+        '''
+        REMOVEALL_GO clears the currently selected editor from the table as well as
+        the ADDUSERS and TEMPUSERS array 
+        ''' 
         for ix in self.TABLE.selectedIndexes():
             dat = ix.data()
             row = ix.row()
@@ -1177,6 +1199,10 @@ class MAINWindow(QMainWindow):
             self.usercount -= 1
 
     def SETNR(self):
+        '''
+        SETNR collects the row index for the currently selected editor in the table
+        and assigns it to the NRSELECT variable
+        '''
         for ix in self.TABLE.selectedIndexes():
             dat = ix.data()
             row = ix.row()
@@ -1186,6 +1212,11 @@ class MAINWindow(QMainWindow):
                 self.NRSELECT = ""
 
     def EDIT_clicked(self):
+        '''
+        EDIT_clicked grabs all of the info from the class instance of the selected editor in the table and populates the
+        Editor Settings fields in the GUI with that information. It also changes the text of the "ADD" button to "UPDATE" while the
+        changes are being made
+        '''
         for ix in self.TABLE.selectedIndexes():
             dat = ix.data()
             row = ix.row()
@@ -1413,7 +1444,6 @@ class MAINWindow(QMainWindow):
 
         parsed_users = self.parse_line_colors_from_mapcss(text_no_newline, parsed_users)
         parsed_users = self.parse_node_colors_from_mapcss(text_no_newline, parsed_users)
-
         return parsed_users
 
     def construct_table(self, parsed_users: dict):
@@ -1451,17 +1481,21 @@ class MAINWindow(QMainWindow):
             self.TABLE.resizeColumnsToContents()
             self.GETTEAMSHAPETEXT()
 
-    def IMPULLGO(self, PULL):
-        parsed_users = self.parse_mapcss_text(str(PULL))
-        self.construct_table(parsed_users)
 
     def IMPORTGO(self):
+        """
+        IMPORTGO opens a QfileDialog to allow the user to select a local mapcss file to import.
+        The function also parses the fisrst block of the incoming mapcss file to determine if the Meta block
+        is at the top of the file, which distinguishes it from the new-style mapcss files we have built
+        specifically for GEM. These two types of files need to be parsed differently, so the OLDSTYLE bool is
+        accordingly which will allow the parse_users function to choose use the correct method of parsing the file.
+        IMPORTGO then calls IMPORT_clicked once a file is chosen.
+        """        
         try:
             infile = QtWidgets.QFileDialog.getOpenFileName(
                 self, self.filters, self.output_file_dir, self.select_filters
             )
             infile = str(infile[0])
-            global INKML
             with open(infile, "r+") as reader:
                 infile_text = reader.read()
                 TYPETEST = infile_text.split("{")
@@ -1470,7 +1504,6 @@ class MAINWindow(QMainWindow):
                 else:
                     OLDSTYLE = False
                 TYPETEST = ""
-                print (OLDSTYLE)
         except Exception as e:
             logger.exception(e)
         try:
@@ -1479,12 +1512,26 @@ class MAINWindow(QMainWindow):
             logger.exception(e)
 
     def IMPORT_clicked(self, PULL):
+        '''
+        IMPORT_clicked calls the parsed_users function which rips the editor data from the selected Mapcss file
+        (Using the OLD or NEW style according to the bool we set in IMPORTGO) and then calls
+        construct_table to populate the table with the parsed editor information
+        '''   
         parsed_users = self.parse_mapcss_text(str(PULL))
         self.construct_table(parsed_users)
 
     def EDITORNODECOLORDISPLAY(self, count):
+        '''
+        EDITORNODECOLORDISPLAY applies a selected node color highlight to the selected editor's node highlight shape
+        and reflects that change in the editor table
+        '''
 
         if self.TEMPUSERS[str(count)].ICONSHAPE == "Circle":
+            '''
+            The function first determines the shape of the selected editor's node highlight,
+            then creates a new instance of that same pixmap, creates a color mask from the selected shape and color,
+            then applies the mask to the new icon, re-assigns the new node icon to the selected editor and reflects that change in the editor table
+            '''
             pixmap = QtGui.QPixmap(self.CIRCLE)
             pixmap = pixmap.scaled(30, 30)
             mask = pixmap.createMaskFromColor(QColor("black"), Qt.MaskOutColor)
