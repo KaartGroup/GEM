@@ -60,7 +60,7 @@ function updateAll(event) {
 export function Banner() {
     return (
     <div className="body-style">
-    <form actions=""  id="iform" className="form">
+    <form method="post" id="iform" className="form">
     <div className="left-side">
         <p>Team Settings: </p>
     <label for="team">Team Name:</label>

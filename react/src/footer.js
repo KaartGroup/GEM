@@ -13,17 +13,17 @@ export function Footer() {
                             <ul>
                                 <li>
                                     <a href="https://www.facebook.com/kaartgroup/">
-                                        <img src="http://kaartgroup.com/wp-content/uploads/2018/12/KG-Facebook-icon.svg" alt="KG-Facebook-icon" height="18" />
+                                        <img src="/static/react/res/KG-Facebook-icon.svg" alt="KG-Facebook-icon" height="18" />
                                     </a>
                                 </li>
                                 <li>
                                     <a href="https://github.com/KaartGroup">
-                                        <img src="http://kaartgroup.com/wp-content/uploads/2018/12/KG-GitHub-Icon.svg" alt="KG-GitHub-Icon" height="18" />
+                                        <img src="/static/react/res/KG-GitHub-Icon.svg" alt="KG-GitHub-Icon" height="18" />
                                     </a>
                                 </li>
                                 <li>
                                     <a href="https://wiki.openstreetmap.org/wiki/Kaart">
-                                        <img src="http://kaartgroup.com/wp-content/uploads/2018/12/KG-WIKI-icon.svg" alt="KG-WIKI-icon" height="18" />
+                                        <img src="/static/react/res/KG-WIKI-icon.svg" alt="KG-WIKI-icon" height="18" />
                                     </a>
                                 </li>
                             </ul>

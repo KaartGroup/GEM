@@ -5,7 +5,7 @@ import "tabulator-tables/dist/css/tabulator.min.css"; //import Tabulator stylesh
 import $ from'jquery';
 import jQuery from 'jquery';
 
-const tdat = [
+var tdat = [
 {
   elinecolor: "#ff0000", elinewidth: "1", ename: "Farris", enodecolor: "#ff0000", enodeshape: "circle", enodesize: "10", team: "Engineering", 
   tlinecolor: "#0000ff", tlinewidth: "1", tnodecolor: "#ff0000", tnodeshape: "circle", tnodesize: "10", uid: "98989898", username:"Farieberrie"
@@ -52,7 +52,7 @@ $(document).ready(function(){
 
 export class Table extends Component {
   state = {
-    data: [],
+    data: tdat,
     selectedName: ""
 
     };
@@ -146,7 +146,7 @@ export class Table extends Component {
     return (
       <div>
         <ReactTabulator
-          data={tdat}
+          data={data}
           columns={columns}
           tooltips={true}
           layout={"fitData"}
