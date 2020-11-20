@@ -17,8 +17,8 @@ window.addEventListener("load", startup, false);
 function startup(){
     tlinecolor = document.querySelector("#tlinecolor");
     tlinecolor.value = tlcolor;
-    //tlinecolor.addEventListener("input", updateFirst,false);
-    //tlinecolor.addEventListener("change", updateAll, false);
+    tlinecolor.addEventListener("input", updateFirst,false);
+    tlinecolor.addEventListener("change", updateAll, false);
     tlinecolor.select(tlcolor);
     
     tnodecolor = document.querySelector("#tnodecolor");

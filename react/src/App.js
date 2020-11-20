@@ -1,10 +1,9 @@
 import React from 'react';
-import { Header } from '../src/header';
-import { Footer } from './footer';
+import { Header } from './components/Header';
+import { Footer } from './components/Footer';
 import {Banner} from './banner';
 import './App.css';
 import Table from './table';
-//import Table from './testtable'
 
 function App() {
   return (
