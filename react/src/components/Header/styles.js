@@ -23,15 +23,15 @@ export const Toolbar = styled.div`
   box-sizing: inherit;
   position: relative;
   align-items: center;
-  padding-left: 24px;
-  padding-right: 24px;
+  padding-left: 152px;
+  padding-right: 152px;
   min-height: 64px;
   width: 100%;
   height: 100%;
   display: flex;
 `;
 export const Link = styled.a`
-align-items: center;
+  align-items: center;
   list-style: none;
   list-style-type: disc;
   line-height: 1em;
@@ -49,21 +49,17 @@ align-items: center;
   text-transform: uppercase;
   font-size: 16px;
   transition: color 300ms ease 0ms;
-  padding-bottom: 8px;
-  padding-right: 20px;
+  padding-left: 11px;
+  padding-right: 11px;
   &:hover {
     color: #f4753c;
   }
 `;
-export const ImageIcon = styled.div`
-    position: "relative",
-    height: 100,
-`;
 
 export const KaartLogo = styled.img`
+  max-width: 100%;
   height: 100px;
   position: relative;
-  transition: transform 0.2s;
   &:hover {
     transform: scale(1.2);
   }
@@ -79,21 +75,76 @@ export const Icon = styled.span`
 `;
 
 export const Typography = styled.div`
+  width: 36.7%;
   flex-grow: 1;
-  font-size: 1.25rem;
-  font-weight: 500;
   line-height: 1.6;
-  letter-spacing: 0.0075em;
 `;
 
-export const MenuItem = styled.div`
-  background: transparent!important;
+export const KaartMenuItem = styled.div`
+  background: transparent !important;
   font-weight: 400;
-  text-align: left;
   font-family: "Hind Guntur", sans-serif;
   font-size: 14px;
   line-height: 1.4285em;
   color: rgba(0, 0, 0, 0.87);
   box-sizing: inherit;
   display: flex;
+  &:hover {
+    color: #f4753c !important;
+  }
 `;
+
+export const ViewerMenuItem = styled.div`
+  background: transparent !important;
+  font-weight: 400;
+  font-size: 14px;
+  box-sizing: inherit;
+  display: flex;
+  &:hover {
+    color: #f4753c;
+  }
+`;
+
+export const Button = styled.button`
+  overflow: visible;
+  border: 0;
+  margin: 0;
+  display: inline-flex;
+  outline: 0;
+  position: relative;
+  align-items: center;
+  user-select: none;
+  vertical-align: middle;
+  justify-content: center;
+  text-decoration: none;
+  background-color: transparent;
+  -webkit-tap-highlight-color: transparent;
+  min-width: 64px;
+  box-sizing: border-box;
+  font-weight: 500;
+  line-height: 1.75;
+  border-radius: 4px;
+  letter-spacing: 0.02857em;
+  text-transform: uppercase;
+  color: inherit;
+  border-color: currentColor;
+  font-size: 0.9375rem;
+  cursor: pointer;
+  padding: 8px 8px;
+  white-space: nowrap;
+`;
+
+export const GEMMenuItem = styled.div`
+  background: transparent !important;
+  font-weight: 400;
+  font-family: "Hind Guntur", sans-serif;
+  font-size: 14px;
+  line-height: 1.4285em;
+  color: rgba(0, 0, 0, 0.87);
+  box-sizing: inherit;
+  display: flex;
+  &:hover {
+    color: #f4753c !important;
+  }
+`;
+
