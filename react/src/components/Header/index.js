@@ -15,7 +15,7 @@ import {
   Button,
 } from "./styles";
 import "./styles.css";
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   button: {
     padding: "8px 8px",
   },
@@ -28,7 +28,7 @@ const useStyles = makeStyles(() => ({
 }));
 export const Header = () => {
 
-  // const classes = useStyles();
+  const classes = useStyles();
   const kaartLogo = require("../../res/20-KAART-Color.svg");
 
   return (
@@ -81,7 +81,11 @@ export const Header = () => {
         </div>
         <div class="spacer"></div>
         <GEMMenuItem>
-            <Link href="https://gem.kaart.com/">GEM</Link>
+          <NavLink to="/" className={classes.selectedNavLink}>
+            <Button color="inherit" size="large">
+              G E M
+            </Button>
+            </NavLink>
           </GEMMenuItem>
       </Toolbar>
     </AppBar>
