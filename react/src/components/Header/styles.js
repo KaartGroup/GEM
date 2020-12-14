@@ -23,7 +23,7 @@ export const Toolbar = styled.div`
   box-sizing: inherit;
   position: relative;
   align-items: center;
-  padding-left: 152px;
+  padding-left: 240px;
   padding-right: 152px;
   min-height: 64px;
   width: 100%;
