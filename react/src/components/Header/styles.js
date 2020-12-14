@@ -65,6 +65,15 @@ export const KaartLogo = styled.img`
   }
 `;
 
+export const KaartLogoSafari = styled.iframe`
+  border-style: none;
+  height: 100px;
+  position: relative;
+  &:hover {
+    transform: scale(1.2);
+  }
+`;
+
 export const Icon = styled.span`
   width: 1em;
   height: 1em;

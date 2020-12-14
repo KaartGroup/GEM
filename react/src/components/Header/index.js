@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { isSafari } from 'react-device-detect';
 import { makeStyles } from "@material-ui/core/styles";
 import {
   AppBar,
@@ -7,6 +8,7 @@ import {
   Typography,
   Icon,
   KaartLogo,
+  KaartLogoSafari,
   ViewerMenuItem,
   KaartMenuItem,
   Link,
@@ -27,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 export const Header = () => {
   const classes = useStyles();
   const kaartLogo = require("../../res/20-KAART-Color.svg");
-
+  console.log('using safari:',isSafari);
   return (
     <AppBar>
       <Toolbar>
@@ -35,11 +37,17 @@ export const Header = () => {
             <Typography>
             <Icon>
                 <NavLink to="/">
+                  { 
+                  isSafari ? 
+                    <KaartLogoSafari src={kaartLogo} />
+                  :
                   <KaartLogo
-                    src={kaartLogo}
-                    alt="Kaart Logo"
-                    href="https://kaart.com/"
-                  />
+                  src={kaartLogo}
+                  alt="Kaart Logo"
+                  href="https://kaart.com/"
+                />
+                  }
+                  
                 </NavLink>
             </Icon>
             </Typography>
