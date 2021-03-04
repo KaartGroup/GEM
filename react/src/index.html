@@ -2,12 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="/static/react/res/Kaart Final Logo_Circle.svg" >
+    <link rel="icon" href="/static/react/res/Kaart Final Logo_Circle.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <meta
-    name="description"
-    content="Web site created using create-react-app"
+      name="description"
+      content="Web site created using create-react-app"
     />
     <!--
       manifest.json provides metadata used when your web app is installed on a
@@ -18,24 +18,25 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
   </head>
   <body>
-    <div id="root"> </div>
-    <footer>
-    </footer>
+    <div id="root"></div>
+    <footer></footer>
   </body>
-
 
   <script>
     function getOrMakeStorage() {
-      if (localStorage.getItem('data') == null || localStorage.getItem('data') == "\"\"") {
-        localStorage.setItem('data', '[{}]');
+      if (
+        localStorage.getItem("data") == null ||
+        localStorage.getItem("data") == '""'
+      ) {
+        localStorage.setItem("data", "[{}]");
       }
-    
-      return JSON.parse(localStorage.getItem('data'));
+
+      return JSON.parse(localStorage.getItem("data"));
     }
 
     function setStorage() {
       var jsonData = getOrMakeStorage();
-      var flaskdata =  {};
+      var flaskdata = {};
       if (data) {
         for (key in flaskData) {
           jsonData[key] = flaskData[key];
@@ -44,6 +45,5 @@
     }
 
     console.log(getOrMakeStorage());
-
   </script>
 </html>

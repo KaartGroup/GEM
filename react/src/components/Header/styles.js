@@ -147,4 +147,3 @@ export const GEMMenuItem = styled.div`
     color: #f4753c !important;
   }
 `;
-

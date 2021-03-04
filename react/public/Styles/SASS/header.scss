@@ -3,29 +3,27 @@ $ContactButton: rgb(5, 231, 5);
 $TitleColor: Black;
 $PrimaryColor: grey;
 $SecondaryColor: rgb(255, 94, 0);
-$Transparentwhite: rgba(white, .8);
+$Transparentwhite: rgba(white, 0.8);
 
-.header{
-    height: 35vh;
-    display: flex;
-    justify-content: center;
-    background-image: linear-gradient(
-        rgba($PrimaryColor, .8),
-        rgba($SecondaryColor, .8),
-        url(../res/Kaart\ Final\ Logo.png),
-    );
-    background-size: auto;
-    border-bottom: 1px solid;
-    button {
-        background: $PrimaryBtn;
-        align-content: right;
-    }
+.header {
+  height: 35vh;
+  display: flex;
+  justify-content: center;
+  background-image: linear-gradient(
+    rgba($PrimaryColor, 0.8),
+    rgba($SecondaryColor, 0.8),
+    url(../res/Kaart\ Final\ Logo.png)
+  );
+  background-size: auto;
+  border-bottom: 1px solid;
+  button {
+    background: $PrimaryBtn;
+    align-content: right;
+  }
 }
 
- .pagetitle{
-    color: $TitleColor;
-    font-style: bold;
-    font-size: 20pt;
-    
+.pagetitle {
+  color: $TitleColor;
+  font-style: bold;
+  font-size: 20pt;
 }
-

@@ -4,8 +4,8 @@
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   background-color: white;
   background-size: cover;
   border-bottom: 1px solid;
@@ -14,7 +14,7 @@
 .header button {
   background: #ff5e00;
   -ms-flex-line-pack: right;
-      align-content: right;
+  align-content: right;
 }
 
 .pagetitle {
