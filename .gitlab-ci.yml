@@ -1,0 +1,158 @@
+# Default image
+#############################
+# Various additional Checks #
+#############################
+include:
+  - template: Code-Quality.gitlab-ci.yml
+  - template: SAST.gitlab-ci.yml
+  - template: Dependency-Scanning.gitlab-ci.yml
+  - template: Container-Scanning.gitlab-ci.yml
+  - template: DAST.gitlab-ci.yml
+  - template: License-Management.gitlab-ci.yml
+
+variables:
+  PIP_CACHE_DIR: "${CI_PROJECT_DIR}/.cache/pip"
+  NODE_PATH: "${NODE_PATH}:${CI_PROJECT_DIR}/node_modules"
+
+cache:
+  paths:
+    - .cache/pip
+    - .cache/npm
+    - venv
+
+.backend_before_script: &backend_before_script
+  image: python:latest
+  before_script:
+    - python --version
+    - python -m venv venv
+    - source venv/bin/activate
+    - pip install -r requirements.txt
+
+.frontend_before_script: &frontend_before_script
+  image: registry.gitlab.com/gokaart/docker-images/node
+  before_script:
+    - cd react
+    - npm ci --prefer-offline --cache ${CI_PROJECT_DIR}/.cache/npm
+
+##########################
+# Build/Formatting stage #
+##########################
+formatting black:
+  stage: build
+  <<: *backend_before_script
+  script:
+    - pip install black
+    - black -l 79 $(git diff --name-only origin/master | grep -E '.*\.py') --check
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      changes:
+        - "**/*.py"
+  interruptible: true
+
+formatting flake8:
+  stage: build
+  <<: *backend_before_script
+  script:
+    - pip install flake8
+    - flake8 $(git diff --name-only origin/master | grep -E '.*\.py')
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      changes:
+        - "**/*.py"
+  interruptible: true
+
+formatting pylint:
+  stage: build
+  <<: *backend_before_script
+  script:
+    - pip install pylint-gitlab
+    - pylint --exit-zero --output-format=text $(git diff --name-only origin/master | grep -E '.*\.py')
+    - pylint --exit-zero --output-format=pylint_gitlab.GitlabCodeClimateReporter $(git diff --name-only origin/master | grep -E '.*\.py') > codeclimate.json
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      changes:
+        - "**/*.py"
+  artifacts:
+    paths:
+      - public
+    reports:
+      codequality: codeclimate.json
+  interruptible: true
+
+formatting prettier:
+  stage: build
+  <<: *frontend_before_script
+  script:
+    - npx prettier --check .
+  interruptible: true
+
+static analysis mypy:
+  stage: build
+  <<: *backend_before_script
+  script:
+    - pip install mypy
+    - python -m mypy $(git diff --name-only origin/master | grep -E '.*\.py')
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      changes:
+        - "**/*.py"
+  interruptible: true
+
+###################
+# Code Navigation #
+###################
+code navigation python:
+  stage: build
+  <<: *backend_before_script
+  script:
+    - CURRENT_DIR="$(pwd)"
+    - cd ..
+    - git clone https://github.com/sourcegraph/lsif-py.git || echo "ok"
+    - cd lsif-py
+    - git pull
+    - sed -i 's/jedi==0.16.0/jedi==0.17.2/g' requirements.txt
+    - pip3 --cache-dir ${PIP_CACHE_DIR} install -r requirements.txt
+    - cd "${CURRENT_DIR}"
+    - ../lsif-py/lsif-py "${CURRENT_DIR}"
+  artifacts:
+    reports:
+      lsif: data.lsif
+  allow_failure: true
+  interruptible: true
+
+code navigation javascript:
+  stage: build
+  <<: *frontend_before_script
+  script:
+    - npm install --prefer-offline -g @sourcegraph/lsif-tsc --cache $CI_PROJECT_DIR/.cache/npm
+    - lsif-tsc src/*.js --allowJs --checkJs
+  artifacts:
+    reports:
+      lsif: react/dump.lsif
+  allow_failure: true
+  interruptible: true
+
+##############
+# Test Stage #
+##############
+test frontend:
+  stage: test
+  <<: *frontend_before_script
+  script:
+    - npm install canvas --cache $CI_PROJECT_DIR/.cache/npm
+    - npm test --cache $CI_PROJECT_DIR/.cache/npm -- --coverage --coverageReporters=cobertura --coverageReporters=text --coverageReporters=lcov --coverageReporters=clover --coverageReporters=json
+    - sed -i 's=<source>.*/react/</source>=<source>./react/</source>=g' coverage/cobertura-coverage.xml
+    - sed -i 's/filename="/filename="react\//g' coverage/cobertura-coverage.xml
+  needs: ["formatting prettier"]
+  artifacts:
+    reports:
+      cobertura: react/coverage/cobertura-coverage.xml
+  interruptible: true
+
+test frontend builds:
+  stage: test
+  <<: *frontend_before_script
+  script:
+    - npm --cache "${npm_config_cache}"--prefer-offline run build
+  needs: ["formatting prettier"]
+  interruptible: true
