@@ -29,7 +29,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 export const Header = () => {
-
   const classes = useStyles();
 
   // const kaartLogo = require("../../res/20-KAART-Color.svg");
@@ -39,11 +38,11 @@ export const Header = () => {
       <Toolbar>
         <Typography>
           <Icon>
-              <KaartLogo
-                src={kaartLogo}
-                alt="Kaart Logo"
-                href="https://kaart.com/"
-              />
+            <KaartLogo
+              src={kaartLogo}
+              alt="Kaart Logo"
+              href="https://kaart.com/"
+            />
           </Icon>
         </Typography>
         {/* This is to match kaart.com */}
