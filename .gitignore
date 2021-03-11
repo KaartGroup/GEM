@@ -4,3 +4,4 @@ __pycache__/
 .vscode/
 flask/static/
 .DS_Store
+venv/
