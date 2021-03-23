@@ -409,4 +409,11 @@ body {
   display: inline-flex;
 }
 
-
+.NodeIcons{
+  width: 40px;
+  height: 40px;
+}
+.LineColors{
+  width: 120px;
+  height: 45px;
+}

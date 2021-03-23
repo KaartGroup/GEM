@@ -21,10 +21,7 @@ export const COLUMNS = [
     },
     {
         Header: 'Node Shape',
-        accessor: "NODESHAPE"
-    },
-    {
-        Header: 'Node Color',
-        accessor: "NODECOLOR"
+        accessor: "NODESHAPE",
+
     }
 ]

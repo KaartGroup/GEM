@@ -1,16 +1,19 @@
-import React, { useMemo, useState, useRef, forwardRef, useEffect} from 'react';
+import React, { useMemo, useState, useContext, useEffect } from 'react';
 import {useTable, useRowSelect} from 'react-table';
 import {COLUMNS} from './columns';
-import userList from '../../template/template.json';
+import userList from './template.json';
+import { DataContext } from "../../common/DataContext";
 //import {outJson} from '../variables.js';
-
+var jsonId= localStorage.getItem("fileIndex")
+var columnId;
+var outcolor;
 ////////////////////////////////////
-const IndeterminateCheckbox = forwardRef(
+const IndeterminateCheckbox = React.forwardRef(
     ({ indeterminate, ...rest }, ref) => {
-      const defaultRef = useRef()
+      const defaultRef = React.useRef()
       const resolvedRef = ref || defaultRef
-  
-      useEffect(() => {
+
+      React.useEffect(() => {
         resolvedRef.current.indeterminate = indeterminate
       }, [resolvedRef, indeterminate])
   
@@ -21,13 +24,11 @@ const IndeterminateCheckbox = forwardRef(
       )
     }
   )
-
-
-
-
-export const BasicTable = ()=>{
+export const EditorTable = ({useData})=>{
     const columns = useMemo(() => COLUMNS,[])
-     const data = useMemo(() => userList,[])
+    const data = useData 
+
+
 
      var outJson;
      const {
@@ -42,6 +43,7 @@ export const BasicTable = ()=>{
         {
         columns,
         data,
+
         },
         useRowSelect,
         hooks => {
@@ -78,15 +80,18 @@ export const BasicTable = ()=>{
     
         )
         localStorage.setItem("outJson", outJson); 
-        console.log(outJson)
+        
         return (
             <>
+              
               <table {...getTableProps()}>
                 <thead>
                   {headerGroups.map(headerGroup => (
                     <tr {...headerGroup.getHeaderGroupProps()}>
                       {headerGroup.headers.map(column => (
-                        <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+                        <th {...column.getHeaderProps()}>{ 
+                          column.render('Header')
+                          }</th>
                       ))}
                     </tr>
                   ))}
@@ -97,8 +102,27 @@ export const BasicTable = ()=>{
                     return (
                       <tr {...row.getRowProps()}>
                         {row.cells.map(cell => {
-                          return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                        })}
+                            {
+                              if(cell.column.id === 'LINECOLOR'){
+                                let index = cell.row.index 
+                                if (cell.value === null){
+                                  return <div></div> 
+                                }else{
+                                return <img className="LineColors" src={cell.value} style={{'background-color':data[index].LINECOLOR}} alt=""/> 
+                                }}
+
+                              if(cell.column.id === 'NODESHAPE'){
+                                let index = cell.row.index 
+                                if(cell.value ===null){
+                                  return <div></div> 
+                                }else{
+                              return <img className="NodeIcons" src={cell.value} style={{'background-color':data[index].NODECOLOR}} alt=""/> 
+                              }}else{
+                           return <td {...cell.getCellProps()}>{
+                            cell.render('Cell')
+                            }</td>}
+                  }
+                  })}
                       </tr>
                     )
                   })}

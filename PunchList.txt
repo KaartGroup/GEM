@@ -1,0 +1,25 @@
+Punch List:
+
+3: Move handler switch & other functions in grid to Context
+
+4: Fix console errors, need guidance
+
+6: combine all fetch calls into a single function
+
+
+
+8: delete old templates on export & after 24 hours
+
+9: Download Dialog
+
+10: Styling
+
+11: move button stylings to single function/style folder
+
+
+
+
+
+
+
+

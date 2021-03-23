@@ -1,161 +1,486 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { Component, useState, useContext, useEffect } from "react";
 import ReactGridLayout, { WidthProvider } from "react-grid-layout";
-import { Editor } from "components/Editor";
-// import { InteractionContext } from "common/InteractionContext";
 import "./styles.css";
-import { BasicTable } from "components/Table"
-// import "react-tabs/style/react-tabs.css";
-// import { DataContext } from "common/DataContext";
+import { FileButtons } from "components/FileButtons";
+import { ExportButton } from "../FileButtons/ExportButton.js";
+import { EditorTable } from "components/Table"
+import { EditButton } from "../Edit/EditButton.js"
+import { TeamNameField } from "../TeamName/TeamNameField.js"
+import { EditorNameField } from "../NameFields/EditorNameField.js"
+import { UserNameField } from "../NameFields/UserNameField.js"
+import { LineWidthSpin} from "../Spinners/LineWidthSpin.js"
+import { UnUpLineWidthSpin} from "../Spinners/UnUpLineWidthSpin.js"
+import { NodeSizeSpin} from "../Spinners/NodeSizeSpin.js"
+import { UnUpNodeSizeSpin} from "../Spinners/UnUpNodeSizeSpin.js"
+import { LineColorPicker } from "../ColorPickers/LineColorPicker.js"
+import { UnUpLineColorPicker } from "../ColorPickers/UnUpLineColorPicker.js"
+import { NodeColorPicker } from "../ColorPickers/NodeColorPicker.js"
+import { UnUpNodeColorPicker } from "../ColorPickers/UnUpNodeColorPicker.js"
+import { NodeShapeMenu } from "../ShapeMenu/NodeShapeMenu.js"
+import { UnUpNodeShapeMenu } from "../ShapeMenu/UnUpNodeShapeMenu.js"
+import { RemoveButtons } from "../TableButtons/RemoveButtons.js"
+import { MoveButtons } from "../TableButtons/MoveButtons.js"
+import { render } from "@testing-library/react";
+import { DataContext } from "../../common/DataContext";
+
+var inEditName;
+var inUserName;
+var inLineWidth;
+var inNodeSize;
+var inLineWidth;
+var inNodeSize;
+var inLineColor;
+var inNodeColor;
+var inNodeShape;
+var outJson;
 
 const GridLayout = WidthProvider(ReactGridLayout);
 
 export const Grid = () => {
+  const { tableData, 
+  setTableData,
+  fetchGemJson,
+  fileID,
+  generateGemJsonId,
+  TeamName,
+  EditorName,
+  UserName,
+  LineColor,
+  LineWidth,
+  NodeColor,
+  NodeSize,
+  NodeShape,
+  UnUpLineColor,
+  UnUpNodeColor,
+  UnUpNodeSize,
+  UnUpNodeShape
+  } = useContext(DataContext);
 
-  var outJson;
-//import {outJson} from './variables.js';
-const blank = async () => {
-  const response =  await fetch('/blank')
-  if(response.ok){
-    const obj= await response.json()
-    console.log(obj)
-  }}
-  blank();
+  const [state, setState] = useState({
+    tableData:tableData,
+    TeamName:"Map Legends",
+    EditorName:"Mappy McMappington III",
+    UserName:"VLD-Whatever",
+    LineColor: '#A9A9A9',
+    LineWidth: 5,
+    NodeColor:"#D3D3D3",
+    NodeSize:5,
+    NodeShape:'/icons/circle.png',
+    UnUpLineColor: 'green',
+    UnUpNodeColor: 'orange',
+    UnUpLineWidth:5,
+    UnUpNodeSize:5,
+    UnUpNodeShape:'/icons/square.png',
+    FileIndex: fileID,
+    ShowShapeMenu:false,
+    ShowUnUpShapeMenu:false,
+    ShowLineColorMenu:false,
+    ShowUnUpLineColorMenu:false,
+    ShowNodeColorMenu:false,
+    ShowUnUpNodeColorMenu:false,
+  });
 
-  const [layouts, setLayouts] = useState({});
+  useEffect((fileID) => {
 
-  const onLayoutChange = (layouts) => {
-    setLayouts(layouts);
-  };
+    if (fileID == null) {
+      generateGemJsonId();
+    }
+  }, [])
 
-  const getViewHeight = () => {
-    return window.innerHeight - 130;
-  };
+    const GetUnUpload=() =>{
+      if (state.TeamName ==="Map Legends" && tableData[0].NAME !=null){
+        alert("Map Legends is a fictitious Team name used as a placeholder. Please enter a valid team name before exporting")
+      }
+      if (tableData[0].NAME ===null){
+        alert("No Data to export. You must either import an existing .mapscc file to edit, or populate the table with editor data in order to export.")
+      }
+      let outJson= [{"TeamName":state.TeamName,"LineColor":state.UnUpLineColor,"lineWidth":state.UnUpLineWidth,"NodeSize":state.UnUpNodeSize,"NodeColor":state.UnUpNodeColor,"NodeShape":state.UnUpNodeShape}]
+      outJson= JSON.stringify(outJson)
+      let url ='/compile?fileID='+fileID
+      const goEx = async () => {
+        const response =  await fetch(url, {method: "POST", body: outJson ,headers: {'Content-Type': 'application/json'}})
+        if(response.ok){
+          const obj= await response.text()
+        }}
+      goEx()
+    }
 
-  const moveUp = ()=>{
-    outJson = localStorage.getItem("outJson");
-    outJson=JSON.stringify(outJson)
-    const request = async () => {
-    const response =  await fetch('/table?sub=moveUp', {method: "POST", body: outJson ,headers: {'Content-Type': 'application/json'}})
-    if(response.ok){
-      const object = await response.text()
-      console.log(object)
-    }}
-    request();
+    const changeFeature=(e,f) =>{
+    switch(f){
+      case "LineColor":
+        setState({...state,LineColor:e});
+        break;
+
+      case "NodeColor":
+        setState({...state,NodeColor:e});
+        break;  
+
+      case "UnUpLineColor":
+        setState({...state,UnUpLineColor:e});
+        break;  
+
+      case "UnUpNodeColor":
+        setState({...state,UnUpNodeColor:e});
+        break;  
+
+      case "NodeShape":
+        setState({...state,NodeShape:e,ShowShapeMenu:false})
+        break;  
+
+      case "UnUpNodeShape":
+        setState({...state,UnUpNodeShape:e,ShowUnUpShapeMenu:false})
+        
+        break; 
+
+      case "+LineWidth":
+        if (state.LineWidth !== 10){
+          setState({ ...state,LineWidth:state.LineWidth +1})}
+        break; 
+
+      case "-LineWidth":
+        if (state.LineWidth !== 0){
+          setState({ ...state,LineWidth:state.LineWidth -1})}
+        break; 
+
+      case "+UnUpLineWidth":
+        if (state.UnUpLineWidth !== 10){
+          setState({ ...state,UnUpLineWidth:state.UnUpLineWidth +1})}
+        break; 
+
+      case "-UnUpLineWidth":
+        if (state.UnUpLineWidth !== 0){
+          setState({ ...state,UnUpLineWidth:state.UnUpLineWidth -1})}
+        break; 
+
+      case "+NodeSize":
+        if (state.NodeSize !== 10){
+          setState({ ...state,NodeSize:state.NodeSize +1})}
+        break;
+
+      case "-NodeSize":
+        if (state.NodeSize !== 0){
+          setState({ ...state,NodeSize:state.NodeSize -1})}
+      break;
+
+      case "+UnUpNodeSize":
+         if (state.UnUpNodeSize !== 10){
+          setState({ ...state,UnUpNodeSize:state.UnUpNodeSize +1})}
+      break; 
+
+      case "-UnUpNodeSize":
+         if (state.UnUpNodeSize !== 0){
+          setState({ ...state,UnUpNodeSize:state.UnUpNodeSize -1})}
+      break; 
+
+      case "TeamName":
+         if (state.UnUpNodeSize !== 0){
+          setState({ ...state,TeamName:e})}
+      break; 
+
+      case "EditorName":
+        setState({ ...state,EditorName:e})
+      break; 
+
+      case "UserName":
+        setState({ ...state,UserName:e})
+      break; 
+
+      case "ShowShapeMenu":
+        setState({ ...state,ShowShapeMenu:e})
+      break; 
+
+      case "ShowUnUpShapeMenu":
+        setState({ ...state,ShowUnUpShapeMenu:e})
+      break; 
+
+      case "ShowLineColorMenu":
+        setState({ ...state,ShowLineColorMenu:e})
+      break; 
+
+      case "ShowUnUpLineColorMenu":
+        setState({ ...state,ShowUnUpLineColorMenu:e})
+      break; 
+
+      case "ShowNodeColorMenu":
+        setState({ ...state,ShowNodeColorMenu:e})
+      break; 
+
+      case "ShowUnUpNodeColorMenu":
+        setState({ ...state,ShowUnUpNodeColorMenu:e})
+      break; 
+
+
+      case "UnUpData":
+        setState({ ...state,TeamName:e[0]["TEAMNAME"],
+        UnUpNodeColor:e[0]["UNUPNODECOLOR"], 
+        UnUpNodeSize:e[0]["UNUPNODESIZE"],
+        UnUpNodeShape:"/icons/"+e[0]["UNUPNODESHAPE"]+".png",  
+        UnUpLineColor:e[0]["UNUPLINECOLOR"],
+        UnUpLineWidth:e[0]["UNUPLINEWIDTH"],
+      })
+      console.log(state.UnUpNodeShape)
+      break; 
+
+
+      case "RemoveEditor":
+
+          outJson = localStorage.getItem("outJson");
+          outJson=JSON.stringify(outJson)
+          const request = async () => {
+          const response =  await fetch('/table?sub=remove&fileID='+fileID, {method: "POST", body: outJson ,headers: {'Content-Type': 'application/json'}})
+          if(response.ok){
+            let object = await response.json()
+            object=JSON.stringify(object)
+            object=JSON.parse(object)
+            console.log(object)
+            setTableData(object)
+          }}
+          request();
+        
+      break; 
+
+
+      case "RemoveAll":
+
+        const removeRequest = async () => {
+        const response =  await fetch('/removeAll?fileID='+fileID, {method: "GET"})
+        if(response.ok){
+          let object = await response.json()
+          object=JSON.stringify(object)
+          object=JSON.parse(object)
+          setTableData(object)
+        }}
+        removeRequest();
+      
+      break;
+
+
+      case "MoveUp":
+        
+        outJson = localStorage.getItem("outJson");
+        outJson=JSON.stringify(outJson)
+        const moveUpRequest = async () => {
+        const response =  await fetch('/table?sub=moveUp&fileID='+fileID,{method: "POST", body: outJson ,headers: {'Content-Type': 'application/json'}})
+        if(response.ok){
+          let object = await response.json()
+          object=JSON.stringify(object)
+          object=JSON.parse(object)
+          setTableData(object)
+        }}
+        moveUpRequest();
+      
+      break;
+
+      case "MoveDown":
+        
+        outJson = localStorage.getItem("outJson");
+        outJson=JSON.stringify(outJson)
+        const moveDownRequest = async () => {
+        const response =  await fetch('/table?sub=moveDown&fileID='+fileID,{method: "POST", body: outJson ,headers: {'Content-Type': 'application/json'}})
+        if(response.ok){
+          let object = await response.json()
+          object=JSON.stringify(object)
+          object=JSON.parse(object)
+          setTableData(object)
+        }}
+        moveDownRequest();
+      
+      break;
+      case "Clear":
+        setState({...state,
+        EditorName: "Mappy McMappington III",
+        UserName: "VLD-whatever",
+        LineColor: '#A9A9A9',
+        LineWidth: 5,
+        NodeColor:"#D3D3D3",
+        NodeSize:5,
+        NodeShape:'/icons/circle.png'
+      })
+      break;
+      
+    }
+
   }
 
 
-const remove = () => {
-  outJson = localStorage.getItem("outJson");
-  outJson=JSON.stringify(outJson)
-  const request = async () => {
-  const response =  await fetch('/table?sub=remove', {method: "POST", body: outJson ,headers: {'Content-Type': 'application/json'}})
-  if(response.ok){
-    const object = await response.text()
-    console.log(object)
-  }}
-  request();
-}
 
-const removeAll= () =>{
-  blank()
-}
+    const EditEditor = () => {
+      let outJson = localStorage.getItem("outJson");
+      let checkJson= JSON.parse(outJson)
+      let count =  0
+      for (let key in checkJson['editor']){
+          count ++
+      }
+      outJson=JSON.stringify(outJson)
+      if ( checkJson['editor'][0]['NAME']===null){
+          alert("Invalid Selection");
+      }else if (checkJson['editor'][0]['NAME']===null){
+          alert("Invalid selection");
+      }else if (count > 1 && checkJson['editor'][0]['NAME']!=null){
+      alert("Only one user may be edited at a time");
+    
+      }else{
+           inEditName = checkJson['editor'][0]['NAME']
+           inUserName = checkJson['editor'][0]['UID']
+           inLineWidth = checkJson['editor'][0]['LINEWIDTH']
+           inNodeSize = checkJson['editor'][0]['NODESIZE']
+           inLineColor=checkJson['editor'][0]['LINECOLOR']
+           inNodeColor=checkJson['editor'][0]['NODECOLOR']
+           inNodeShape=checkJson['editor'][0]['NODESHAPE']
+      setState({...state,
+        EditorName: inEditName,
+        UserName: inUserName,
+        LineWidth: parseInt(inLineWidth),
+        NodeSize: parseInt(inNodeSize),
+        LineColor: inLineColor,
+        NodeShape:inNodeShape,
+        NodeColor:inNodeColor,
+      })
+    }}
+    
+    const updateEditor = (e) => {
+      if (state.EditorName === "Mappy McMappington III" && e ==="add"){
+        alert("Mr. McMappigton is a fictional editor used as a placeholder. Please enter a valid Name and Username. ")
+        return;
+      }else if(state.EditorName === "Mappy McMappington III" && e ==="update"){
+        alert("You must first select an Editor from the table to update. ")
+        return;
+      }
+    let outJson = localStorage.getItem("outJson");
+    let checkJson= JSON.parse(outJson)
+    let index= Object.keys(checkJson.rowId)[0]
+    let entry = {'NAME':state.EditorName,"UID":state.UserName,'NODESHAPE':state.NodeShape,'NODECOLOR':state.NodeColor,"NODESIZE":state.NodeSize,'LINEWIDTH':state.LineWidth,"LINECOLOR":state.LineColor}
+    entry=JSON.stringify(entry)
+    let sub = e
+    let url ='/update?sub='+sub+'&index='+index+'&infile='+fileID
+    console.log(url)
+    const update = async () => {
+      const response =  await fetch(url, {method: "POST", body: entry ,headers: {'Content-Type': 'application/json'}})
+      if(response.ok){
+        const obj= await response.json()
+        setTableData(obj)
+      }}
+    update()
+    setState({...state,
+      EditorName:"Mappy McMappington III",
+      UserName: "VLD-whatever",
+      LineColor: '#A9A9A9',
+      LineWidth: 5,
+      NodeColor:"#D3D3D3",
+      NodeSize:5,
+      NodeShape:'/icons/circle.png'
+      })
+      
 
-
-const onChange = (e) => 
-{
-  let files = e.target.files
-  let infile = files[0]
-  let formData = new FormData();
-  console.log(infile)
-  formData.append("infile", infile);
-  const request = async () => {
-  const response =  await fetch('/parse', {method: "POST", body: formData})
-  if(response.ok){
-    const obj= await response.json()
-    console.log(obj)
-  }}
-  request();
-  //const data = JSON.stringify(obj);
-  };
-
+    }
 
   return (
-    <div className="Gem" >
-        <GridLayout
-          measureBeforeMount={true}
-          className="layout"
-          cols={12}
-          containerPadding={[10, 10]}
-          rowHeight={getViewHeight() / 2}
-          margin={[10, 10]}
-          layouts={layouts}
-          onLayoutChange={(layout) => onLayoutChange(layout)}
-        >
-          <div
-            className="Table"
-            key="1"
-            data-grid={{
-              x: .5,
-              y: 0,
-              w: 10,
-              h: 1,
-              i: "table",
-              static: true,
-            }}
+      <div className="Gem" >
+          <GridLayout
+            measureBeforeMount={true}
+            className="layout"
+            cols={12}
+            containerPadding={[10, 10]}
+            // rowHeight={getViewHeight() / 2}
+            // margin={[10, 10]}
+            // layouts={layouts}
+            // onLayoutChange={(layout) => onLayoutChange(layout)}
           >
-              {/* Table */}
-              <BasicTable />
-              <form>
-        <input type='file' name='file' onChange={(e)=>onChange(e)}/>
-        <input type="button" name='remove' value="Remove" onClick={()=>remove}/>
-        <input type="button" name='removeAll' value="Remove All" onClick={()=>removeAll}/>
-        <input type="button" name='moveUp' value="Move Up" onClick={()=>moveUp}/>
-      </form>
-          </div>
-          {/* <div
-            className="editor"
-            key="2"
-            data-grid={{
-              x: .5,
-              y: 1,
-              w: 4,
-              h: 1,
-              i: "editor",
-              static: true,
-            }}
-          >
-              <Editor />
-              Editor
-          </div> */}
-          {/* <div
-            className="team"
-            key="3"
-            data-grid={{
-              x: 4.5,
-              y: 1,
-              w: 4,
-              h: 1,
-              i: "team",
-              static: true,
-            }}
-          >
-              Team
-          </div> */}
-          {/* <div
-            className="Im/Ex"
-            key="4"
-            data-grid={{
-              x: 9,
-              y: 1,
-              w: 2,
-              h: 1,
-              i: "Im/Ex",
-              static: true,
-            }}
-          >
-              Im/Ex
-          </div> */}
-        </GridLayout>
-    </div>
-  );
-};
+            <div
+              className="Table"
+              key="1"
+              data-grid={{
+                x: .5,
+                y: 0,
+                w: 10,
+                h: 1,
+                i: "table",
+                static: true,
+              }}
+            >
+                { tableData ? <EditorTable useData={tableData}/> : null}
+                <RemoveButtons action={changeFeature}/>
+                <MoveButtons action={changeFeature}/>
+            </div>
+
+            <div
+              className="FileFunctions"
+              key="2"
+              data-grid={{
+                x: 10,
+                y: 1,
+                w: 1,
+                h: 1,
+                i: "file",
+                static: true,
+              }}
+            >
+              <label>Import/Export</label>
+                <FileButtons fileID={state.fileID} action={changeFeature} /> 
+                <ExportButton action={GetUnUpload}/>
+            </div>
+            <div
+              className="team"
+              key="3"
+              data-grid={{
+                x: 10,
+                y: 1,
+                w: 2,
+                h: 1,
+                i: "team",
+                static: true,
+              }}
+            >
+            <label>Team Name:</label> 
+            <TeamNameField action={changeFeature} value={state.TeamName}/> 
+            </div> 
+            <div
+              className="UnUploaded"
+              key="4"
+              data-grid={{
+                x: 4.5,
+                y: 1,
+                w: 2,
+                h: 1,
+                i: "UnUpload",
+                static: true,
+              }}
+            >
+            <label>Non-uploaded edits:</label> 
+            <UnUpLineWidthSpin  num={state.UnUpLineWidth}action={changeFeature}/>
+            <UnUpNodeSizeSpin  num={state.UnUpNodeSize}action={changeFeature}/>
+
+            <UnUpLineColorPicker  action={changeFeature}color={state.UnUpLineColor}showMenu={state.ShowUnUpLineColorMenu}/>
+            <UnUpNodeColorPicker action={changeFeature}color={state.UnUpNodeColor}showMenu={state.ShowUnUpNodeColorMenu}/>
+            <UnUpNodeShapeMenu  action={changeFeature}color={state.UnUpNodeColor}src={state.UnUpNodeShape} ShowMenu={state.ShowUnUpShapeMenu}/>
+            </div> 
+
+            <div
+              className="EditEditor"
+              key="5"
+              data-grid={{
+                x: 6.5,
+                y: 1,
+                w: 2,
+                h: 1,
+                i: "Im/Ex",
+                static: true,
+              }}
+            >
+            <label>Add/Update Editor:</label> 
+            <EditButton       action={changeFeature} action2={updateEditor}action3={EditEditor}/>
+            <EditorNameField  action={changeFeature}value={state.EditorName}/>
+            <UserNameField    action={changeFeature}value={state.UserName}/>
+            <LineWidthSpin    action={changeFeature}num={state.LineWidth}/>
+            <NodeSizeSpin     action={changeFeature}num={state.NodeSize}/>
+
+
+            <LineColorPicker  action={changeFeature}color={state.LineColor}showMenu={state.ShowLineColorMenu}/>
+            <NodeColorPicker  action={changeFeature}color={state.NodeColor}showMenu={state.ShowNodeColorMenu}/>
+            <NodeShapeMenu    action={changeFeature}color={state.NodeColor}src={state.NodeShape} ShowMenu={state.ShowShapeMenu}/>
+            </div>
+          </GridLayout>
+      </div>
+    );
+
+}
