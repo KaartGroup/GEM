@@ -135,7 +135,7 @@ node.USERNAME{
         IN = IN.replace("[","")
         IN = IN.replace("'","")
         IN = IN.replace('"',"")
-        IN = IN.replace(' Team',"")
+        IN = IN.replace('Team',"")
         return(IN)
     
     def PARSER(self, INFILE):
@@ -182,7 +182,6 @@ node.USERNAME{
             CONSTRUCTOR.NODECOLOR =re.findall(r'symbol-stroke-color:(.*)\;',i)
             CONSTRUCTOR.NODECOLOR = self.STRIPPER(CONSTRUCTOR.NODECOLOR)
             if CONSTRUCTOR.NAME != "" :      
-                #self.TEMPUSERS[str(self.usercount)] = CONSTRUCTOR
                 self.ADDUSERS.append(CONSTRUCTOR)
                 self.OUTJSON.append({'NAME':CONSTRUCTOR.NAME,"UID":CONSTRUCTOR.UID,"LINECOLOR":CONSTRUCTOR.LINECOLOR,"LINEWIDTH":CONSTRUCTOR.LINEWIDTH,"NODESIZE":CONSTRUCTOR.NODESIZE,"NODESHAPE":"/icons/%s.png"%(CONSTRUCTOR.NODESHAPE),"NODECOLOR":CONSTRUCTOR.NODECOLOR})
          
@@ -190,8 +189,7 @@ node.USERNAME{
  
             else:
                 pass
-        self.OUTJSON.append(self.UnUpJson)    
-        #print(self.OUTJSON)    
+        self.OUTJSON.append(self.UnUpJson)      
         self.OUTPUTJSON=jsonify(self.OUTJSON)
 
         
@@ -204,11 +202,6 @@ node.USERNAME{
 
 ###################### # routes # #############################
 
-@app.route('/blank')
-def blank():
-    with open("/Users/imac25/Documents/WEBGEM/GEM/react/src/components/Table/template.json", 'w')as json_file:
-        json.dump(blankJson, json_file)
-    return("blanked")
 
 def root_dir():  # pragma: no cover
     return os.path.abspath(os.path.dirname(__file__))
@@ -239,14 +232,24 @@ def get_or_create_json():
 def removeAll():
     fileID =request.args.get("fileID")
     path = (f"{root_dir()}/tmp/generated/{fileID}.json")
-    print(path) 
+
     with open(path, 'w+')as json_file:
         json.dump(blankJson, json_file)
     with open(path ,'r')as outJson:
         outJson=outJson.read()
     return (outJson)
 
-
+@app.cli.command()
+def scheduled():
+    print('Deleting Files...')
+    path1=os.path.join(root_dir(),"static/")
+    path2=os.path.join(root_dir(),"tmp/generated/")
+    for root, dirs, files in os.walk(path2):
+        for f in files:
+            os.remove(path2+f)
+    for root, dirs, files in os.walk(path1):
+        for i in files:
+            os.remove(path1+i)
 
 @app.route('/update', methods=['GET', 'POST'])
 def update():
@@ -338,7 +341,6 @@ def table():
         newJson.append(k)
 
     if sub == "moveUp":
-        print("MOVEUP")
         for i in index:
             j=int(i)-1
             if j <0:
@@ -357,6 +359,15 @@ def table():
     with open(path, "r")as outFile:
         outJson=outFile.read()
     return(outJson)
+
+
+@app.route('/uploads/<path:filename>', methods=['GET', 'POST'])
+def download(filename):
+    uploads = os.path.join(root_dir(), app.config['UPLOAD_FOLDER'])    
+    return send_from_directory(directory=uploads, filename=filename)
+
+
+
 
 @app.route('/compile', methods=['GET', 'POST'])
 def compile():
@@ -384,24 +395,25 @@ def compile():
         FINSHEDUSERBLOCK = ""
         for i in injson:
             if i != 'UNUPLOADED':
-
                 editor=EDITORINFO()
-                editor.NAME=injson[count]['NAME']
-                editor.UID=injson[count]['UID']
-                editor.NODECOLOR=injson[count]['NODECOLOR']
-                editor.NODESIZE=injson[count]['NODESIZE']
-                editor.NODESHAPE=injson[count]['NODESHAPE']
-                editor.LINEWIDTH=injson[count]['LINEWIDTH']
-                editor.LINECOLOR=injson[count]['LINECOLOR']
-                editor.USERBLOCK=re.sub(FINDUSERNAME,editor.NAME , one.USERBLOCK)
-                editor.USERBLOCK=re.sub(FINDUSERID,editor.UID , editor.USERBLOCK)
-                editor.USERBLOCK=re.sub(FINDUSERNODESIZE,editor.NODESIZE , editor.USERBLOCK)
-                editor.USERBLOCK=re.sub(FINDUSERNODECOLOR,editor.NODECOLOR , editor.USERBLOCK)
-                editor.USERBLOCK=re.sub(FINDUSERNODESHAPE,editor.NODESHAPE , editor.USERBLOCK)
-                editor.USERBLOCK=re.sub(FINDUSERWAYWIDTH,editor.LINEWIDTH , editor.USERBLOCK)
-                editor.USERBLOCK=re.sub(FINDUSERWAYCOLOR,editor.LINECOLOR , editor.USERBLOCK)
-                FINSHEDUSERBLOCK  += str(editor.USERBLOCK)
-                count += 1
+                
+                if 'NAME' in injson[int(count)]: 
+                    editor.UID=injson[count]['UID']
+                    editor.NAME=injson[count]['NAME']
+                    editor.NODECOLOR=injson[count]['NODECOLOR']
+                    editor.NODESIZE=injson[count]['NODESIZE']
+                    editor.NODESHAPE=injson[count]['NODESHAPE']
+                    editor.LINEWIDTH=injson[count]['LINEWIDTH']
+                    editor.LINECOLOR=injson[count]['LINECOLOR']
+                    editor.USERBLOCK=re.sub(FINDUSERNAME, editor.NAME , one.USERBLOCK)
+                    editor.USERBLOCK=re.sub(FINDUSERID, editor.UID , editor.USERBLOCK)
+                    editor.USERBLOCK=re.sub(FINDUSERNODESIZE, str(editor.NODESIZE) , editor.USERBLOCK)
+                    editor.USERBLOCK=re.sub(FINDUSERNODECOLOR, editor.NODECOLOR , editor.USERBLOCK)
+                    editor.USERBLOCK=re.sub(FINDUSERNODESHAPE, editor.NODESHAPE , editor.USERBLOCK)
+                    editor.USERBLOCK=re.sub(FINDUSERWAYWIDTH, str(editor.LINEWIDTH) , editor.USERBLOCK)
+                    editor.USERBLOCK=re.sub(FINDUSERWAYCOLOR, editor.LINECOLOR , editor.USERBLOCK)
+                    FINSHEDUSERBLOCK  += str(editor.USERBLOCK)
+                    count += 1
         STATICBLOCK = re.sub(FINDNOTUPNODESIZE, str(unUpJson[0]['NodeSize']), one.STATICBLOCK)
         STATICBLOCK = re.sub(FINDNOTUPNODECOLOR,str(unUpJson[0]['NodeColor']), STATICBLOCK)
         STATICBLOCK = re.sub(FINDNOTUPNODESHAPE, str(unUpJson[0]['NodeShape']), STATICBLOCK)
@@ -409,12 +421,11 @@ def compile():
         STATICBLOCK = re.sub(FINDNOTUPWAYWIDTH, str(unUpJson[0]['lineWidth']), STATICBLOCK)
         STATICBLOCK = re.sub(FINDTITLE, str(unUpJson[0]['TeamName']), STATICBLOCK)
         BLOCK = FINSHEDUSERBLOCK + STATICBLOCK
-        #path=app.config['UPLOAD_FOLDER']
-        path=os.getcwd()
+
+        path=os.getcwd() + "/static"
         filename=str(str(unUpJson[0]['TeamName']))
-        filename="QAQC_"+filename+".mapcss"
+        filename=filename+".mapcss"
         uppath=path+"/"+filename
-        print(uppath)
         with open(uppath, 'w')as CSS:
             CSS.writelines (BLOCK)
         BLOCK = ""
@@ -422,7 +433,7 @@ def compile():
         FINSHEDUSERBLOCK =""
         return ("exported")
         #return str(BLOCK)
-      
+  
     
 # if __name__ == "__main__":
 #     app.run(port = 3000)

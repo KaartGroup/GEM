@@ -3,6 +3,7 @@ import ReactGridLayout, { WidthProvider } from "react-grid-layout";
 import "./styles.css";
 import { FileButtons } from "components/FileButtons";
 import { ExportButton } from "../FileButtons/ExportButton.js";
+import { DownloadButton } from "../FileButtons/DownloadButton.js";
 import { EditorTable } from "components/Table"
 import { EditButton } from "../Edit/EditButton.js"
 import { TeamNameField } from "../TeamName/TeamNameField.js"
@@ -22,7 +23,7 @@ import { RemoveButtons } from "../TableButtons/RemoveButtons.js"
 import { MoveButtons } from "../TableButtons/MoveButtons.js"
 import { render } from "@testing-library/react";
 import { DataContext } from "../../common/DataContext";
-
+import { saveAs } from 'file-saver'
 var inEditName;
 var inUserName;
 var inLineWidth;
@@ -32,28 +33,17 @@ var inNodeSize;
 var inLineColor;
 var inNodeColor;
 var inNodeShape;
-var outJson;
+
+
+
 
 const GridLayout = WidthProvider(ReactGridLayout);
 
 export const Grid = () => {
   const { tableData, 
   setTableData,
-  fetchGemJson,
   fileID,
   generateGemJsonId,
-  TeamName,
-  EditorName,
-  UserName,
-  LineColor,
-  LineWidth,
-  NodeColor,
-  NodeSize,
-  NodeShape,
-  UnUpLineColor,
-  UnUpNodeColor,
-  UnUpNodeSize,
-  UnUpNodeShape
   } = useContext(DataContext);
 
   const [state, setState] = useState({
@@ -72,16 +62,17 @@ export const Grid = () => {
     UnUpNodeSize:5,
     UnUpNodeShape:'/icons/square.png',
     FileIndex: fileID,
+    RowData:{},
     ShowShapeMenu:false,
     ShowUnUpShapeMenu:false,
     ShowLineColorMenu:false,
     ShowUnUpLineColorMenu:false,
     ShowNodeColorMenu:false,
     ShowUnUpNodeColorMenu:false,
+
   });
 
   useEffect((fileID) => {
-
     if (fileID == null) {
       generateGemJsonId();
     }
@@ -101,11 +92,13 @@ export const Grid = () => {
         const response =  await fetch(url, {method: "POST", body: outJson ,headers: {'Content-Type': 'application/json'}})
         if(response.ok){
           const obj= await response.text()
+        alert("The mapcss file is ready for download.")
         }}
       goEx()
     }
 
     const changeFeature=(e,f) =>{
+    let outJson = state.RowData
     switch(f){
       case "LineColor":
         setState({...state,LineColor:e});
@@ -209,6 +202,24 @@ export const Grid = () => {
         setState({ ...state,ShowUnUpNodeColorMenu:e})
       break; 
 
+      case "GetRowData":
+        setState({ ...state,RowData:e})
+      break; 
+
+
+      case "Download":
+        let path = '/uploads/'+ state.TeamName +".mapcss";
+        if  (path){
+          const Downrequest = async () => {
+            return fetch(path, {method: "GET",responseType: 'blob'})
+            .then(response=>response.blob())
+            .then(blob => saveAs(blob, state.TeamName+'.mapcss'))
+
+        }
+        Downrequest();
+      }
+
+      break; 
 
       case "UnUpData":
         setState({ ...state,TeamName:e[0]["TEAMNAME"],
@@ -218,13 +229,11 @@ export const Grid = () => {
         UnUpLineColor:e[0]["UNUPLINECOLOR"],
         UnUpLineWidth:e[0]["UNUPLINEWIDTH"],
       })
-      console.log(state.UnUpNodeShape)
+  
       break; 
 
 
       case "RemoveEditor":
-
-          outJson = localStorage.getItem("outJson");
           outJson=JSON.stringify(outJson)
           const request = async () => {
           const response =  await fetch('/table?sub=remove&fileID='+fileID, {method: "POST", body: outJson ,headers: {'Content-Type': 'application/json'}})
@@ -232,7 +241,6 @@ export const Grid = () => {
             let object = await response.json()
             object=JSON.stringify(object)
             object=JSON.parse(object)
-            console.log(object)
             setTableData(object)
           }}
           request();
@@ -257,7 +265,7 @@ export const Grid = () => {
 
       case "MoveUp":
         
-        outJson = localStorage.getItem("outJson");
+        
         outJson=JSON.stringify(outJson)
         const moveUpRequest = async () => {
         const response =  await fetch('/table?sub=moveUp&fileID='+fileID,{method: "POST", body: outJson ,headers: {'Content-Type': 'application/json'}})
@@ -272,8 +280,6 @@ export const Grid = () => {
       break;
 
       case "MoveDown":
-        
-        outJson = localStorage.getItem("outJson");
         outJson=JSON.stringify(outJson)
         const moveDownRequest = async () => {
         const response =  await fetch('/table?sub=moveDown&fileID='+fileID,{method: "POST", body: outJson ,headers: {'Content-Type': 'application/json'}})
@@ -302,10 +308,8 @@ export const Grid = () => {
 
   }
 
-
-
     const EditEditor = () => {
-      let outJson = localStorage.getItem("outJson");
+      let outJson = state.RowData
       let checkJson= JSON.parse(outJson)
       let count =  0
       for (let key in checkJson['editor']){
@@ -346,14 +350,13 @@ export const Grid = () => {
         alert("You must first select an Editor from the table to update. ")
         return;
       }
-    let outJson = localStorage.getItem("outJson");
+    let outJson = state.RowData
     let checkJson= JSON.parse(outJson)
     let index= Object.keys(checkJson.rowId)[0]
     let entry = {'NAME':state.EditorName,"UID":state.UserName,'NODESHAPE':state.NodeShape,'NODECOLOR':state.NodeColor,"NODESIZE":state.NodeSize,'LINEWIDTH':state.LineWidth,"LINECOLOR":state.LineColor}
     entry=JSON.stringify(entry)
     let sub = e
     let url ='/update?sub='+sub+'&index='+index+'&infile='+fileID
-    console.log(url)
     const update = async () => {
       const response =  await fetch(url, {method: "POST", body: entry ,headers: {'Content-Type': 'application/json'}})
       if(response.ok){
@@ -370,8 +373,6 @@ export const Grid = () => {
       NodeSize:5,
       NodeShape:'/icons/circle.png'
       })
-      
-
     }
 
   return (
@@ -398,7 +399,7 @@ export const Grid = () => {
                 static: true,
               }}
             >
-                { tableData ? <EditorTable useData={tableData}/> : null}
+                { tableData ? <EditorTable useData={tableData} action={changeFeature}/> : null}
                 <RemoveButtons action={changeFeature}/>
                 <MoveButtons action={changeFeature}/>
             </div>
@@ -418,6 +419,7 @@ export const Grid = () => {
               <label>Import/Export</label>
                 <FileButtons fileID={state.fileID} action={changeFeature} /> 
                 <ExportButton action={GetUnUpload}/>
+                <DownloadButton action={changeFeature}/>
             </div>
             <div
               className="team"

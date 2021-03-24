@@ -1,5 +1,4 @@
-
-import React, { useState } from "react";
+import React, { Component, useState } from "react";
 import styled from "styled-components";
 var outJson;
 var url;
@@ -30,25 +29,11 @@ const Button = styled.button`
     theme: "blue"
   };
 
-
-      export const MoveButtons= (props) => {
-     
-        const ButtonFunction = (e) => {
-          if(e === "Up"){
-                  props.action(null,'MoveUp')}
-          else if(e === "Down"){
-                  props.action(null,'MoveDown')}
-            }
-
-            
-
-
+      export const DownloadButton =(props)=> {
           return (
             <>
-  
-                <Button onClick={()=>ButtonFunction('Up')}>Move Up</Button>
-                <Button onClick={()=>ButtonFunction('Down')}>Move Down</Button>
-
+                <Button onClick={()=>props.action(null,"Download")}>Download</Button>
             </>
           );
-        }     
+
+    }

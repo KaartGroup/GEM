@@ -52,9 +52,8 @@ const toggleShowPicker = ()=>{
       <div>
       <label> Line Color:</label>
       </div>
-      <div >
-        <SketchPicker color={props.color}onChange={ changeColor }/>
-      </div>
+
+        <SketchPicker width={200} disableAlpha={false} color={props.color}onChange={ changeColor }/>
 
       <div>
         <Button onClick={toggleShowPicker}>Close</Button>
@@ -67,7 +66,7 @@ const toggleShowPicker = ()=>{
         <label> Line Color:</label>
         </div>
         <div>
-        <img className="NodeIcons" src={null} style={{'background-color':props.color}} alt=""/>
+        <img className="NodeIcons" src={null} style={{backgroundColor:props.color}} alt=""/>
         </div>
         <div>
         <Button onClick={toggleShowPicker}>Open</Button>

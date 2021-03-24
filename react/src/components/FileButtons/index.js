@@ -58,6 +58,7 @@ export const FileButtons = (props) => {
           let UnUpData = obj[obj.length-1]
           obj.splice(-1,1)
           props.action(UnUpData,"UnUpData")
+          // path = 
           setTableData(obj);
         }}
         request();

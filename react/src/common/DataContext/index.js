@@ -18,7 +18,6 @@ const [tableData, setTableData] = useState(null);
 
 
 const fetchGemJson = () => {
-  console.log(fileID)
     let jsonURL = API_URL.concat("gem_json/template")
         .concat("?index=")
         .concat(fileID);

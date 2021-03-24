@@ -24,13 +24,14 @@ const IndeterminateCheckbox = React.forwardRef(
       )
     }
   )
-export const EditorTable = ({useData})=>{
+export const EditorTable = (props)=>{
     const columns = useMemo(() => COLUMNS,[])
-    const data = useData 
+    const data = props.useData
 
 
 
      var outJson;
+     
      const {
         getTableProps,
         getTableBodyProps,
@@ -43,23 +44,19 @@ export const EditorTable = ({useData})=>{
         {
         columns,
         data,
-
+        
         },
+
         useRowSelect,
         hooks => {
             hooks.visibleColumns.push(columns => [
-              // Let's make a column for selection
               {
                 id: 'selection',
-                // The header can use the table's getToggleAllRowsSelectedProps method
-                // to render a checkbox
                 Header: ({ getToggleAllRowsSelectedProps }) => (
                   <div>
                     <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
                   </div>
                 ),
-                // The cell can use the individual row's getToggleRowSelectedProps method
-                // to the render a checkbox
                 Cell: ({ row }) => (
                   <div>
                     <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
@@ -79,11 +76,14 @@ export const EditorTable = ({useData})=>{
           },
     
         )
-        localStorage.setItem("outJson", outJson); 
+        useEffect(() => {
+          props.action(outJson,"GetRowData")
+        }, [outJson])
+        
+        //localStorage.setItem("outJson", outJson); 
         
         return (
             <>
-              
               <table {...getTableProps()}>
                 <thead>
                   {headerGroups.map(headerGroup => (
@@ -132,5 +132,5 @@ export const EditorTable = ({useData})=>{
 
 
             </>
-          )
+        ) 
         }
