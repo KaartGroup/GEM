@@ -2,6 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import  kaartLogo  from "../../res/20-KAART-Color.svg";
+import gemlogo from "../../res/GEM.png";
 import {
   AppBar,
   Toolbar,
@@ -12,6 +13,8 @@ import {
   Link,
   GEMMenuItem,
   Button,
+  GEMButton,
+  GEMLogo,
 } from "./styles";
 import "./styles.css";
 const useStyles = makeStyles((theme) => ({
@@ -81,11 +84,11 @@ export const Header = () => {
         </div>
         <div class="spacer"></div>
         <GEMMenuItem>
-          <NavLink to="/" className={classes.selectedNavLink}>
-            <Button color="inherit" size="large">
-              G E M
-            </Button>
-            </NavLink>
+            <GEMButton color="inherit" size="large">
+              GEM
+            </GEMButton>
+          <GEMLogo src={gemlogo}>
+            </GEMLogo>
           </GEMMenuItem>
       </Toolbar>
     </AppBar>

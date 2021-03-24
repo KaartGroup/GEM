@@ -56,6 +56,16 @@ export const Link = styled.a`
   }
 `;
 
+export const GEMLogo = styled.img`
+  max-width: 100%;
+  height: 80px;
+  position: relative;
+  // tranform:translate(-100%, 0%)
+  &:hover {
+    transform: scale(1.2);
+  }
+`;
+
 export const KaartLogo = styled.img`
   max-width: 100%;
   height: 100px;
@@ -133,6 +143,40 @@ export const Button = styled.button`
   padding: 8px 8px;
   white-space: nowrap;
 `;
+
+export const GEMButton = styled.button`
+  // display: flex;
+  // transform: translate(150%, 0%);
+  overflow: visible;
+  // height: 20vh;
+  border: 0;
+  margin: 0;
+  display: inline-flex;
+  outline: 0;
+  position: relative;
+  align-items: center;
+  user-select: none;
+  vertical-align: middle;
+  justify-content: center;
+  text-decoration: none;
+  background-color: inherit;
+  -webkit-tap-highlight-color: transparent;ffffff
+  min-width: 64px;
+  box-sizing: border-box;
+  font-weight: 500;
+  line-height: 2;
+  border-radius: 4px;
+  letter-spacing: 0.02857em;
+  text-transform: uppercase;
+  color: #f4753c;
+  border-color: inherit;
+  font-size: 0.9375rem;
+  cursor: pointer;
+  padding: 8px 8px;
+  white-space: nowrap;
+  z-index: 1;
+`;
+
 
 export const GEMMenuItem = styled.div`
   background: transparent !important;
