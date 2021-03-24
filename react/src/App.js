@@ -17,7 +17,7 @@ function App() {
       <Route path ="/">
        <Header /> 
         <Gem />
-       {/* <Footer />  */}
+       <Footer /> 
        </Route> 
       </Switch>
       </DataProvider>
