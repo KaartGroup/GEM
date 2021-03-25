@@ -48,9 +48,9 @@ export const Grid = () => {
 
   const [state, setState] = useState({
     tableData:tableData,
-    TeamName:"Map Legends",
-    EditorName:"Mappy McMappington III",
-    UserName:"VLD-Whatever",
+    TeamName:"",
+    EditorName:"",
+    UserName:"",
     LineColor: '#A9A9A9',
     LineWidth: 5,
     NodeColor:"#D3D3D3",
@@ -81,8 +81,8 @@ export const Grid = () => {
   }, [])
 
     const GetUnUpload=() =>{
-      if (state.TeamName ==="Map Legends" && tableData[0].NAME !=null){
-        alert("Map Legends is a fictitious Team name used as a placeholder. Please enter a valid team name before exporting")
+      if (state.TeamName ==="" && tableData[0].NAME !=null){
+        alert("Please enter a valid team name before exporting")
       }
       if (tableData[0].NAME ===null){
         alert("No Data to export. You must either import an existing .mapscc file to edit, or populate the table with editor data in order to export.")
@@ -264,7 +264,10 @@ export const Grid = () => {
           setTableData(object)
         }}
         removeRequest();
-        setState({...state,newFile:true})
+        setState({...state,
+          newFile:true,
+          TeamName:""
+        })
       
       break;
 
@@ -300,8 +303,8 @@ export const Grid = () => {
       break;
       case "Clear":
         setState({...state,
-        EditorName: "Mappy McMappington III",
-        UserName: "VLD-whatever",
+        EditorName: "",
+        UserName: "",
         LineColor: '#A9A9A9',
         LineWidth: 5,
         NodeColor:"#D3D3D3",
@@ -335,9 +338,6 @@ export const Grid = () => {
   
         else if ( checkJson['editor'][0]['NAME']===null){
             alert("Invalid Selection");
-  
-        }else if (checkJson['editor'][0]['NAME']===null){
-            alert("Invalid selection");
   
         }else if (count > 1 && checkJson['editor'][0]['NAME']!=null){
         alert("Only one user may be edited at a time"); 
@@ -376,9 +376,15 @@ export const Grid = () => {
     
     const updateEditor = (e) => {
       let sub = e
-      if (state.EditorName === "Mappy McMappington III" && e ==="add"){
-        alert("Mr. McMappigton is a fictional editor used as a placeholder. Please enter a valid Name and Username. ")
+      if (state.EditorName === "" && e ==="add"){
+        alert("Please enter a valid Name for the Editor")
         return;
+      }
+      if (state.UserName === "" && e ==="add"){
+          alert("Please enter a valid OSM Username")
+          return;
+        
+        
       }else if(state.EditorName === "Mappy McMappington III" && e ==="update"){
         alert("You must first select an Editor from the table to update. ")
         return;
@@ -398,8 +404,8 @@ export const Grid = () => {
       }}
     update();
     setState({...state,
-      EditorName:"Mappy McMappington III",
-      UserName: "VLD-whatever",
+      EditorName:"",
+      UserName: "",
       LineColor: '#A9A9A9',
       LineWidth: 5,
       NodeColor:"#D3D3D3",

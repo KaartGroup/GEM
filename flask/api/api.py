@@ -399,6 +399,8 @@ def compile():
                     editor.NODECOLOR=injson[count]['NODECOLOR']
                     editor.NODESIZE=injson[count]['NODESIZE']
                     editor.NODESHAPE=injson[count]['NODESHAPE']
+                    editor.NODESHAPE= editor.NODESHAPE.replace("/icons/","")
+                    editor.NODESHAPE= editor.NODESHAPE.replace(".png","")
                     editor.LINEWIDTH=injson[count]['LINEWIDTH']
                     editor.LINECOLOR=injson[count]['LINECOLOR']
                     editor.USERBLOCK=re.sub(FINDUSERNAME, editor.NAME , one.USERBLOCK)
