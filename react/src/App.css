@@ -246,22 +246,7 @@ section {
   padding: 14px 20px;
 }
 
-label {
-  display: block;
-  font: 1rem "Fira Sans", sans-serif;
-  width: 200px;
-  height: 25px;
-  color: black;
-  border-bottom: 2px solid #f4753c;
-  background-color: seashell;
-  padding-top: 2px;
-}
 
-input,
-label {
-  margin: 0.4rem 0;
-  align-self: center;
-}
 
 p {
   font: 1rem "Fira Sans", sans-serif;

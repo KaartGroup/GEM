@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const MainFooter = styled.div`
   position: absolute;
-  transform: translate(0%, 250%);
+  transform: translate(0%, 300%);
   font-family: "Hind Guntur", sans-serif;
   width: 100vw;
   color: #666;
