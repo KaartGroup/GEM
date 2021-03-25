@@ -91,7 +91,7 @@ export const Grid = () => {
       }
       let outJson= [{"TeamName":state.TeamName,"LineColor":state.UnUpLineColor,"lineWidth":state.UnUpLineWidth,"NodeSize":state.UnUpNodeSize,"NodeColor":state.UnUpNodeColor,"NodeShape":state.UnUpNodeShape}]
       outJson= JSON.stringify(outJson)
-      let url ='/compile?fileID='+fileID
+      let url ='/api/compile?fileID='+fileID
       const goEx = async () => {
         const response =  await fetch(url, {method: "POST", body: outJson ,headers: {'Content-Type': 'application/json'}})
         if(response.ok){
@@ -211,11 +211,13 @@ export const Grid = () => {
       break; 
 
       case "Download":
-            let path = '/uploads?fileID='+state.TeamName;
-            const Downrequest = async () => {
-              return fetch(path, {method: "GET",responseType: 'blob'})
-              .then(response=>response.blob())
-              .then(blob => saveAs(blob, state.TeamName+'.mapcss'))
+        let path = '/api/uploads/'+ state.TeamName +".mapcss";
+        if  (path){
+          const Downrequest = async () => {
+            return fetch(path, {method: "GET",responseType: 'blob'})
+            .then(response=>response.blob())
+            .then(blob => saveAs(blob, state.TeamName+'.mapcss'))
+
         }
         Downrequest();
   
@@ -250,7 +252,7 @@ export const Grid = () => {
 
       case "RemoveAll":
         const removeRequest = async () => {
-        const response =  await fetch('/removeAll?fileID='+fileID, {method: "GET"})
+        const response =  await fetch('/api/removeAll?fileID='+fileID, {method: "GET"})
         if(response.ok){
           let object = await response.json()
           object=JSON.stringify(object)
@@ -389,7 +391,8 @@ export const Grid = () => {
     let index= Object.keys(checkJson.rowId)[0]
     let entry = {'NAME':state.EditorName,"UID":state.UserName,'NODESHAPE':state.NodeShape,'NODECOLOR':state.NodeColor,"NODESIZE":state.NodeSize,'LINEWIDTH':state.LineWidth,"LINECOLOR":state.LineColor}
     entry=JSON.stringify(entry)
-    let url ='/update?sub='+sub+'&index='+index+'&infile='+fileID+"&newFile="+state.newFile
+    let sub = e
+    let url ='/api/update?sub='+sub+'&index='+index+'&infile='+fileID
     const update = async () => {
       const response =  await fetch(url, {method: "POST", body: entry ,headers: {'Content-Type': 'application/json'}})
       if(response.ok){
