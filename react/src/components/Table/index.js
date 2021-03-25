@@ -106,7 +106,7 @@ export const EditorTable = (props)=>{
                               if(cell.column.id === 'LINECOLOR'){
                                 let index = cell.row.index 
                                 if (cell.value === null){
-                                  return <div></div> 
+                                  
                                 }else{
                                 return <img className="LineColors" src={cell.value} style={{'background-color':data[index].LINECOLOR}} alt=""/> 
                                 }}

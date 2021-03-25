@@ -39,15 +39,27 @@ export const EditButton = (props) => {
   const Add=()=>{
     props.action2('add')
   }
-        
+
+  if(props.bool===true){
     return (
-      <>
+
         <div>
           <Button onClick={props.action3}>Edit</Button>
-          <Button onClick={()=>props.action2('update')}>Update</Button>
           <Button onClick={Add}>Add</Button>
           <Button onClick={clear}>Clear</Button>
         </div> 
-      </>
+
     );
+  }else{
+    return (
+
+        <div>
+          <Button onClick={props.action3}>Edit</Button>
+          <Button onClick={()=>props.action2('update')}>Update</Button>
+          <Button onClick={clear}>Clear</Button>
+        </div> 
+
+    );
+  
+    }
   }

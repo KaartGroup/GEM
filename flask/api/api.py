@@ -260,20 +260,23 @@ def update():
     with open(path, 'r')as json_file:
         tempJson=json_file.read()
     tempJson=json.loads(tempJson)
-
     sub=request.args.get('sub')
-    if sub =="update":
-        tempJson[int(index)]=injson
-    if sub =="add":
-        if tempJson[0]['NAME']==None:
-            tempJson=[injson]
-        else:
-            tempJson.append(injson)
-           
-    with open(path, 'w')as json_file:
-            json.dump(tempJson, json_file)
-    return (jsonify(tempJson))
 
+    if sub =="update":
+        tempJson[int(index)+1]=injson
+        with open(path, 'w')as json_file:
+            json.dump(tempJson, json_file)
+        
+    if sub =="add":
+        tempJson.append(injson)
+        with open(path, 'w')as json_file:
+            json.dump(tempJson, json_file)
+
+    return (jsonify(tempJson[1:]))
+
+
+    
+    
 
 
 @app.route('/parse', methods=['GET', 'POST'])

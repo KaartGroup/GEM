@@ -69,6 +69,7 @@ export const Grid = () => {
     ShowUnUpLineColorMenu:false,
     ShowNodeColorMenu:false,
     ShowUnUpNodeColorMenu:false,
+    addEditor:true,
 
   });
 
@@ -191,6 +192,7 @@ export const Grid = () => {
       break; 
 
       case "ShowUnUpLineColorMenu":
+        //console.log(state.EditorName)
         setState({ ...state,ShowUnUpLineColorMenu:e})
       break; 
 
@@ -308,29 +310,54 @@ export const Grid = () => {
 
   }
 
-    const EditEditor = () => {
+  function isEmpty(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}
+
+
+    const ChangeAddButton=()=>{
       let outJson = state.RowData
       let checkJson= JSON.parse(outJson)
       let count =  0
       for (let key in checkJson['editor']){
           count ++
       }
-      outJson=JSON.stringify(outJson)
-      if ( checkJson['editor'][0]['NAME']===null){
-          alert("Invalid Selection");
-      }else if (checkJson['editor'][0]['NAME']===null){
-          alert("Invalid selection");
-      }else if (count > 1 && checkJson['editor'][0]['NAME']!=null){
-      alert("Only one user may be edited at a time");
-    
-      }else{
-           inEditName = checkJson['editor'][0]['NAME']
-           inUserName = checkJson['editor'][0]['UID']
-           inLineWidth = checkJson['editor'][0]['LINEWIDTH']
-           inNodeSize = checkJson['editor'][0]['NODESIZE']
-           inLineColor=checkJson['editor'][0]['LINECOLOR']
-           inNodeColor=checkJson['editor'][0]['NODECOLOR']
-           inNodeShape=checkJson['editor'][0]['NODESHAPE']
+      if (isEmpty(checkJson['rowId'])){
+        alert("Invalid Secection");}
+  
+        else if ( checkJson['editor'][0]['NAME']===null){
+            alert("Invalid Selection");
+  
+        }else if (checkJson['editor'][0]['NAME']===null){
+            alert("Invalid selection");
+  
+        }else if (count > 1 && checkJson['editor'][0]['NAME']!=null){
+        alert("Only one user may be edited at a time"); 
+        }else{
+      setState({ ...state,addEditor:false})
+     //
+    }
+  }
+
+  useEffect(() => {
+    if(state.addEditor===false){
+      EditEditor()}
+  }, [state.addEditor])
+
+    const EditEditor = () => {
+      let outJson = state.RowData
+      let checkJson= JSON.parse(outJson)
+      inEditName = checkJson['editor'][0]['NAME']
+      inUserName = checkJson['editor'][0]['UID']
+      inLineWidth = checkJson['editor'][0]['LINEWIDTH']
+      inNodeSize = checkJson['editor'][0]['NODESIZE']
+      inLineColor=checkJson['editor'][0]['LINECOLOR']
+      inNodeColor=checkJson['editor'][0]['NODECOLOR']
+      inNodeShape=checkJson['editor'][0]['NODESHAPE']
       setState({...state,
         EditorName: inEditName,
         UserName: inUserName,
@@ -340,9 +367,11 @@ export const Grid = () => {
         NodeShape:inNodeShape,
         NodeColor:inNodeColor,
       })
-    }}
+
+    }
     
     const updateEditor = (e) => {
+      let sub = e
       if (state.EditorName === "Mappy McMappington III" && e ==="add"){
         alert("Mr. McMappigton is a fictional editor used as a placeholder. Please enter a valid Name and Username. ")
         return;
@@ -355,7 +384,6 @@ export const Grid = () => {
     let index= Object.keys(checkJson.rowId)[0]
     let entry = {'NAME':state.EditorName,"UID":state.UserName,'NODESHAPE':state.NodeShape,'NODECOLOR':state.NodeColor,"NODESIZE":state.NodeSize,'LINEWIDTH':state.LineWidth,"LINECOLOR":state.LineColor}
     entry=JSON.stringify(entry)
-    let sub = e
     let url ='/update?sub='+sub+'&index='+index+'&infile='+fileID
     const update = async () => {
       const response =  await fetch(url, {method: "POST", body: entry ,headers: {'Content-Type': 'application/json'}})
@@ -363,7 +391,7 @@ export const Grid = () => {
         const obj= await response.json()
         setTableData(obj)
       }}
-    update()
+    update();
     setState({...state,
       EditorName:"Mappy McMappington III",
       UserName: "VLD-whatever",
@@ -371,9 +399,10 @@ export const Grid = () => {
       LineWidth: 5,
       NodeColor:"#D3D3D3",
       NodeSize:5,
-      NodeShape:'/icons/circle.png'
+      NodeShape:'/icons/circle.png',
+      addEditor:true
       })
-    }
+    } 
 
   return (
       <div className="Gem" >
@@ -387,7 +416,7 @@ export const Grid = () => {
             // layouts={layouts}
             // onLayoutChange={(layout) => onLayoutChange(layout)}
           >
-            <div
+            <div 
               className="Table"
               key="1"
               data-grid={{
@@ -470,7 +499,7 @@ export const Grid = () => {
               }}
             >
             <label>Add/Update Editor:</label> 
-            <EditButton       action={changeFeature} action2={updateEditor}action3={EditEditor}/>
+            <EditButton       action={changeFeature} action2={updateEditor}action3={ChangeAddButton}bool={state.addEditor}/>
             <EditorNameField  action={changeFeature}value={state.EditorName}/>
             <UserNameField    action={changeFeature}value={state.UserName}/>
             <LineWidthSpin    action={changeFeature}num={state.LineWidth}/>
