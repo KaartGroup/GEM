@@ -1,12 +1,12 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useLocalStorageState } from "../useLocalStorageState";
 import { json as fetchJson } from "d3-fetch";
+import { API_URL } from "components/constants.js";
 
 export const DataContext = createContext({});
 
 export const DataProvider = ({ children }) => {
 
-const API_URL = "http://localhost:5000/";
 const [fileID, setFileID] = useLocalStorageState("gem.file_id", null);
 const [tableData, setTableData] = useState(null);
 
