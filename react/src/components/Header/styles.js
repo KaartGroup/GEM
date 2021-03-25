@@ -57,10 +57,9 @@ export const Link = styled.a`
 `;
 
 export const GEMLogo = styled.img`
-  max-width: 100%;
-  height: 80px;
+  max-width: 50%;
+  height: 60px;
   position: relative;
-  // tranform:translate(-100%, 0%)
   &:hover {
     transform: scale(1.2);
   }
