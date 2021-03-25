@@ -106,17 +106,17 @@ export const EditorTable = (props)=>{
                               if(cell.column.id === 'LINECOLOR'){
                                 let index = cell.row.index 
                                 if (cell.value === null){
-                                  
+                                  return <td></td>
                                 }else{
-                                return <img className="LineColors" src={cell.value} style={{'background-color':data[index].LINECOLOR}} alt=""/> 
+                                return <td><img className="LineColors" src={cell.value} style={{'background-color':data[index].LINECOLOR}} alt=""/> </td>
                                 }}
 
                               if(cell.column.id === 'NODESHAPE'){
                                 let index = cell.row.index 
                                 if(cell.value ===null){
-                                  return <div></div> 
+                                  return <td></td>
                                 }else{
-                              return <img className="NodeIcons" src={cell.value} style={{'background-color':data[index].NODECOLOR}} alt=""/> 
+                              return <td> <img className="NodeIcons" src={cell.value} style={{'background-color':data[index].NODECOLOR}} alt=""/> </td>
                               }}else{
                            return <td {...cell.getCellProps()}>{
                             cell.render('Cell')

@@ -121,12 +121,6 @@ node.USERNAME{
   z-index: -5;
 }"""
 
-
-
-
-
-
-        
     def STRIPPER(self, IN):
         IN=str(IN).split(";")
         IN=str(IN[0])
@@ -192,21 +186,11 @@ node.USERNAME{
         self.OUTJSON.append(self.UnUpJson)      
         self.OUTPUTJSON=jsonify(self.OUTJSON)
 
-        
-
-
-
-
-
-
-
 ###################### # routes # #############################
-
 
 def root_dir():  # pragma: no cover
     return os.path.abspath(os.path.dirname(__file__))
 
-#@flask_cors.cross_origin(support_credentials=True)
 @app.route("/gem_json/template")
 @flask_cors.cross_origin(support_credentials=True)
 def get_template():
@@ -225,8 +209,6 @@ def get_or_create_json():
         with open(filename, 'w+')as json_file:
             json.dump(blankJson, json_file)
     return str(index)
-
-
 
 @app.route("/removeAll")
 def removeAll():
@@ -256,23 +238,34 @@ def update():
     injson= request.get_json()
     index=request.args.get('index')
     fileId=request.args.get('infile')
+    sub=request.args.get('sub')
+    newFile=request.args.get('newFile')
     path = os.path.join(root_dir(),f"tmp/generated/{fileId}.json")
     with open(path, 'r')as json_file:
         tempJson=json_file.read()
     tempJson=json.loads(tempJson)
-    sub=request.args.get('sub')
-
+    if newFile == "false":
+        if not ("NAME" in tempJson[-1]):
+            tempJson.pop(-1)
+    
     if sub =="update":
-        tempJson[int(index)+1]=injson
+        tempJson[int(index)]=injson
         with open(path, 'w')as json_file:
             json.dump(tempJson, json_file)
         
     if sub =="add":
-        tempJson.append(injson)
+        print(newFile)
+        if newFile == "true":
+            if tempJson[0]['NAME']==None:
+                tempJson[0]=injson
+            else:
+                tempJson.append(injson)
+        else:
+                tempJson.append(injson)
         with open(path, 'w')as json_file:
             json.dump(tempJson, json_file)
 
-    return (jsonify(tempJson[1:]))
+    return (jsonify(tempJson))
 
 
     

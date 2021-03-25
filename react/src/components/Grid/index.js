@@ -70,6 +70,7 @@ export const Grid = () => {
     ShowNodeColorMenu:false,
     ShowUnUpNodeColorMenu:false,
     addEditor:true,
+    newFile:true,
 
   });
 
@@ -224,7 +225,9 @@ export const Grid = () => {
       break; 
 
       case "UnUpData":
-        setState({ ...state,TeamName:e[0]["TEAMNAME"],
+        setState({ ...state,
+        newFile:false,
+        TeamName:e[0]["TEAMNAME"],
         UnUpNodeColor:e[0]["UNUPNODECOLOR"], 
         UnUpNodeSize:e[0]["UNUPNODESIZE"],
         UnUpNodeShape:"/icons/"+e[0]["UNUPNODESHAPE"]+".png",  
@@ -246,12 +249,12 @@ export const Grid = () => {
             setTableData(object)
           }}
           request();
+  
         
       break; 
 
 
       case "RemoveAll":
-
         const removeRequest = async () => {
         const response =  await fetch('/removeAll?fileID='+fileID, {method: "GET"})
         if(response.ok){
@@ -261,6 +264,7 @@ export const Grid = () => {
           setTableData(object)
         }}
         removeRequest();
+        setState({...state,newFile:true})
       
       break;
 
@@ -379,12 +383,13 @@ export const Grid = () => {
         alert("You must first select an Editor from the table to update. ")
         return;
       }
+    
     let outJson = state.RowData
     let checkJson= JSON.parse(outJson)
     let index= Object.keys(checkJson.rowId)[0]
     let entry = {'NAME':state.EditorName,"UID":state.UserName,'NODESHAPE':state.NodeShape,'NODECOLOR':state.NodeColor,"NODESIZE":state.NodeSize,'LINEWIDTH':state.LineWidth,"LINECOLOR":state.LineColor}
     entry=JSON.stringify(entry)
-    let url ='/update?sub='+sub+'&index='+index+'&infile='+fileID
+    let url ='/update?sub='+sub+'&index='+index+'&infile='+fileID+"&newFile="+state.newFile
     const update = async () => {
       const response =  await fetch(url, {method: "POST", body: entry ,headers: {'Content-Type': 'application/json'}})
       if(response.ok){
