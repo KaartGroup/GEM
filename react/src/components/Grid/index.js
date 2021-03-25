@@ -238,7 +238,7 @@ export const Grid = () => {
       case "RemoveEditor":
           outJson=JSON.stringify(outJson)
           const request = async () => {
-          const response =  await fetch('/table?sub=remove&fileID='+fileID, {method: "POST", body: outJson ,headers: {'Content-Type': 'application/json'}})
+          const response =  await fetch('/api/table?sub=remove&fileID='+fileID, {method: "POST", body: outJson ,headers: {'Content-Type': 'application/json'}})
           if(response.ok){
             let object = await response.json()
             object=JSON.stringify(object)
@@ -271,7 +271,7 @@ export const Grid = () => {
         
         outJson=JSON.stringify(outJson)
         const moveUpRequest = async () => {
-        const response =  await fetch('/table?sub=moveUp&fileID='+fileID,{method: "POST", body: outJson ,headers: {'Content-Type': 'application/json'}})
+        const response =  await fetch('/api/table?sub=moveUp&fileID='+fileID,{method: "POST", body: outJson ,headers: {'Content-Type': 'application/json'}})
         if(response.ok){
           let object = await response.json()
           object=JSON.stringify(object)
@@ -285,7 +285,7 @@ export const Grid = () => {
       case "MoveDown":
         outJson=JSON.stringify(outJson)
         const moveDownRequest = async () => {
-        const response =  await fetch('/table?sub=moveDown&fileID='+fileID,{method: "POST", body: outJson ,headers: {'Content-Type': 'application/json'}})
+        const response =  await fetch('/api/table?sub=moveDown&fileID='+fileID,{method: "POST", body: outJson ,headers: {'Content-Type': 'application/json'}})
         if(response.ok){
           let object = await response.json()
           object=JSON.stringify(object)
