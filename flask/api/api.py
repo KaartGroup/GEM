@@ -193,14 +193,15 @@ node.USERNAME{
 def root_dir():  # pragma: no cover
     return os.path.abspath(os.path.dirname(__file__))
 
-@app.route("/gem_json/template")
+#@flask_cors.cross_origin(support_credentials=True)
+@app.route("/api/gem_json/template")
 @flask_cors.cross_origin(support_credentials=True)
 def get_template():
     index=request.args.get('index')
     src = os.path.join(root_dir(),f"tmp/generated/{index}.json")
     return send_file(src)
 
-@app.route("/gem_json/generate")
+@app.route("/api/gem_json/generate")
 def get_or_create_json():
     index=uuid.uuid4()
     base_dir = (f"{root_dir()}/tmp/generated/") 
@@ -212,7 +213,9 @@ def get_or_create_json():
             json.dump(blankJson, json_file)
     return str(index)
 
-@app.route("/removeAll")
+
+
+@app.route("/api/removeAll")
 def removeAll():
     fileID =request.args.get("fileID")
     path = (f"{root_dir()}/tmp/generated/{fileID}.json")
@@ -235,7 +238,7 @@ def scheduled():
         for i in files:
             os.remove(path1+i)
 
-@app.route('/update', methods=['GET', 'POST'])
+@app.route('/api/update', methods=['GET', 'POST'])
 def update():
     injson= request.get_json()
     index=request.args.get('index')
@@ -269,7 +272,7 @@ def update():
 
     return (jsonify(tempJson))
 
-@app.route('/parse', methods=['GET', 'POST'])
+@app.route('/api/parse', methods=['GET', 'POST'])
 def upload_file():
         one = MAIN()
         fileId=request.args.get('ID')
@@ -281,7 +284,9 @@ def upload_file():
              json.dump(one.OUTJSON, json_file)
         return(jsonify(one.OUTJSON))
 
-@app.route('/table', methods=['GET', 'POST'])
+
+
+@app.route('/api/table', methods=['GET', 'POST'])
 def table():
 
     newJson=[]
@@ -352,17 +357,15 @@ def table():
     return(outJson)
 
 
-@app.route('/uploads', methods=['GET', 'POST'])
-def download():
-    fileID = request.args.get('fileID')
-    uploads =  '/Users/imac25/Documents/WEBGEM/GEM/flask/api/static'    
-    filename=filename=fileID+".mapcss"
-    return send_from_directory(uploads,filename )
+@app.route('/api/uploads/<path:filename>', methods=['GET', 'POST'])
+def download(filename):
+    uploads = os.path.join(root_dir(), app.config['UPLOAD_FOLDER'])    
+    return send_from_directory(directory=uploads, filename=filename)
 
 
 
 
-@app.route('/compile', methods=['GET', 'POST'])
+@app.route('/api/compile', methods=['GET', 'POST'])
 def compile():
         one = MAIN()
         count = 0

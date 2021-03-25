@@ -52,7 +52,7 @@ export const FileButtons = (props) => {
         let formData = new FormData();
         formData.append("infile", infile);
         const request = async () => {
-        const response =  await fetch('/parse?ID='+fileID, {method:"POST", body: formData})
+        const response =  await fetch('/api/parse?ID='+fileID, {method:"POST", body: formData})
         if(response.ok){
           const obj= await response.json()
           let UnUpData = obj[obj.length-1]
