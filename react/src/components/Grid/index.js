@@ -211,17 +211,14 @@ export const Grid = () => {
 
 
       case "Download":
-        let path = '/uploads/'+ state.TeamName +".mapcss";
-        if  (path){
-          const Downrequest = async () => {
-            return fetch(path, {method: "GET",responseType: 'blob'})
-            .then(response=>response.blob())
-            .then(blob => saveAs(blob, state.TeamName+'.mapcss'))
-
+            let path = '/uploads?fileID='+state.TeamName;
+            const Downrequest = async () => {
+              return fetch(path, {method: "GET",responseType: 'blob'})
+              .then(response=>response.blob())
+              .then(blob => saveAs(blob, state.TeamName+'.mapcss'))
         }
         Downrequest();
-      }
-
+  
       break; 
 
       case "UnUpData":
@@ -252,7 +249,6 @@ export const Grid = () => {
   
         
       break; 
-
 
       case "RemoveAll":
         const removeRequest = async () => {

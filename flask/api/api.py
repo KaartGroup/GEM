@@ -6,6 +6,7 @@ from flask import (Flask, render_template, redirect, request, jsonify, json, sen
 #from flask import Flask, flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
 app = Flask("__main__")
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 10
 mainpath= os.getcwd()
 UPLOAD_FOLDER = mainpath + '/static'
 ALLOWED_EXTENSIONS = {'txt', 'mapcss', 'png', 'jpg', 'jpeg', 'gif'}
@@ -357,10 +358,15 @@ def table():
     return(outJson)
 
 
-@app.route('/uploads/<path:filename>', methods=['GET', 'POST'])
-def download(filename):
-    uploads = os.path.join(root_dir(), app.config['UPLOAD_FOLDER'])    
-    return send_from_directory(directory=uploads, filename=filename)
+@app.route('/uploads', methods=['GET', 'POST'])
+def download():
+    fileID = request.args.get('fileID')
+
+    uploads =  '/Users/imac25/Documents/WEBGEM/GEM/flask/api/static'    
+    print(uploads)
+    #return ("TEST")
+    filename=filename=fileID+".mapcss"
+    return send_from_directory(uploads,filename )
 
 
 
@@ -401,6 +407,7 @@ def compile():
                     editor.NODESHAPE=injson[count]['NODESHAPE']
                     editor.NODESHAPE= editor.NODESHAPE.replace("/icons/","")
                     editor.NODESHAPE= editor.NODESHAPE.replace(".png","")
+                    #print(editor.NODESHAPE)
                     editor.LINEWIDTH=injson[count]['LINEWIDTH']
                     editor.LINECOLOR=injson[count]['LINECOLOR']
                     editor.USERBLOCK=re.sub(FINDUSERNAME, editor.NAME , one.USERBLOCK)
@@ -414,7 +421,11 @@ def compile():
                     count += 1
         STATICBLOCK = re.sub(FINDNOTUPNODESIZE, str(unUpJson[0]['NodeSize']), one.STATICBLOCK)
         STATICBLOCK = re.sub(FINDNOTUPNODECOLOR,str(unUpJson[0]['NodeColor']), STATICBLOCK)
-        STATICBLOCK = re.sub(FINDNOTUPNODESHAPE, str(unUpJson[0]['NodeShape']), STATICBLOCK)
+        UnUpShape=str(unUpJson[0]['NodeShape']).replace("/icons/","")
+        UnUpShape=UnUpShape.replace(".png","")
+        #print(UnUpShape)
+        STATICBLOCK = re.sub(FINDNOTUPNODESHAPE, UnUpShape, STATICBLOCK)
+        
         STATICBLOCK = re.sub(FINDNOTUPWAYCOLOR, str(unUpJson[0]['LineColor']), STATICBLOCK)
         STATICBLOCK = re.sub(FINDNOTUPWAYWIDTH, str(unUpJson[0]['lineWidth']), STATICBLOCK)
         STATICBLOCK = re.sub(FINDTITLE, str(unUpJson[0]['TeamName']), STATICBLOCK)
