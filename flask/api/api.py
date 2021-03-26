@@ -64,13 +64,12 @@ node:modified::modified_layer {
     z-index: -5;
 }
 
-way:modified::modified_layer,
-node:modified < way::modified_layer {
+way:modified::modified_layer{
     width: 6;
     color: transparent;
     opacity: 0;
     casing-width: 1;
-    casing-color: #fffff;
+    casing-color: NOTUPWAYCOLOR;
     casing-opacity: 0.7;
     z-index: -5;
 }
@@ -151,8 +150,10 @@ node.USERNAME{
         self.UNUPNODESIZE = self.STRIPPER(self.UNUPNODESIZE)
         self.UNUPNODECOLOR = re.findall(r'symbol-stroke-color:(.*)\;',TEAMTEXT)
         self.UNUPNODECOLOR = self.STRIPPER(self.UNUPNODECOLOR)
+
         self.UNUPLINECOLOR = re.findall(r'casing-color:(.*)\;',TEAMTEXT)
         self.UNUPLINECOLOR = self.STRIPPER(self.UNUPLINECOLOR)
+
         self.UNUPLINEWIDTH = re.findall(r'casing-width:(.*)\;',TEAMTEXT)
         self.UNUPLINEWIDTH = self.STRIPPER(self.UNUPLINEWIDTH)
         self.UnUpJson.append({"TEAMNAME":self.TEAMNAME,"UNUPNODESHAPE":self.UNUPNODESHAPE,"UNUPNODESIZE":self.UNUPNODESIZE,"UNUPNODECOLOR":self.UNUPNODECOLOR,"UNUPLINECOLOR":self.UNUPLINECOLOR,"UNUPLINEWIDTH":self.UNUPLINEWIDTH})
