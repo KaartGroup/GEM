@@ -83,9 +83,11 @@ export const Grid = () => {
     const GetUnUpload=() =>{
       if (state.TeamName ==="" && tableData[0].NAME !=null){
         alert("Please enter a valid team name before exporting")
+        return
       }
       if (tableData[0].NAME ===null){
         alert("No Data to export. You must either import an existing .mapscc file to edit, or populate the table with editor data in order to export.")
+        return
       }
       let outJson= [{"TeamName":state.TeamName,"LineColor":state.UnUpLineColor,"lineWidth":state.UnUpLineWidth,"NodeSize":state.UnUpNodeSize,"NodeColor":state.UnUpNodeColor,"NodeShape":state.UnUpNodeShape}]
       outJson= JSON.stringify(outJson)
