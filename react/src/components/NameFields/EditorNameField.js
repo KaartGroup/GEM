@@ -4,7 +4,7 @@ const handleChangeComplete = (text) => {
     props.action(text.target.value,"EditorName")
 }
     return (
-        <div >Editor Name:
+        <div >Editor Name:  
             <input
               name="fname"
               type="text"

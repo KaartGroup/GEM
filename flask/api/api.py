@@ -268,11 +268,6 @@ def update():
 
     return (jsonify(tempJson))
 
-
-    
-    
-
-
 @app.route('/parse', methods=['GET', 'POST'])
 def upload_file():
         one = MAIN()
@@ -284,8 +279,6 @@ def upload_file():
         with open(path, 'w')as json_file:
              json.dump(one.OUTJSON, json_file)
         return(jsonify(one.OUTJSON))
-
-
 
 @app.route('/table', methods=['GET', 'POST'])
 def table():
@@ -361,10 +354,7 @@ def table():
 @app.route('/uploads', methods=['GET', 'POST'])
 def download():
     fileID = request.args.get('fileID')
-
     uploads =  '/Users/imac25/Documents/WEBGEM/GEM/flask/api/static'    
-    print(uploads)
-    #return ("TEST")
     filename=filename=fileID+".mapcss"
     return send_from_directory(uploads,filename )
 

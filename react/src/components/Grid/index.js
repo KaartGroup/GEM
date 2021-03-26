@@ -193,7 +193,6 @@ export const Grid = () => {
       break; 
 
       case "ShowUnUpLineColorMenu":
-        //console.log(state.EditorName)
         setState({ ...state,ShowUnUpLineColorMenu:e})
       break; 
 
@@ -208,7 +207,6 @@ export const Grid = () => {
       case "GetRowData":
         setState({ ...state,RowData:e})
       break; 
-
 
       case "Download":
             let path = '/uploads?fileID='+state.TeamName;
@@ -246,8 +244,6 @@ export const Grid = () => {
             setTableData(object)
           }}
           request();
-  
-        
       break; 
 
       case "RemoveAll":
@@ -417,7 +413,7 @@ export const Grid = () => {
             measureBeforeMount={true}
             className="layout"
             cols={12}
-            containerPadding={[10, 10]}
+            containerPadding={[5, 5]}
             // rowHeight={getViewHeight() / 2}
             // margin={[10, 10]}
             // layouts={layouts}
@@ -427,10 +423,10 @@ export const Grid = () => {
               className="Table"
               key="1"
               data-grid={{
-                x: .5,
-                y: 0,
-                w: 10,
-                h: 1,
+                x: .1,
+                y: .1,
+                w: 3,
+                h: .5,
                 i: "table",
                 static: true,
               }}
@@ -444,52 +440,53 @@ export const Grid = () => {
               className="FileFunctions"
               key="2"
               data-grid={{
-                x: 10,
-                y: 1,
+                x: 8.8,
+                y: .1,
                 w: 1,
                 h: 1,
                 i: "file",
                 static: true,
               }}
-            >
-              <label>Import/Export</label>
-                <FileButtons fileID={state.fileID} action={changeFeature} /> 
-                <ExportButton action={GetUnUpload}/>
-                <DownloadButton action={changeFeature}/>
+            > <div className="MenuLabel">
+              <label >Import/Export:</label>
+              </div>
+              
+              <label>Team Name:</label> 
+              <div className="MenuLine">
+              <TeamNameField action={changeFeature} value={state.TeamName}/> 
+              </div>
+              <div className="MenuLine">
+              <FileButtons fileID={state.fileID} action={changeFeature} /> 
+              <ExportButton action={GetUnUpload}/>
+              <DownloadButton action={changeFeature}/>
+              </div>
             </div>
-            <div
-              className="team"
-              key="3"
-              data-grid={{
-                x: 10,
-                y: 1,
-                w: 2,
-                h: 1,
-                i: "team",
-                static: true,
-              }}
-            >
-            <label>Team Name:</label> 
-            <TeamNameField action={changeFeature} value={state.TeamName}/> 
-            </div> 
+
             <div
               className="UnUploaded"
               key="4"
               data-grid={{
-                x: 4.5,
-                y: 1,
-                w: 2,
+                x: 6.4,
+                y: .1,
+                w: 2.4,
                 h: 1,
                 i: "UnUpload",
                 static: true,
               }}
-            >
+            >  
+            <div className="MenuLabel">
             <label>Non-uploaded edits:</label> 
+            </div>
+            <div className="MenuLine">
             <UnUpLineWidthSpin  num={state.UnUpLineWidth}action={changeFeature}/>
+            </div>
+            <div className="MenuLine">
             <UnUpNodeSizeSpin  num={state.UnUpNodeSize}action={changeFeature}/>
-
+            </div>
+            <div className="MenuLine">
             <UnUpLineColorPicker  action={changeFeature}color={state.UnUpLineColor}showMenu={state.ShowUnUpLineColorMenu}/>
             <UnUpNodeColorPicker action={changeFeature}color={state.UnUpNodeColor}showMenu={state.ShowUnUpNodeColorMenu}/>
+            </div>
             <UnUpNodeShapeMenu  action={changeFeature}color={state.UnUpNodeColor}src={state.UnUpNodeShape} ShowMenu={state.ShowUnUpShapeMenu}/>
             </div> 
 
@@ -497,24 +494,34 @@ export const Grid = () => {
               className="EditEditor"
               key="5"
               data-grid={{
-                x: 6.5,
-                y: 1,
-                w: 2,
+                x: 4,
+                y: .1,
+                w: 2.4,
                 h: 1,
                 i: "Im/Ex",
                 static: true,
               }}
             >
-            <label>Add/Update Editor:</label> 
+            <div className="MenuLabel">
+            <label >Add/Update Editor:</label> 
+            </div>
             <EditButton       action={changeFeature} action2={updateEditor}action3={ChangeAddButton}bool={state.addEditor}/>
+            <div className="MenuLine">
             <EditorNameField  action={changeFeature}value={state.EditorName}/>
+            </div>
+            <div className="MenuLine">
             <UserNameField    action={changeFeature}value={state.UserName}/>
+            </div>
+            <div className="MenuLine">
             <LineWidthSpin    action={changeFeature}num={state.LineWidth}/>
+            </div>
+            <div className="MenuLine">
             <NodeSizeSpin     action={changeFeature}num={state.NodeSize}/>
-
-
+            </div>
+            <div className="MenuLine">
             <LineColorPicker  action={changeFeature}color={state.LineColor}showMenu={state.ShowLineColorMenu}/>
             <NodeColorPicker  action={changeFeature}color={state.NodeColor}showMenu={state.ShowNodeColorMenu}/>
+            </div>
             <NodeShapeMenu    action={changeFeature}color={state.NodeColor}src={state.NodeShape} ShowMenu={state.ShowShapeMenu}/>
             </div>
           </GridLayout>

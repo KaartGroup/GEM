@@ -71,12 +71,14 @@ return(
 
 
    <>
+
     <Button type='file' name='file'onClick={()=>fileInput.current.click()}>Upload</Button>
           <input 
           ref={fileInput} 
           onChange={(e)=>onChange(e)}
           type="file" 
           style={{ display: 'none' }} />
+
     </>
     );
 };

@@ -14,11 +14,11 @@ background-color: ${(props) => theme[props.theme].default};
 color: white;
 width:20;
 height:20;
-padding: 5px 15px;
+padding: 5px 5px;
 border-radius: 5px;
 outline: 0;
 text-transform: uppercase;
-margin: 10px 0px;
+margin: 0px 10px;
 cursor: pointer;
 box-shadow: 0px 2px 2px lightgray;
 transition: ease background-color 250ms;
@@ -48,20 +48,20 @@ const toggleShowPicker = ()=>{
     if (props.showMenu){
     return (
       <>
-      <div>
+      <div className="LineColorLabel">
       <label> Node Color:</label>
       </div>
       <div >
-        <SketchPicker color={props.color}onChange={changeColor}/>
+        <SketchPicker height={50} disableAlpha={false} color={props.color}onChange={changeColor}/>
       </div>
-      <div>
+
         <Button onClick={toggleShowPicker}>Close</Button>
-      </div>
+
       </>
     )}else{
       return (
         <>
-        <div>
+        <div >
         <label> Node Color:</label>
         </div>
         <div>

@@ -6,7 +6,7 @@ export const UserNameField =(props)=> {
     props.action(text.target.value,"UserName")
 }
     return (
-        <div>User Name:
+        <div>OSM Username:
             <input
               name="uname"
               type="text"
