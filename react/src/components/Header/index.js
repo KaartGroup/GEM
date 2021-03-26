@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import  kaartLogo  from "../../res/20-KAART-Color.svg";
 import  GemLogo from "../../res/GEMicon.svg";
+import  Gemblack from "../../res/GEMblack.png";
 import {
   AppBar,
   Toolbar,
@@ -89,9 +90,8 @@ export const Header = () => {
               G E M
             </Button>
             </NavLink>
-
           </GEMMenuItem>
-
+          <img className="GEMIcon" src={Gemblack} alt=""/>
       </Toolbar>
     </AppBar>
   );

@@ -459,3 +459,15 @@ body {
 
 
 
+.GEMIcon{
+  height:7%;
+  width: 7%;
+  padding:0px;
+  margin:0%;
+  background-color: #fffdfd;
+
+}
+.GEMIcon:hover{
+  height:8%;
+  width: 8%;
+}
