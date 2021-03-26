@@ -440,7 +440,7 @@ export const Grid = () => {
               className="FileFunctions"
               key="2"
               data-grid={{
-                x: 8.8,
+                x: 9,
                 y: .1,
                 w: 1,
                 h: 1,
@@ -466,7 +466,7 @@ export const Grid = () => {
               className="UnUploaded"
               key="4"
               data-grid={{
-                x: 6.4,
+                x: 6.6,
                 y: .1,
                 w: 2.4,
                 h: 1,
@@ -487,14 +487,16 @@ export const Grid = () => {
             <UnUpLineColorPicker  action={changeFeature}color={state.UnUpLineColor}showMenu={state.ShowUnUpLineColorMenu}/>
             <UnUpNodeColorPicker action={changeFeature}color={state.UnUpNodeColor}showMenu={state.ShowUnUpNodeColorMenu}/>
             </div>
+            <div className="MenuLine">
             <UnUpNodeShapeMenu  action={changeFeature}color={state.UnUpNodeColor}src={state.UnUpNodeShape} ShowMenu={state.ShowUnUpShapeMenu}/>
+            </div>
             </div> 
 
             <div
               className="EditEditor"
               key="5"
               data-grid={{
-                x: 4,
+                x: 4.2,
                 y: .1,
                 w: 2.4,
                 h: 1,
@@ -521,8 +523,10 @@ export const Grid = () => {
             <div className="MenuLine">
             <LineColorPicker  action={changeFeature}color={state.LineColor}showMenu={state.ShowLineColorMenu}/>
             <NodeColorPicker  action={changeFeature}color={state.NodeColor}showMenu={state.ShowNodeColorMenu}/>
-            </div>
+            </div >
+            <div className="MenuLine">
             <NodeShapeMenu    action={changeFeature}color={state.NodeColor}src={state.NodeShape} ShowMenu={state.ShowShapeMenu}/>
+            </div>
             </div>
           </GridLayout>
       </div>

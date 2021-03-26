@@ -59,17 +59,13 @@ const toggleShowMenu = ()=>{
       <div>
       <label> Node Shape:</label>
       </div>
-      <div>
+      <div className="ShapeMenu">
         <Button style={{'background-color':'White'}}onClick={()=>changeShape('/icons/circle.png')}><img className="NodeIcons" src={'/icons/circle.png'} style={{'background-color':props.color}} alt=""/></Button>
         <Button style={{'background-color':'White'}}onClick={()=>changeShape('/icons/triangle.png')}><img className="NodeIcons" src={'/icons/triangle.png'} style={{'background-color':props.color}} alt=""/></Button>
         <Button style={{'background-color':'White'}}onClick={()=>changeShape('/icons/square.png')}><img className="NodeIcons" src={'/icons/square.png'} style={{'background-color':props.color}} alt=""/></Button>
-      </div>
-      <div>
         <Button style={{'background-color':'White'}}onClick={()=>changeShape('/icons/pentagon.png')}><img className="NodeIcons" src={'/icons/pentagon.png'} style={{'background-color':props.color}} alt=""/></Button>
         <Button style={{'background-color':'White'}}onClick={()=>changeShape('/icons/hexagon.png')}><img className="NodeIcons" src={'/icons/hexagon.png'} style={{'background-color':props.color}} alt=""/></Button>
         <Button style={{'background-color':'White'}}onClick={()=>changeShape('/icons/heptagon.png')}><img className="NodeIcons" src={'/icons/heptagon.png'} style={{'background-color':props.color}} alt=""/></Button>
-      </div>
-      <div>
         <Button style={{'background-color':'White'}}onClick={()=>changeShape('/icons/octagon.png')}><img className="NodeIcons" src={'/icons/octagon.png'} style={{'background-color':props.color}} alt=""/></Button>
         <Button style={{'background-color':'White'}}onClick={()=>changeShape('/icons/nonagon.png')}><img className="NodeIcons" src={'/icons/nonagon.png'} style={{'background-color':props.color}} alt=""/></Button>
         <Button style={{'background-color':'White'}}onClick={()=>changeShape('/icons/decagon.png')}><img className="NodeIcons" src={'/icons/decagon.png'} style={{'background-color':props.color}} alt=""/></Button>
@@ -81,14 +77,15 @@ const toggleShowMenu = ()=>{
     )}else{
       return (
         <>
-        <div>
+        <div className="LineColorLabel">
         <label> Node Shape:</label>
+        </div>
+
+        <div>
+        <img className="NodeIcons" src={props.src} style={{'background-color':props.color}} alt=""/>
         </div>
         <div>
         <Button onClick={toggleShowMenu}>Open</Button>
-        </div>
-        <div>
-        <img className="NodeIcons" src={props.src} style={{'background-color':props.color}} alt=""/>
         </div>
          </>
       )

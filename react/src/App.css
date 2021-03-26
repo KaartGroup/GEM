@@ -454,10 +454,14 @@ body {
 .LineColorLabel{
   font-size: 15px;
   background-color: #fffdfd;
-  margin-right:5px
+  margin-right:5px;
+  padding-bottom:10px
 }
 
+.ShapeMenu{
+  display: flex;
 
+}
 
 .GEMIcon{
   height:7%;
@@ -470,4 +474,7 @@ body {
 .GEMIcon:hover{
   height:8%;
   width: 8%;
+}
+.Table{
+  padding-right:10px;
 }
