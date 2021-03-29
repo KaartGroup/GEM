@@ -1,4 +1,4 @@
-import React, { Component, useState, useContext, useEffect } from "react";
+  import React, { Component, useState, useContext, useEffect } from "react";
 import ReactGridLayout, { WidthProvider } from "react-grid-layout";
 import "./styles.css";
 import { FileButtons } from "components/FileButtons";
@@ -211,13 +211,11 @@ export const Grid = () => {
       break; 
 
       case "Download":
-        let path = '/api/uploads/'+ state.TeamName +".mapcss";
-        if  (path){
-          const Downrequest = async () => {
-            return fetch(path, {method: "GET",responseType: 'blob'})
-            .then(response=>response.blob())
-            .then(blob => saveAs(blob, state.TeamName+'.mapcss'))
-
+            let path = '/api/uploads/' + state.TeamName + ".mapcss";
+            const Downrequest = async () => {
+              return fetch(path, {method: "GET",responseType: 'blob'})
+              .then(response=>response.blob())
+              .then(blob => saveAs(blob, state.TeamName + ".mapcss"))
         }
         Downrequest();
   
@@ -391,8 +389,7 @@ export const Grid = () => {
     let index= Object.keys(checkJson.rowId)[0]
     let entry = {'NAME':state.EditorName,"UID":state.UserName,'NODESHAPE':state.NodeShape,'NODECOLOR':state.NodeColor,"NODESIZE":state.NodeSize,'LINEWIDTH':state.LineWidth,"LINECOLOR":state.LineColor}
     entry=JSON.stringify(entry)
-    let sub = e
-    let url ='/api/update?sub='+sub+'&index='+index+'&infile='+fileID
+    let url ='/api/update?sub='+sub+'&index='+index+'&infile='+fileID+"&newFile="+state.newFile
     const update = async () => {
       const response =  await fetch(url, {method: "POST", body: entry ,headers: {'Content-Type': 'application/json'}})
       if(response.ok){

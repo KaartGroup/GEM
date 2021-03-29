@@ -57,11 +57,11 @@ export const Link = styled.a`
 `;
 
 export const GEMLogo = styled.img`
-  max-width: 50%;
-  height: 60px;
+  max-width: 3%;
+  max-height: 3%;
   position: relative;
   &:hover {
-    transform: scale(1.2);
+    transform: scale(1.5);
   }
 `;
 
@@ -144,10 +144,7 @@ export const Button = styled.button`
 `;
 
 export const GEMButton = styled.button`
-  // display: flex;
-  // transform: translate(150%, 0%);
   overflow: visible;
-  // height: 20vh;
   border: 0;
   margin: 0;
   display: inline-flex;
@@ -169,7 +166,7 @@ export const GEMButton = styled.button`
   text-transform: uppercase;
   color: #f4753c;
   border-color: inherit;
-  font-size: 0.9375rem;
+  font-size: 1.25rem;
   cursor: pointer;
   padding: 8px 8px;
   white-space: nowrap;

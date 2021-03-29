@@ -359,7 +359,7 @@ def table():
 
 @app.route('/api/uploads/<path:filename>', methods=['GET', 'POST'])
 def download(filename):
-    uploads = os.path.join(root_dir(), app.config['UPLOAD_FOLDER'])    
+    uploads = os.path.join(root_dir(), app.config['UPLOAD_FOLDER'])
     return send_from_directory(directory=uploads, filename=filename)
 
 
