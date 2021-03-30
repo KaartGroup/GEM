@@ -97,7 +97,7 @@ export const Footer = () => {
               ></SocialImage>
             </SocialLink>
             <SocialLink
-              href="https://github.com/KaartGroup"
+              href="https://github.com/KaartGroup/GEM"
               title="KAART Group Github"
             >
               <SocialImage

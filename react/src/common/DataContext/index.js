@@ -8,7 +8,10 @@ export const DataContext = createContext({});
 export const DataProvider = ({ children }) => {
 
 const [fileID, setFileID] = useLocalStorageState("gem.file_id", null);
+
 const [tableData, setTableData] = useState(null);
+
+const [EditorLayout, setEditorLayout] = useState(null);
 
   useEffect(() => {
     if (fileID != null) {
@@ -53,7 +56,8 @@ const generateGemJsonId = () => {
         setTableData,
         fetchGemJson,
         generateGemJsonId,
-
+        EditorLayout,
+        setEditorLayout,
         TeamName:"Sneffles",
         EditorName:"Mappy McMappington III",
         UserName:"VLD-Whatever",

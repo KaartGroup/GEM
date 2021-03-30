@@ -24,18 +24,10 @@ import { MoveButtons } from "../TableButtons/MoveButtons.js"
 import { render } from "@testing-library/react";
 import { DataContext } from "../../common/DataContext";
 import { saveAs } from 'file-saver'
-var inEditName;
-var inUserName;
-var inLineWidth;
-var inNodeSize;
-var inLineWidth;
-var inNodeSize;
-var inLineColor;
-var inNodeColor;
-var inNodeShape;
+import { GEM, AddUpdateEditor, UpExDown, TeamTable, UnUploadedEditor  } from "./styles.js";
 
 
-
+var inEditName, inUserName, inLineWidth, inNodeSize, inLineWidth, inNodeSize, inLineColor, inNodeColor, inNodeShape;
 
 const GridLayout = WidthProvider(ReactGridLayout);
 
@@ -410,7 +402,8 @@ export const Grid = () => {
     } 
 
   return (
-      <div className="Gem" >
+    <div className="Gem" >
+        <GEM>
           <GridLayout
             measureBeforeMount={true}
             className="layout"
@@ -420,7 +413,7 @@ export const Grid = () => {
             // margin={[10, 10]}
             // layouts={layouts}
             // onLayoutChange={(layout) => onLayoutChange(layout)}
-          >
+          ><TeamTable>
             <div 
               className="Table"
               key="1"
@@ -437,7 +430,8 @@ export const Grid = () => {
                 <RemoveButtons action={changeFeature}/>
                 <MoveButtons action={changeFeature}/>
             </div>
-
+            </TeamTable>
+            <UpExDown>
             <div
               className="FileFunctions"
               key="2"
@@ -463,7 +457,7 @@ export const Grid = () => {
               <DownloadButton action={changeFeature}/>
               </div>
             </div>
-
+              </UpExDown>
             <div
               className="UnUploaded"
               key="4"
@@ -475,7 +469,8 @@ export const Grid = () => {
                 i: "UnUpload",
                 static: true,
               }}
-            >  
+              >  
+              <UnUploadedEditor>
             <div className="MenuLabel">
             <label>Non-uploaded edits:</label> 
             </div>
@@ -492,8 +487,8 @@ export const Grid = () => {
             <div className="MenuLine">
             <UnUpNodeShapeMenu  action={changeFeature}color={state.UnUpNodeColor}src={state.UnUpNodeShape} ShowMenu={state.ShowUnUpShapeMenu}/>
             </div>
+            </UnUploadedEditor>
             </div> 
-
             <div
               className="EditEditor"
               key="5"
@@ -505,7 +500,8 @@ export const Grid = () => {
                 i: "Im/Ex",
                 static: true,
               }}
-            >
+              >
+              <AddUpdateEditor>
             <div className="MenuLabel">
             <label >Add/Update Editor:</label> 
             </div>
@@ -529,8 +525,10 @@ export const Grid = () => {
             <div className="MenuLine">
             <NodeShapeMenu    action={changeFeature}color={state.NodeColor}src={state.NodeShape} ShowMenu={state.ShowShapeMenu}/>
             </div>
+            </AddUpdateEditor>
             </div>
           </GridLayout>
+      </GEM>
       </div>
     );
 
