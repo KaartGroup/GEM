@@ -54,8 +54,8 @@ justify-content: space-around;
                     type="numeric"
                     value={props.num}
                     />
-                    <Button onClick={add}>+</Button>
                     <Button onClick={subtract}>-</Button>
+                    <Button onClick={add}>+</Button>
                     </UnUpLineWidthWrapper>
             </>
         );

@@ -53,8 +53,8 @@ export const UnUpNodeSizeSpin =(props)=>{
                     type="numeric"
                     value={props.num}
                     />
-                    <Button onClick={add}>+</Button>
                     <Button onClick={subtract}>-</Button>
+                    <Button onClick={add}>+</Button>
                     </UnUpNodeSizeWrapper>
             </>
         );
