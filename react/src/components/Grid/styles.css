@@ -38,7 +38,7 @@
   }
   
   .react-grid-item > .react-resizable-handle {
-    position: absolute;
+    /* position: absolute; */
     width: 20px;
     height: 20px;
     bottom: 0;
@@ -113,25 +113,15 @@
     line-height: 14px;
   }
 
-  .Table{
+  .NodeIcons{
+    width: 5vw;
     height: 10vh;
-    width: 60vw;
-    border: 1px solid black;
   }
+  
 
-/* .FileFunctions{
-  display: flex;
-  align-items: flex-start;
-  height: 100vh;
-  width: 20vw;
-}
-
-.UnUploaded{
-  display: flex;
-  align-items: flex-start;
-}
-
-.EditEditor{
-  display: flex;
-  align-items: flex-start;
-} */
+  .MenuLabel{
+    font-size: 20px;
+    background-color: #fffdfd;
+    border-bottom: 4px solid #f4753c;
+    margin-bottom:10px
+  }

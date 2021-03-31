@@ -24,7 +24,7 @@ import { MoveButtons } from "../TableButtons/MoveButtons.js"
 import { render } from "@testing-library/react";
 import { DataContext } from "../../common/DataContext";
 import { saveAs } from 'file-saver'
-import { GEM, AddUpdateEditor, UpExDown, TeamTable, UnUploadedEditor  } from "./styles.js";
+import { GEM, AddUpdateEditor, UpExDown, UnUpLineandNodeWrapper, LineandNodeWrapper, TeamTable, UnUploadedEditor, TeamTableBtns, AddUpdateBtns  } from "./styles.js";
 
 
 var inEditName, inUserName, inLineWidth, inNodeSize, inLineWidth, inNodeSize, inLineColor, inNodeColor, inNodeShape;
@@ -403,22 +403,17 @@ export const Grid = () => {
 
   return (
     <div className="Gem" >
-        <GEM>
           <GridLayout
             measureBeforeMount={true}
             className="layout"
             cols={12}
             containerPadding={[5, 5]}
-            // rowHeight={getViewHeight() / 2}
-            // margin={[10, 10]}
-            // layouts={layouts}
-            // onLayoutChange={(layout) => onLayoutChange(layout)}
-          ><TeamTable>
+          >
             <div 
               className="Table"
               key="1"
               data-grid={{
-                x: .1,
+                x: 1,
                 y: .1,
                 w: 3,
                 h: .5,
@@ -426,18 +421,20 @@ export const Grid = () => {
                 static: true,
               }}
             >
+              <TeamTable>
                 { tableData ? <EditorTable useData={tableData} action={changeFeature}/> : null}
+                <TeamTableBtns>
                 <RemoveButtons action={changeFeature}/>
                 <MoveButtons action={changeFeature}/>
-            </div>
+                </TeamTableBtns>
             </TeamTable>
-            <UpExDown>
+            </div>
             <div
               className="FileFunctions"
               key="2"
               data-grid={{
-                x: 9,
-                y: .1,
+                x: 8,
+                y: 0,
                 w: 1,
                 h: 1,
                 i: "file",
@@ -448,52 +445,40 @@ export const Grid = () => {
               </div>
               
               <label>Team Name:</label> 
-              <div className="MenuLine">
-              <TeamNameField action={changeFeature} value={state.TeamName}/> 
-              </div>
-              <div className="MenuLine">
+            
+              <TeamNameField action={changeFeature} value={state.TeamName}/>
               <FileButtons fileID={state.fileID} action={changeFeature} /> 
               <ExportButton action={GetUnUpload}/>
               <DownloadButton action={changeFeature}/>
               </div>
-            </div>
-              </UpExDown>
             <div
               className="UnUploaded"
               key="4"
               data-grid={{
-                x: 6.6,
-                y: .1,
+                x: 8,
+                y: 2.1,
                 w: 2.4,
                 h: 1,
                 i: "UnUpload",
                 static: true,
               }}
-              >  
-              <UnUploadedEditor>
+              >             
             <div className="MenuLabel">
             <label>Non-uploaded edits:</label> 
             </div>
-            <div className="MenuLine">
             <UnUpLineWidthSpin  num={state.UnUpLineWidth}action={changeFeature}/>
-            </div>
-            <div className="MenuLine">
             <UnUpNodeSizeSpin  num={state.UnUpNodeSize}action={changeFeature}/>
-            </div>
-            <div className="MenuLine">
+            <UnUpLineandNodeWrapper>
             <UnUpLineColorPicker  action={changeFeature}color={state.UnUpLineColor}showMenu={state.ShowUnUpLineColorMenu}/>
             <UnUpNodeColorPicker action={changeFeature}color={state.UnUpNodeColor}showMenu={state.ShowUnUpNodeColorMenu}/>
-            </div>
-            <div className="MenuLine">
             <UnUpNodeShapeMenu  action={changeFeature}color={state.UnUpNodeColor}src={state.UnUpNodeShape} ShowMenu={state.ShowUnUpShapeMenu}/>
-            </div>
-            </UnUploadedEditor>
+            </UnUpLineandNodeWrapper>
             </div> 
             <div
               className="EditEditor"
               key="5"
               data-grid={{
-                x: 4.2,
+                x: 5,
                 y: .1,
                 w: 2.4,
                 h: 1,
@@ -501,34 +486,26 @@ export const Grid = () => {
                 static: true,
               }}
               >
-              <AddUpdateEditor>
             <div className="MenuLabel">
             <label >Add/Update Editor:</label> 
             </div>
+                <AddUpdateBtns>
             <EditButton       action={changeFeature} action2={updateEditor}action3={ChangeAddButton}bool={state.addEditor}/>
-            <div className="MenuLine">
+            </AddUpdateBtns>
+              <AddUpdateEditor>
             <EditorNameField  action={changeFeature}value={state.EditorName}/>
-            </div>
-            <div className="MenuLine">
             <UserNameField    action={changeFeature}value={state.UserName}/>
-            </div>
-            <div className="MenuLine">
             <LineWidthSpin    action={changeFeature}num={state.LineWidth}/>
-            </div>
-            <div className="MenuLine">
+
             <NodeSizeSpin     action={changeFeature}num={state.NodeSize}/>
-            </div>
-            <div className="MenuLine">
+              <LineandNodeWrapper>
             <LineColorPicker  action={changeFeature}color={state.LineColor}showMenu={state.ShowLineColorMenu}/>
             <NodeColorPicker  action={changeFeature}color={state.NodeColor}showMenu={state.ShowNodeColorMenu}/>
-            </div >
-            <div className="MenuLine">
             <NodeShapeMenu    action={changeFeature}color={state.NodeColor}src={state.NodeShape} ShowMenu={state.ShowShapeMenu}/>
-            </div>
+            </LineandNodeWrapper>
             </AddUpdateEditor>
             </div>
           </GridLayout>
-      </GEM>
       </div>
     );
 

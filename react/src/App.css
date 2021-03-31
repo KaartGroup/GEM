@@ -416,81 +416,10 @@ th {
   display: inline-flex;
 }
 
-.NodeIcons{
-  width: 40px;
-  height: 40px;
-}
-.LineColors{
-  width: 120px;
-  height: 45px;
-}
-
-
-.EditEditor{
-
-  padding: 10px;
-  font-size: 18px;
-  background-color: #FFFFFF;
-
-}
-
-.UnUploaded{
-  padding: 10px;
-  font-size: 18px;
-  background-color: #FFFFFF;
-
-}
-
-.FileFunctions{
-  padding: 10px;
-  font-size: 18px;
-  background-color: #FFFFFF;
-
-}
-
-.MenuLabel{
-  font-size: 20px;
-  background-color: #fffdfd;
-  border-bottom: 4px solid #f4753c;
-  margin-bottom:10px
-}
-
-.MenuLine{
-  font-weight: 600;
-  padding-top: 10px;
-  padding-bottom: 5px;
-  padding-left: 0px;
-  display: inline-flex;
-  font-size: 15px;
-  border-bottom: 4px solid #8b7c75;
-
-}
-
-
-.LineColorLabel{
-  font-size: 15px;
-  background-color: #fffdfd;
-  margin-right:5px;
-  padding-bottom:10px
-}
-
-.ShapeMenu{
+.EditorButtons{
   display: flex;
-
-}
-
-.GEMIcon{
-  height:7%;
-  width: 7%;
-  padding:0px;
-  margin:0%;
-  background-color: #fffdfd;
-
-}
-.GEMIcon:hover{
-  height:8%;
-  width: 8%;
-}
-.Table{
-  padding-right:10px;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100vw;
+  height: 10vh;
 }

@@ -3,44 +3,30 @@ import styled from "styled-components";
 import { DataContext } from "../../common/DataContext";
 import { Upload, EditorMenu, UploadFile, UploadForm } from "./styles";
 
-
-
-const theme = {
-    blue: {
-      default: "#3f51b5",
-      hover: "#283593"
-    }
-  };
-
-  const Button = styled.button`
-  background-color: ${(props) => theme[props.theme].default};
+export const Button = styled.button`
+  box-sizing: inherit;
+  font-family: sans-serif;
+  font-size: 100%;
+  line-height: 1.15;
+  width: 5vw;
+  height: 5vh;
+  overflow: visible;
+  text-transform: none;
+  border-radius: 6px;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  background-color: #f4753c;
   color: white;
-  padding: 5px 15px;
-  border-radius: 5px;
-  outline: 0;
-  text-transform: uppercase;
-  margin: 10px 0px;
-  cursor: pointer;
-  box-shadow: 0px 2px 2px lightgray;
-  transition: ease background-color 250ms;
+  padding: 14px 20px;
+  border: none;
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   &:hover {
-    background-color: ${(props) => theme[props.theme].hover};
-  }`;
-
-  Button.defaultProps = {
-    theme: "blue"
-  };
-
-
-
-
-
-
-
-
-
-
-
+    background-color: ${(props) => (props.disabled ? "gray" : "#c85823")};
+    color: black;
+    background-color:  #ffff;
+    border: 2px solid #f4753c;
+  }
+`;
 
 export const FileButtons = (props) => {
   const { setTableData } = useContext(DataContext);
@@ -68,10 +54,7 @@ export const FileButtons = (props) => {
 const fileInput = React.useRef();   
 
 return(
-
-
    <>
-
     <Button type='file' name='file'onClick={()=>fileInput.current.click()}>Upload</Button>
           <input 
           ref={fileInput} 

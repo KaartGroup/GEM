@@ -1,36 +1,31 @@
-
-import React, { Component,useState } from "react";
+import React from "react";
 import styled from "styled-components";
-var outJson;
-var url;
-var key;
 
-const theme = {
-    blue: {
-      default: "#3f51b5",
-      hover: "#283593"
-    }
-  };
-
-  const Button = styled.button`
-  background-color: ${(props) => theme[props.theme].default};
+export const Button = styled.button`
+  box-sizing: inherit;
+  font-family: sans-serif;
+  font-size: 100%;
+  line-height: 1.15;
+  width: 5vw;
+  height: 5vh;
+  overflow: visible;
+  text-transform: none;
+  border-radius: 6px;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  background-color: #f4753c;
   color: white;
-  padding: 5px 15px;
-  border-radius: 5px;
-  outline: 0;
-  text-transform: uppercase;
-  margin: 10px 0px;
-  cursor: pointer;
-  box-shadow: 0px 2px 2px lightgray;
-  transition: ease background-color 250ms;
+  padding: 14px 20px;
+  border: none;
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   &:hover {
-    background-color: ${(props) => theme[props.theme].hover};
-  }`;
+    background-color: ${(props) => (props.disabled ? "gray" : "#c85823")};
+    color: black;
+    background-color:  #ffff;
+    border: 2px solid #f4753c;
+  }
+`;
 
-  Button.defaultProps = {
-    theme: "blue"
-  };
-  
 export const EditButton = (props) => {
 
   const clear= () => {
@@ -40,10 +35,10 @@ export const EditButton = (props) => {
     props.action2('add')
   }
 
-  if(props.bool===true){
+  if(props.bool){
     return (
 
-        <div>
+      <div className="EditorButtons" >
           <Button onClick={props.action3}>Edit</Button>
           <Button onClick={Add}>Add</Button>
           <Button onClick={clear}>Clear</Button>
@@ -52,13 +47,11 @@ export const EditButton = (props) => {
     );
   }else{
     return (
-
-        <div>
-          <Button onClick={props.action3}>Edit</Button>
-          <Button onClick={()=>props.action2('update')}>Update</Button>
-          <Button onClick={clear}>Clear</Button>
-        </div> 
-
+      <div className="EditorButtons" >
+      <Button onClick={props.action3}>Edit</Button>
+      <Button onClick={()=>props.action2('update')}>Update</Button>
+      <Button onClick={clear}>Clear</Button>
+      </div>
     );
   
     }

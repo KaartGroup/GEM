@@ -1,33 +1,40 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 
-const theme = {
-    blue: {
-      default: "#3f51b5",
-      hover: "#283593"
-    }
-  };
+export const Button = styled.button`
+box-sizing: inherit;
+font-family: sans-serif;
+font-size: 100%;
+line-height: 1.15;
+width: 2vw;
+text-align: center;
+height: 3vh;
+overflow: visible;
+text-transform: none;
+border-radius: 6px;
+margin-top: 1em;
+margin-bottom: 1em;
+background-color: #f4753c;
+color: white;
+padding: 1px 1px;
+border: none;
+cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+&:hover {
+  background-color: ${(props) => (props.disabled ? "gray" : "#c85823")};
+  color: black;
+  background-color:  #ffff;
+  border: 2px solid #f4753c;
+}
+`;
 
-const Button = styled.button`
-  background-color: ${(props) => theme[props.theme].default};
-  color: white;
-  width:20;
-  height:20;
-  padding: 5px 15px;
-  border-radius: 5px;
-  outline: 0;
-  text-transform: uppercase;
-  margin: 10px 0px;
-  cursor: pointer;
-  box-shadow: 0px 2px 2px lightgray;
-  transition: ease background-color 250ms;
-  &:hover {
-    background-color: ${(props) => theme[props.theme].hover};
-  }`;
 
-  Button.defaultProps = {
-    theme: "blue"
-  };
+export const UnUpLineWidthWrapper = styled.div`
+display: flex;
+padding: 1%;
+align-items: center;
+flex-direction: row;
+justify-content: space-around;
+`;
 
   export const UnUpLineWidthSpin=(props)=> {
 
@@ -40,14 +47,16 @@ const Button = styled.button`
 }
         return (
             <>
-                <div>Line Width:
+                <UnUpLineWidthWrapper>
+                  Line Width:
                     <input
+                        style={{maxWidth: '15%', textAlign:'center'}}
                     type="numeric"
                     value={props.num}
                     />
                     <Button onClick={add}>+</Button>
                     <Button onClick={subtract}>-</Button>
-                </div>
+                    </UnUpLineWidthWrapper>
             </>
         );
 }

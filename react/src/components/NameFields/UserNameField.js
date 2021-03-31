@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React from "react";
+import "./styles.css";
 
 export const UserNameField =(props)=> {
 
@@ -6,8 +7,8 @@ export const UserNameField =(props)=> {
     props.action(text.target.value,"UserName")
 }
     return (
-        <div>OSM Username:
-            <input
+        <div className="OSMUsername">OSM Username:
+            <input style={{display: 'flex'}}
               name="uname"
               type="text"
               value={props.value}
