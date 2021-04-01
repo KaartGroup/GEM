@@ -14,7 +14,7 @@ export const MainFooter = styled.div`
   border: 0 solid #333;
   background-size: cover;
   position: relative;
-  margin-top: 70%;
+  margin-top: 100%;
   background-color: #fff;
   padding: 54px 0;
   border-top-width: 3px;
