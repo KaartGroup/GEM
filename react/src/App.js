@@ -17,8 +17,7 @@ function App() {
       <Route path ="/">
        <Header /> 
         <Gem />
-       {/* <Footer /> 
-       TODO add footer */}
+       <Footer />  
        </Route> 
       </Switch>
       </DataProvider>

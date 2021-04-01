@@ -1,3 +1,4 @@
+import zIndex from '@material-ui/core/styles/zIndex';
 import { LineWidthWrapper } from 'components/Spinners/LineWidthSpin';
 import React from 'react';
 import { SketchPicker, } from 'react-color';
@@ -9,7 +10,7 @@ export const Button = styled.button`
   font-family: sans-serif;
   font-size: 100%;
   line-height: 1.15;
-  width: 5vw;
+  min-width: 5vw;
   height: 4vh;
   overflow: visible;
   text-transform: none;
@@ -29,7 +30,6 @@ export const Button = styled.button`
 `;
 
 export const LineColorWrapper = styled.div`
-  border-TOP: 2px solid #f4753c;
   display: flex;
   padding: 3%;
   flex-direction: column;
@@ -55,7 +55,7 @@ const toggleShowPicker = ()=>{
       <>
       <LineColorWrapper>
       <label > Line Color:</label>
-        <SketchPicker disableAlpha={true} color={props.color}onChange={ changeColor }/>
+        <SketchPicker  disableAlpha={true} color={props.color}onChange={ changeColor }/>
         <Button  onClick={toggleShowPicker}>Close</Button>
         </LineColorWrapper>
       </>

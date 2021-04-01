@@ -4,6 +4,8 @@ import {COLUMNS} from './columns';
 import userList from './template.json';
 import { DataContext } from "../../common/DataContext";
 //import {outJson} from '../variables.js';
+import {TableLineColor} from "./styles";
+
 var jsonId= localStorage.getItem("fileIndex")
 var columnId;
 var outcolor;
@@ -108,7 +110,7 @@ export const EditorTable = (props)=>{
                                 if (cell.value === null){
                                   return <td></td>
                                 }else{
-                                return <td><img className="LineColors" src={cell.value} style={{'background-color':data[index].LINECOLOR}} alt=""/> </td>
+                                return <TableLineColor color={ data[index].LINECOLOR}/> 
                                 }}
 
                               if(cell.column.id === 'NODESHAPE'){

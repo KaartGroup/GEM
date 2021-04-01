@@ -3,10 +3,11 @@ import styled from "styled-components";
 
 export const Button = styled.button`
   box-sizing: inherit;
+  display: flex;
   font-family: sans-serif;
   font-size: 100%;
   line-height: 1.15;
-  width: 5vw;
+  min-width: 5vw;
   height: 5vh;
   overflow: visible;
   text-transform: none;

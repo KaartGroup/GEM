@@ -24,7 +24,8 @@ import { MoveButtons } from "../TableButtons/MoveButtons.js"
 import { render } from "@testing-library/react";
 import { DataContext } from "../../common/DataContext";
 import { saveAs } from 'file-saver'
-import { GEM, AddUpdateEditor, UpExDown, UnUpLineandNodeWrapper, LineandNodeWrapper, TeamTable, UnUploadedEditor, TeamTableBtns, AddUpdateBtns  } from "./styles.js";
+import { GEM, MobileLineandNodeWrapper,MobileFileButtonsWrapper ,MobileTeamTableWrapper, MobileTeamTableBtns,MobileViewWrapper ,AddUpdateEditor, FileButtonsWrapper, UpExDown, UnUpLineandNodeWrapper, LineandNodeWrapper, TeamTable, UnUploadedEditor, TeamTableBtns, AddUpdateBtns  } from "./styles.js";
+import {BrowserView, MobileView, isBrowser, isMobile} from 'react-device-detect';
 
 
 var inEditName, inUserName, inLineWidth, inNodeSize, inLineWidth, inNodeSize, inLineColor, inNodeColor, inNodeShape;
@@ -81,6 +82,12 @@ export const Grid = () => {
         alert("No Data to export. You must either import an existing .mapscc file to edit, or populate the table with editor data in order to export.")
         return
       }
+      let path = '/api/uploads/' + state.TeamName + ".mapcss";
+      const Downrequest = async () => {
+        return fetch(path, {method: "GET",responseType: 'blob'})
+        .then(response=>response.blob())
+        .then(blob => saveAs(blob, state.TeamName + ".mapcss"))
+      }
       let outJson= [{"TeamName":state.TeamName,"LineColor":state.UnUpLineColor,"lineWidth":state.UnUpLineWidth,"NodeSize":state.UnUpNodeSize,"NodeColor":state.UnUpNodeColor,"NodeShape":state.UnUpNodeShape}]
       outJson= JSON.stringify(outJson)
       let url ='/api/compile?fileID='+fileID
@@ -88,9 +95,11 @@ export const Grid = () => {
         const response =  await fetch(url, {method: "POST", body: outJson ,headers: {'Content-Type': 'application/json'}})
         if(response.ok){
           const obj= await response.text()
-        alert("The mapcss file is ready for download.")
+          return fetch(path, {method: "GET",responseType: 'blob'})
+          .then(response=>response.blob())
+          .then(blob => saveAs(blob, state.TeamName + ".mapcss"))
         }}
-      goEx()
+        goEx();
     }
 
     const changeFeature=(e,f) =>{
@@ -203,14 +212,6 @@ export const Grid = () => {
       break; 
 
       case "Download":
-            let path = '/api/uploads/' + state.TeamName + ".mapcss";
-            const Downrequest = async () => {
-              return fetch(path, {method: "GET",responseType: 'blob'})
-              .then(response=>response.blob())
-              .then(blob => saveAs(blob, state.TeamName + ".mapcss"))
-        }
-        Downrequest();
-  
       break; 
 
       case "UnUpData":
@@ -403,6 +404,7 @@ export const Grid = () => {
 
   return (
     <div className="Gem" >
+      <BrowserView>
           <GridLayout
             measureBeforeMount={true}
             className="layout"
@@ -447,16 +449,17 @@ export const Grid = () => {
               <label>Team Name:</label> 
             
               <TeamNameField action={changeFeature} value={state.TeamName}/>
-              <FileButtons fileID={state.fileID} action={changeFeature} /> 
-              <ExportButton action={GetUnUpload}/>
-              <DownloadButton action={changeFeature}/>
+              <FileButtonsWrapper>
+              <FileButtons fileID={state.fileID} action={changeFeature} />
+              <DownloadButton action={ GetUnUpload }/>
+              </FileButtonsWrapper>
               </div>
             <div
               className="UnUploaded"
               key="4"
               data-grid={{
                 x: 8,
-                y: 2.1,
+                y: 1.2,
                 w: 2.4,
                 h: 1,
                 i: "UnUpload",
@@ -471,8 +474,8 @@ export const Grid = () => {
             <UnUpLineandNodeWrapper>
             <UnUpLineColorPicker  action={changeFeature}color={state.UnUpLineColor}showMenu={state.ShowUnUpLineColorMenu}/>
             <UnUpNodeColorPicker action={changeFeature}color={state.UnUpNodeColor}showMenu={state.ShowUnUpNodeColorMenu}/>
-            <UnUpNodeShapeMenu  action={changeFeature}color={state.UnUpNodeColor}src={state.UnUpNodeShape} ShowMenu={state.ShowUnUpShapeMenu}/>
             </UnUpLineandNodeWrapper>
+            <UnUpNodeShapeMenu  action={changeFeature}color={state.UnUpNodeColor}src={state.UnUpNodeShape} ShowMenu={state.ShowUnUpShapeMenu}/>
             </div> 
             <div
               className="EditEditor"
@@ -499,14 +502,65 @@ export const Grid = () => {
 
             <NodeSizeSpin     action={changeFeature}num={state.NodeSize}/>
               <LineandNodeWrapper>
+
             <LineColorPicker  action={changeFeature}color={state.LineColor}showMenu={state.ShowLineColorMenu}/>
             <NodeColorPicker  action={changeFeature}color={state.NodeColor}showMenu={state.ShowNodeColorMenu}/>
-            <NodeShapeMenu    action={changeFeature}color={state.NodeColor}src={state.NodeShape} ShowMenu={state.ShowShapeMenu}/>
+
             </LineandNodeWrapper>
+
+            <NodeShapeMenu    action={changeFeature}color={state.NodeColor}src={state.NodeShape} ShowMenu={state.ShowShapeMenu}/>
             </AddUpdateEditor>
             </div>
           </GridLayout>
+          </BrowserView>
+          <MobileView>
+            <MobileViewWrapper>
+
+            <MobileTeamTableWrapper>
+            <TeamTable>
+                { tableData ? <EditorTable useData={tableData} action={changeFeature}/> : null}
+                <MobileTeamTableBtns>
+                <RemoveButtons action={changeFeature}/>
+                <MoveButtons action={changeFeature}/>
+                </MobileTeamTableBtns>
+            </TeamTable>
+            </MobileTeamTableWrapper>
+            <label style={{textAlign: 'center', borderBottom:"2px solid #f4753c"}} >Import/Export:</label>
+            <label style={{padding: '4%'}}>Team Name:</label> 
+            <TeamNameField action={changeFeature} value={state.TeamName}/>
+              <MobileFileButtonsWrapper>
+              <FileButtons fileID={state.fileID} action={changeFeature} />
+              <DownloadButton action={ GetUnUpload }/>
+              </MobileFileButtonsWrapper>
+              <UnUpLineWidthSpin  num={state.UnUpLineWidth}action={changeFeature}/>
+            <UnUpNodeSizeSpin  num={state.UnUpNodeSize}action={changeFeature}/>
+            <MobileLineandNodeWrapper>
+            <UnUpLineColorPicker  action={changeFeature}color={state.UnUpLineColor}showMenu={state.ShowUnUpLineColorMenu}/>
+            <UnUpNodeColorPicker action={changeFeature}color={state.UnUpNodeColor}showMenu={state.ShowUnUpNodeColorMenu}/>
+            </MobileLineandNodeWrapper>
+            <label>Non-uploaded edits:</label> 
+            <UnUpNodeShapeMenu  action={changeFeature}color={state.UnUpNodeColor}src={state.UnUpNodeShape} ShowMenu={state.ShowUnUpShapeMenu}/>
+            <AddUpdateBtns>
+            <EditButton       action={changeFeature} action2={updateEditor}action3={ChangeAddButton}bool={state.addEditor}/>
+            </AddUpdateBtns>
+            <label >Add/Update Editor:</label> 
+              <AddUpdateEditor>
+            <EditorNameField  action={changeFeature}value={state.EditorName}/>
+            <UserNameField    action={changeFeature}value={state.UserName}/>
+            <LineWidthSpin    action={changeFeature}num={state.LineWidth}/>
+
+            <NodeSizeSpin     action={changeFeature}num={state.NodeSize}/>
+
+              <MobileLineandNodeWrapper>
+            <LineColorPicker  action={changeFeature}color={state.LineColor}showMenu={state.ShowLineColorMenu}/>
+            <NodeColorPicker  action={changeFeature}color={state.NodeColor}showMenu={state.ShowNodeColorMenu}/>
+            </MobileLineandNodeWrapper>
+            <NodeShapeMenu    action={changeFeature}color={state.NodeColor}src={state.NodeShape} ShowMenu={state.ShowShapeMenu}/>
+            </AddUpdateEditor>
+              
+            </MobileViewWrapper>
+
+          </MobileView>
       </div>
     );
-
 }

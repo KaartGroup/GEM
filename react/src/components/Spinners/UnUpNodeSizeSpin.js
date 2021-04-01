@@ -6,7 +6,7 @@ box-sizing: inherit;
 font-family: sans-serif;
 font-size: 100%;
 line-height: 1.15;
-width: 2vw;
+min-width: 2vw;
 text-align: center;
 height: 3vh;
 overflow: visible;

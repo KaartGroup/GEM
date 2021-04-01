@@ -423,3 +423,8 @@ th {
   width: 100vw;
   height: 10vh;
 }
+
+.NodeIcons{
+  min-width: 5vw;
+  max-width: 6vw;
+}

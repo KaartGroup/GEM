@@ -3,31 +3,14 @@ import styled from "styled-components";
 export var inEditName;
 var inEditName;
 
-// const Button = styled.button`
-//   background-color: #f4753c;
-//   color: white;
-//   display: flex;
-//   font-size: 15px;
-//   text-align: center;
-//   padding: 2% 6%;
-//   border-radius: 5px;
-//   outline: 0;
-//   font-family: "Hind Guntur", sans-serif;
-//   cursor: pointer;
-//   box-shadow: 0px 2px 2px lightgray;
-//   transition: ease background-color 250ms;
-//   border-color: #f4753c;
-//   &:hover {
-//     background-color: #fffdfd;
-//     color: black;
-//   }`;
 export const Button = styled.button`
   box-sizing: inherit;
   font-family: sans-serif;
   font-size: 100%;
   text-align: center
   line-height: 1.15;
-  width: 5vw;
+  min-width: 5vw;
+  max-width: 11vw;
   height: 5vh;
   overflow: visible;
   text-transform: none;

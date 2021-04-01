@@ -9,7 +9,7 @@ app = Flask("__main__")
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 10
 mainpath= os.getcwd()
 UPLOAD_FOLDER = mainpath + '/static'
-ALLOWED_EXTENSIONS = {'txt', 'mapcss', 'png', 'jpg', 'jpeg', 'gif'}
+ALLOWED_EXTENSIONS = {'txt', 'mapcss'}
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 flask_cors.CORS(app, support_credentials=True)

@@ -1,8 +1,6 @@
 import styled from "styled-components";
 
 export const MainFooter = styled.div`
-  // position: relative;
-  // transform: translate(0%, 500%);
   font-family: "Hind Guntur", sans-serif;
   width: 100vw;
   color: #666;
@@ -16,6 +14,7 @@ export const MainFooter = styled.div`
   border: 0 solid #333;
   background-size: cover;
   position: relative;
+  margin-top: 60%;
   background-color: #fff;
   padding: 54px 0;
   border-top-width: 3px;

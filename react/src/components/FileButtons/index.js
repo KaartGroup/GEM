@@ -4,11 +4,12 @@ import { DataContext } from "../../common/DataContext";
 import { Upload, EditorMenu, UploadFile, UploadForm } from "./styles";
 
 export const Button = styled.button`
+  display: flex;
   box-sizing: inherit;
   font-family: sans-serif;
   font-size: 100%;
   line-height: 1.15;
-  width: 5vw;
+  min-width: 5vw;
   height: 5vh;
   overflow: visible;
   text-transform: none;

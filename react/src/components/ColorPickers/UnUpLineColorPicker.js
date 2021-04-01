@@ -7,7 +7,7 @@ export const Button = styled.button`
   font-family: sans-serif;
   font-size: 100%;
   line-height: 1.15;
-  width: 5vw;
+  min-width: 5vw;
   height: 4vh;
   overflow: visible;
   text-transform: none;
@@ -27,7 +27,6 @@ export const Button = styled.button`
 `;
 
 export const UnUpLineColorWrapper = styled.div`
-border-TOP: 2px solid #f4753c;
 display: flex;
 padding: 3%;
 flex-direction: column;

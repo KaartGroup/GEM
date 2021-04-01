@@ -6,7 +6,8 @@ export const Button = styled.button`
   font-family: sans-serif;
   font-size: 100%;
   line-height: 1.15;
-  width: 6vw;
+  min-width: 5vw;
+  max-width: 10vw;
   overflow: visible;
   text-transform: none;
   border-radius: 6px;
@@ -27,6 +28,7 @@ export const Button = styled.button`
 export const UnUpNodeShapeIconWrapper = styled.div`
   display: grid;
   grid-template-columns: 50% 50% 50%;
+  max-width: 22vh;
 `;
 
 export const UnUpNodeShapeWrapper = styled.div`

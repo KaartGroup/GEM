@@ -6,7 +6,8 @@ export const Button = styled.button`
   font-family: sans-serif;
   font-size: 100%;
   line-height: 1.15;
-  width: 6vw;
+  min-width: 5vw;
+  max-width: 10vw;
   // height: 4vh;
   overflow: visible;
   text-transform: none;
@@ -14,6 +15,7 @@ export const Button = styled.button`
   margin-top: 1em;
   margin-bottom: 1em;
   background-color: #f4753c;
+  z-index: 9;
   color: white;
   border: none;
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
@@ -27,6 +29,8 @@ export const Button = styled.button`
 
 export const NodeShapeIconWrapper = styled.div`
   display: grid;
+  max-width: 22vh;
+  z-index: 9;
   grid-template-columns: 50% 50% 50%;
 `;
 
