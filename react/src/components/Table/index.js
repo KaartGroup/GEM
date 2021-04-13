@@ -1,35 +1,12 @@
 import  React, {  useMemo, useState, useContext, useEffect } from 'react';
-import {useTable, useRowSelect} from 'react-table';
 import ReactTable from 'react-table-6';
 import {COLUMNS} from './columns';
-import userList from './template.json';
 import { DataContext } from "../../common/DataContext";
 //import {outJson} from '../variables.js';
 import {TableLineColor, NodeShapes} from "./styles";
-import { Header } from 'header';
-
-var jsonId= localStorage.getItem("fileIndex")
-var columnId;
-var outcolor;
 
 
-////////////////////////////////////
-const IndeterminateCheckbox = React.forwardRef(
-    ({ indeterminate, ...rest }, ref) => {
-      const defaultRef = React.useRef()
-      const resolvedRef = ref || defaultRef
 
-      React.useEffect(() => {
-        resolvedRef.current.indeterminate = indeterminate
-      }, [resolvedRef, indeterminate])
-  
-      return (
-        <>
-          <input type="checkbox" ref={resolvedRef} {...rest} />
-        </>
-      )
-    }
-  )
 export const EditorTable = (props)=>{
     const columns = useMemo(() => COLUMNS,[])
     const data = props.useData
@@ -48,7 +25,6 @@ export const EditorTable = (props)=>{
           // props.action(outJson,"GetRowData")
           // setSelectedRow(EditorRow);
           setEditorRow(selectedRow);
-          console.log(selectedRow)
         }, [selectedRow])
 
         
