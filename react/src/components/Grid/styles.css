@@ -1,10 +1,11 @@
 .Gem {
     width: 100vw;
+    height: 100vh;
   }
   
   /* REACT GRID LAYOUT STYLES, this would not import for some reason */
   .react-grid-layout {
-    position: relative;
+    /* position: relative; */
     transition: height 200ms ease;
   }
   .react-grid-item {
@@ -121,7 +122,40 @@
 
   .MenuLabel{
     font-size: 20px;
+    padding: 2% 2%;
+    max-width: 99%;
     background-color: #fffdfd;
     border-bottom: 4px solid #f4753c;
-    margin-bottom:10px
+    border-right: 4px solid #f4753c;
+    border-top: 4px solid #f4753c;
+    border: 3px solid #f4753c;
+    margin-bottom: 10px;
+    border-radius: 2%;
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
   }
+
+  .StartMenuLabel{
+    font-size: 20px;
+    padding: 2%;
+    background-color: #fffdfd;
+    border-top: 3px solid grey;
+    margin-bottom: 10px;
+    
+  }
+
+  .IMMenuLabel{
+    font-size: 20px;
+    transform: translate(2%, 4%);
+    width: 18vw;
+    background-color: #fffdfd;
+    max-height: 400px;
+    border: 2px solid #f4753c;
+    /* border-bottom: 4px solid #f4753c; */
+    padding: 2%;
+    border-radius: 2%;
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  }
+
+

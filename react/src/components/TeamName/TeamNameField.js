@@ -19,6 +19,7 @@ export class TeamNameField extends Component {
     return (
         <div>
             <input
+            style={{maxWidth:'90%'}}
               name="uname"
               type="text"
               value={this.props.value}

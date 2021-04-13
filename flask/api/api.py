@@ -295,17 +295,11 @@ def table():
     injson= request.get_json()
     if injson != None:
         injson=json.loads(injson)
-        index= injson["rowId"].keys()
-        index=str(index).replace(' ',"")
-        index= str(index).split("(")
-        index=str (index[1::])
-        index=index.replace("[","")
-        index=index.replace("]","")
-        index=index.replace(")","")
-        index=index.replace("'","")
-        index=index.replace('"',"")
-        index=index.replace(' ',"")
-        index=index.split(",")
+        index = injson["rowId"]
+        print(index)
+        # print(type(index))
+        if isinstance(index, int):
+            index = [index]
     path = os.path.join(root_dir(),f"tmp/generated/{fileID}.json")
     with open(path, 'r')as json_file:
         tempJson=json_file.read()
@@ -338,11 +332,13 @@ def table():
 
     if sub == "moveUp":
         for i in index:
-            j=int(i)-1
-            if j <0:
+            # print(type(i))
+            print(i)
+            j = i - 1
+            if j < 0:
                 pass
             else:
-                newJson[int(i)],newJson[j] =newJson[j],newJson[int(i)]
+                newJson[i],newJson[j] =newJson[j],newJson[i]
     elif sub == "moveDown":
         for i in index:
             j=int(i)+1

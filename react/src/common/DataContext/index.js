@@ -11,6 +11,10 @@ const [fileID, setFileID] = useLocalStorageState("gem.file_id", null);
 
 const [tableData, setTableData] = useState(null);
 
+const [selectedRow, setSelectedRow] = useState(null);
+
+const [EditorRow, setEditorRow] = useState(null);
+
 const [EditorLayout, setEditorLayout] = useState(null);
 
   useEffect(() => {
@@ -54,6 +58,10 @@ const generateGemJsonId = () => {
         fileID,
         tableData,
         setTableData,
+        selectedRow,
+        EditorRow,
+        setEditorRow,
+        setSelectedRow,
         fetchGemJson,
         generateGemJsonId,
         EditorLayout,

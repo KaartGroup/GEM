@@ -1,5 +1,19 @@
 import styled from "styled-components";
 
+export const GEM = styled.div`
+    padding: 1%;
+    display: grid;
+    grid-template-columns: 80% 20%;
+`;
+
+export const EverythingbutTable = styled.div`
+    padding: 1%;
+    display: grid;
+    grid-auto-flow: row dense;
+    grid-template-columns: 50% 50%;
+    // grid-template-rows: 15% 60%;
+`;
+
 export const GroupEditorButtons = styled.div`
     display: flex;
 `;
@@ -7,7 +21,6 @@ export const GroupEditorButtons = styled.div`
 export const AddUpdateEditor = styled.div`
     display: flex;
     flex-direction: column;
-
 `;
 
 export const FileButtonsWrapper = styled.div`
@@ -15,8 +28,6 @@ export const FileButtonsWrapper = styled.div`
     flex-direction: reverse-row;
     padding: 1%;
     justify-content: space-around; 
-    margin: 1% 1%;
-    width: 30vh;
 `;
 
 export const UnUploadedEditor = styled.div`
@@ -30,6 +41,7 @@ export const UpDown = styled.div`
 export const TeamTable = styled.div`
     display: flex;
     flex-direction: column;
+    padding: 1%;
 `;
 
 export const TeamTableBtns = styled.div`
@@ -37,8 +49,8 @@ export const TeamTableBtns = styled.div`
     flex-direction: row;
     justify-content: space-around;
     align-self: center;
-    padding: 1%;
-    width: 100%;
+    padding: 2%;
+    width: 60%;
 `;
 
 export const AddUpdateBtns = styled.div`
@@ -66,9 +78,7 @@ export const UnUpLineandNodeWrapper = styled.div`
 
 export const MobileViewWrapper = styled.div`
     display: flex;
-    flex-direction: column;
-    // width: 90vw;
-    // height: 100vh;    
+    flex-direction: column;  
 `;
 
 export const MobileTeamTableWrapper = styled.div`
@@ -85,10 +95,7 @@ export const MobileLineandNodeWrapper = styled.div`
 `;
 
 export const MobileUnUpLineandNodeWrapper = styled.div`
-    // border-top: 2px solid #f4753c;
     display: flex;
-    // flex-direction: row;
-    // padding: 1%;
     justify-content: space-around;
 `;
 
@@ -96,16 +103,12 @@ export const MobileUnUpLineandNodeWrapper = styled.div`
 export const MobileFileButtonsWrapper = styled.div`
     display: flex;
     flex-direction: reverse-row;
-    // padding: 1%;
     justify-content: space-around; 
-    // margin: 1% 1%;
-    // width: 30vh;
 `;
 
 export const MobileTeamTableBtns = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    // align-self: flex-center;
     padding: 3%;
 `;

@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "react-table-6": "^6.11.0"
   }
 }
