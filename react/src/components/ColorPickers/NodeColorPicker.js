@@ -52,7 +52,7 @@ const toggleShowPicker = ()=>{
       <>
       <NodeColorWrapper>
       <label> Node Color:</label>
-        <SketchPicker height={50} width={125} disableAlpha={true} color={props.color}onChange={changeColor}/>
+        <SketchPicker  disableAlpha={true} color={props.color}onChange={changeColor}/>
         <Button onClick={toggleShowPicker}>Close</Button>
         </NodeColorWrapper>
       </>

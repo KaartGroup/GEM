@@ -28,7 +28,7 @@ export const Button = styled.button`
 export const UnUpNodeShapeIconWrapper = styled.div`
   display: grid;
   grid-template-columns: 50% 50% 50%;
-  max-width: 22vh;
+  max-width: 25vh;
 `;
 
 export const UnUpNodeShapeWrapper = styled.div`

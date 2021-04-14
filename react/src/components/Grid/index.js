@@ -320,10 +320,14 @@ export const Grid = () => {
 
 
     const ChangeAddButton=()=>{
-      let outJson = state.RowData
-      let checkJson = JSON.parse(outJson)
-      // console.log(checkJson);
-        if ( checkJson['editor']['NAME'] === null){
+      let outJson = state.RowData;
+      var checkJson;
+      console.log(state.RowData);
+      console.log(outJson);
+      if(Object.entries(outJson).length !== 0){
+        checkJson = JSON.parse(outJson)
+      }
+        if ( !checkJson){
             alert("Invalid Selection");
         }
         else
@@ -336,7 +340,7 @@ export const Grid = () => {
   useEffect(() => {
     if(state.addEditor !== true){
       EditEditor();
-      console.log(state)
+      // console.log(state)
     }
     // else if(!state.EditorName){
       // EditEditor();
@@ -386,9 +390,14 @@ export const Grid = () => {
       }
     
     let outJson = state.RowData
-    let checkJson = JSON.parse(outJson)
-    let index = checkJson["rowId"]
-    console.log(index)
+    var checkJson;
+    if(Object.entries(outJson).length !== 0){
+     checkJson = JSON.parse(outJson)
+    }
+    var index;
+    if (checkJson){
+      index = checkJson["rowId"]
+    }
     let entry = {'NAME':state.EditorName,"UID":state.UserName,'NODESHAPE':state.NodeShape,'NODECOLOR':state.NodeColor,"NODESIZE":state.NodeSize,'LINEWIDTH':state.LineWidth,"LINECOLOR":state.LineColor}
     entry=JSON.stringify(entry)
     let url ='/api/update?sub='+sub+'&index='+index+'&infile='+fileID+"&newFile="+state.newFile

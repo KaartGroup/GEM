@@ -11,6 +11,7 @@ export const EverythingbutTable = styled.div`
     display: grid;
     grid-auto-flow: row dense;
     grid-template-columns: 50% 50%;
+    z-index:999;
     // grid-template-rows: 15% 60%;
 `;
 

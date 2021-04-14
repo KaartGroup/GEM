@@ -76,7 +76,7 @@ export const EditorTable = (props)=>{
           accessor: "NODESHAPE",
           Cell: (row) => (
             row.value ?
-             <NodeShapes src={row.value }  color={row.original.NODECOLOR}  />
+             <NodeShapes src={row.value }  color={row.original.NODECOLOR}/>
              : ""  
             )
       }
@@ -84,7 +84,7 @@ export const EditorTable = (props)=>{
 }
 
   resolveData={data => data.map(row => row)}
-  getTdProps={(state, rowInfo, column, instance ) => {  
+  getTdProps={(state, rowInfo ) => {  
     
 
 

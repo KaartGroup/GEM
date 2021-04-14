@@ -29,7 +29,7 @@ export const Button = styled.button`
 
 export const NodeShapeIconWrapper = styled.div`
   display: grid;
-  max-width: 22vh;
+  max-width: 25vh;
   z-index: 9;
   grid-template-columns: 50% 50% 50%;
 `;
@@ -39,6 +39,8 @@ export const NodeShapeWrapper = styled.div`
   display: flex;
   padding: 3%;
   flex-direction: column;
+  z-index: 9;
+  background-color:white;
 `;
 
 export const NodeShapeMenu =(props)=> {
